@@ -8,8 +8,10 @@ img = torch.rand(4,3,224,224)
 model = model.to(0)
 img = img.to(0)
 
-loss, pred, mask = model(img)
+loss, pred, mask, latent = model(img, mask_ratio=0.8)
 
 print(loss)
 print(pred.shape)
 print(mask.shape)
+print(mask.sum(dim = -1))
+print(latent.shape)

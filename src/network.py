@@ -3,7 +3,6 @@ import torch
 import torchvision 
 import torch.nn as nn 
 import torch.nn.functional as F
-from torchdiffeq import odeint
 from .ssl import proj_dict, pred_dict
 import warnings; warnings.filterwarnings("ignore")
 
@@ -125,7 +124,7 @@ class BaseEncoder(nn.Module):
 
     def forward(self, x):
         return self.feat_extractor(x).flatten(1)
-
+    
 class Network(nn.Module):
     def __init__(self, **kwargs):
         super().__init__()
@@ -135,42 +134,27 @@ class Network(nn.Module):
         assert self.algo_type != "-1", "Please specify algo_type for the network"
 
         # so far general feature extractor ($h_{\theta}$)
-        proj_dim = kwargs.get("proj_dim", 128)
+        clr_proj = kwargs.get("clr_proj", 128)
+        proj_dim = kwargs.get("proj_dim", 8192)
+        # proj_dim = kwargs.get("proj_dim", 128)
         self.proj_args = {
-            "simclr": (self.ci, self.ci, proj_dim),
-            "scalre": (self.ci, self.ci, proj_dim),
-            "byol": (self.ci, kwargs.get("byol_hidden", 4096), proj_dim),
-            "simsiam": (self.ci,),
+            "simclr": (self.ci, self.ci, clr_proj),
             "bt": (self.ci, kwargs.get("barlow_hidden", 8192), proj_dim),
             "vicreg": (self.ci, kwargs.get("barlow_hidden", 8192), proj_dim),
-            "simsiam-sc": (self.ci,),
-            "bt-sc": (self.ci, kwargs.get("barlow_hidden", 8192), proj_dim),
-            "vicreg-sc": (self.ci, kwargs.get("barlow_hidden", 8192), proj_dim),
-            "byol-sc": (self.ci, kwargs.get("byol_hidden", 4096), proj_dim)
         }
 
-        self.pred_args = {"byol": (kwargs.get("pred_dim", 256), kwargs.get("byol_hidden", 4096), proj_dim),
-                          "simsiam": (self.ci, kwargs.get("pred_dim", 512)),
-                          "byol-sc": (kwargs.get("pred_dim", 256), kwargs.get("byol_hidden", 4096), proj_dim),
-                          "simsiam-sc": (self.ci, kwargs.get("pred_dim", 512))}
+        self.proj_clr = proj_dict["simclr"](*self.proj_args["simclr"])
+        base_algo = self.algo_type.split("_")[0]
+        self.proj_other = proj_dict[base_algo](*self.proj_args[base_algo])
 
-        self.proj = proj_dict[self.algo_type](*self.proj_args[self.algo_type])
-        self.pred = pred_dict.get(self.algo_type, None)
-        if self.pred is not None:
-            self.pred = self.pred(*self.pred_args[self.algo_type])
-
-    def forward(self, x, t = None, test=None):
+    def forward(self, x, test=None):
         features = self.base_encoder(x)
         if test:
             return {"features": features}
         
-        proj = self.proj(features)
-        if self.pred is not None:
-            pred = self.pred(proj)
-            return {"features": features, "proj_features": proj, "pred_features": pred}
-        else:
-            return {"features": features, "proj_features": proj}
-
+        proj_clr = self.proj_clr(features)
+        proj_other = self.proj_other(features)
+        return {"features": features, "proj_clr": proj_clr, "proj_other": proj_other}
 
 if __name__ == "__main__":
     device=torch.device('cuda:0')
