@@ -1,0 +1,58 @@
+environment: 
+YAML: configs/vicreg.yaml
+==> SEED: 42
+==> train_algo: vicreg_clr
+==> dataset: {'cifar10': {'num_classes': 10, 'params': {'data_dir': 'datasets/cifar10', 'batch_size': 512, 'num_workers': 1, 'image_size': 32, 'algo': 'vicreg_clr'}}, 'cifar100': {'num_classes': 100, 'params': {'data_dir': 'datasets/cifar100', 'batch_size': 512, 'num_workers': 1, 'image_size': 32, 'algo': 'vicreg_clr'}}, 'timg': {'num_classes': 200, 'params': {'data_dir': 'datasets/tinyimagenet/tiny-imagenet-200', 'batch_size': 256, 'num_workers': 1, 'image_size': 64, 'algo': 'vicreg_clr'}}}
+==> return_logs: False
+==> eval_every: 10
+==> n_epochs: 800
+==> n_epochs_mlp: 100
+==> gpu_id: 0
+==> opt: LARS
+==> opt_params: {'lr': 0.4, 'momentum': 0.9, 'weight_decay': 1e-06}
+==> schedular_params: {'T_max': 800, 'eta_min': 0.001}
+==> mlp_opt: SGD
+==> mlp_opt_params: {'lr': 0.01, 'momentum': 0.9}
+==> model_params: {'model_name': 'resnet18', 'pretrained': False, 'proj_dim': 4096, 'barlow_hidden': 4096, 'clr_proj': 128, 'algo_type': 'vicreg_clr'}
+==> mlp_type: hidden
+==> loss: vicreg_clr
+==> loss_params: {'simclr': {'sim': 'cosine', 'tau': 0.5}, 'vicreg': {'_lambda': 25.0, 'mu': 25.0, 'nu': 1.0}}
+==> distributed: True
+==> model_save_path: saved_models/vicreg.clr.r18.timg.pth
+==> warmup_epochs: 40
+==> config: configs/vicreg.yaml
+--------------------------------------------------
+Launching DDP across 3 GPUs
+W0331 19:56:31.425000 784473 torch/multiprocessing/spawn.py:165] Terminating process 784597 via signal SIGTERM
+W0331 19:56:31.426000 784473 torch/multiprocessing/spawn.py:165] Terminating process 784598 via signal SIGTERM
+Traceback (most recent call last):
+  File "/data1/home/nirbhays/maessl/train.py", line 194, in <module>
+    mp.spawn(main_single, args=(world_size, config, args, True), nprocs=world_size)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 340, in spawn
+    return start_processes(fn, args, nprocs, join, daemon, start_method="spawn")
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 296, in start_processes
+    while not context.join():
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 211, in join
+    raise ProcessRaisedException(msg, error_index, failed_process.pid)
+torch.multiprocessing.spawn.ProcessRaisedException: 
+
+-- Process 0 terminated with the following error:
+Traceback (most recent call last):
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 87, in _wrap
+    fn(i, *args)
+  File "/data1/home/nirbhays/maessl/train.py", line 61, in main_single
+    ddp_setup(rank, world_size)
+  File "/data1/home/nirbhays/maessl/train.py", line 51, in ddp_setup
+    init_process_group(backend = 'nccl', rank = rank, world_size = world_size)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/distributed/c10d_logger.py", line 83, in wrapper
+    return func(*args, **kwargs)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/distributed/c10d_logger.py", line 97, in wrapper
+    func_return = func(*args, **kwargs)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/distributed/distributed_c10d.py", line 1806, in init_process_group
+    store, rank, world_size = next(rendezvous_iterator)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/distributed/rendezvous.py", line 281, in _env_rendezvous_handler
+    store = _create_c10d_store(
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/distributed/rendezvous.py", line 200, in _create_c10d_store
+    return TCPStore(
+torch.distributed.DistNetworkError: The server socket has failed to listen on any local network address. port: 4084, useIpv6: false, code: -98, name: EADDRINUSE, message: address already in use
+
