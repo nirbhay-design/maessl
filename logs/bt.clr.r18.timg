@@ -8,8 +8,8 @@ YAML: configs/bt.yaml
 ==> n_epochs: 800
 ==> n_epochs_mlp: 100
 ==> gpu_id: 0
-==> opt: SGD
-==> opt_params: {'lr': 0.4, 'momentum': 0.9, 'weight_decay': 0.0001}
+==> opt: LARS
+==> opt_params: {'lr': 0.2, 'momentum': 0.9, 'weight_decay': 0.0001}
 ==> schedular_params: {'T_max': 800, 'eta_min': 0.001}
 ==> mlp_opt: SGD
 ==> mlp_opt_params: {'lr': 0.01, 'momentum': 0.9}
@@ -130,7 +130,7 @@ Network(
   )
 )
 NOC: 200
-using optimizer: SGD
+using optimizer: LARS
 augmentation for bt_clr: 
 Compose(
     RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
@@ -163,7 +163,7 @@ loss function: bt
 loss: SimCLR(sim=cosine, tau=0.5)
 loss: BT(lambda=0.005)
 ### Barlow Twins + SimCLR Training begins
-using optimizer: SGD
+using optimizer: LARS
 augmentation for bt_clr: 
 Compose(
     RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
@@ -191,7 +191,7 @@ Compose(
 )
 loss function: simclr
 loss function: bt
-using optimizer: SGD
+using optimizer: LARS
 augmentation for bt_clr: 
 Compose(
     RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
@@ -219,6 +219,6 @@ Compose(
 )
 loss function: simclr
 loss function: bt
-[GPU0] epochs: [1/800] train_loss_con: 2539.079
-[GPU1] epochs: [1/800] train_loss_con: 2528.258
-[GPU2] epochs: [1/800] train_loss_con: 2537.103
+[GPU0] epochs: [1/800] train_loss_con: 4683.387
+[GPU2] epochs: [1/800] train_loss_con: 4651.450
+[GPU1] epochs: [1/800] train_loss_con: 4582.725

@@ -32,6 +32,7 @@ def get_args():
     parser.add_argument("--lr", type=float, default = None, help="lr for SSL")
     parser.add_argument("--wd", type=float, default = None, help="weight decay for SSL")
     parser.add_argument("--warmup_epochs", type=int, default = None, help="warmup epochs before starting base_lr")
+    parser.add_argument("--port", type=str, default = "4084", help="port to run distributed training")
     parser.add_argument("--distributed", action="store_true", help="distributed training")
     
     # evaluation 
@@ -45,9 +46,9 @@ def get_args():
     args = parser.parse_args()
     return args
 
-def ddp_setup(rank, world_size):
+def ddp_setup(rank, world_size, port):
     os.environ['MASTER_ADDR'] = 'localhost'
-    os.environ['MASTER_PORT'] = "4084"
+    os.environ['MASTER_PORT'] = port
     init_process_group(backend = 'nccl', rank = rank, world_size = world_size)
 
 def train_network(**kwargs):
@@ -58,7 +59,7 @@ def train_network(**kwargs):
 
 def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False):
     if is_distributed:
-        ddp_setup(rank, world_size)
+        ddp_setup(rank, world_size, args.port)
 
     device = config['gpu_id']
     train_algo = config['train_algo']
