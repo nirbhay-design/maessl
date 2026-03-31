@@ -1,0 +1,25 @@
+environment: 
+YAML: configs/vicreg.yaml
+==> SEED: 42
+==> train_algo: vicreg_clr
+==> dataset: {'cifar10': {'num_classes': 10, 'params': {'data_dir': 'datasets/cifar10', 'batch_size': 512, 'num_workers': 1, 'image_size': 32, 'algo': 'vicreg_clr'}}, 'cifar100': {'num_classes': 100, 'params': {'data_dir': 'datasets/cifar100', 'batch_size': 512, 'num_workers': 1, 'image_size': 32, 'algo': 'vicreg_clr'}}, 'timg': {'num_classes': 200, 'params': {'data_dir': 'datasets/tinyimagenet/tiny-imagenet-200', 'batch_size': 256, 'num_workers': 1, 'image_size': 64, 'algo': 'vicreg_clr'}}}
+==> return_logs: False
+==> eval_every: 10
+==> n_epochs: 800
+==> n_epochs_mlp: 100
+==> gpu_id: 0
+==> opt: LARS
+==> opt_params: {'lr': 0.4, 'momentum': 0.9, 'weight_decay': 1e-06}
+==> schedular_params: {'T_max': 800, 'eta_min': 0.001}
+==> mlp_opt: SGD
+==> mlp_opt_params: {'lr': 0.01, 'momentum': 0.9}
+==> model_params: {'model_name': 'resnet18', 'pretrained': False, 'proj_dim': 4096, 'barlow_hidden': 4096, 'clr_proj': 128, 'algo_type': 'vicreg_clr'}
+==> mlp_type: hidden
+==> loss: vicreg_clr
+==> loss_params: {'simclr': {'sim': 'cosine', 'tau': 0.5}, 'vicreg': {'_lambda': 25.0, 'mu': 25.0, 'nu': 1.0}}
+==> distributed: True
+==> model_save_path: saved_models/vicreg.clr.r18.c100.pth
+==> warmup_epochs: 40
+==> config: configs/vicreg.yaml
+--------------------------------------------------
+Launching DDP across 2 GPUs
