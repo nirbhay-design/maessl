@@ -64,3 +64,4 @@ loss_params:
     nu: 1.0
 distributed: False
 model_save_path: saved_models
+warmup_epochs: 30

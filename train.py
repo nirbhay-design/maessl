@@ -11,6 +11,7 @@ from test import train_linear_probe
 import torch.multiprocessing as mp 
 from torch.nn.parallel import DistributedDataParallel as DDP 
 from torch.distributed import init_process_group, destroy_process_group
+from torch.cuda.amp import GradScaler
 import os 
 import argparse
 import json 
@@ -30,7 +31,7 @@ def get_args():
     parser.add_argument("--opt", type=str, default=None, help="SGD/ADAM/AdamW/LARS")
     parser.add_argument("--lr", type=float, default = None, help="lr for SSL")
     parser.add_argument("--wd", type=float, default = None, help="weight decay for SSL")
-    parser.add_argument("--warmup_epochs", type=int, default = None, help="warmup epochs before starting ScAlRe")
+    parser.add_argument("--warmup_epochs", type=int, default = None, help="warmup epochs before starting base_lr")
     parser.add_argument("--distributed", action="store_true", help="distributed training")
     
     # evaluation 
@@ -69,6 +70,8 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
 
     optimizer = model_optimizer(model, config['opt'], **config['opt_params'])
     opt_lr_schedular = optim.lr_scheduler.CosineAnnealingLR(optimizer, **config['schedular_params'])
+    warmup_lr_schedular = optim.lr_scheduler.LinearLR(optimizer, start_factor=1e-4, end_factor=1.0, total_iters = config["warmup_epochs"])
+    scaler = GradScaler()
 
     train_dl, train_dl_mlp, test_dl, train_ds, test_ds = load_dataset(
         dataset_name = args.dataset,
@@ -100,9 +103,9 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
     
     ## defining parameter configs for each training algorithm
 
-    param_config = {"train_algo": train_algo, "model": model, "train_loader": train_dl,
+    param_config = {"train_algo": train_algo, "model": model, "train_loader": train_dl, "scaler": scaler, "warmup_epochs": config["warmup_epochs"],
         "loss_base": loss_base, "loss_clr": loss_clr, "optimizer": optimizer, "opt_lr_schedular": opt_lr_schedular, "progress": progress,
-        "n_epochs": n_epochs, "device_id": rank, "eval_id": device, "return_logs": return_logs}
+        "n_epochs": n_epochs, "device_id": rank, "eval_id": device, "return_logs": return_logs, "warmup_lr_schedular": warmup_lr_schedular}
 
     final_model = train_network(**param_config)
 
@@ -110,8 +113,6 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         final_model = final_model.module if is_distributed else final_model 
         torch.save(final_model.base_encoder.state_dict(), config["model_save_path"])
         print("Model weights saved")
-
-        # print(model.base_encoder.load_state_dict(torch.load(config["model_save_path"], map_location="cpu")))
 
         train_linear_probe(
                 pretrain_model=final_model.base_encoder,
@@ -131,7 +132,7 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         output = get_tsne_knn_logreg(**test_config)
         for key, value in output.items():
             print(f"{key}: {value:.3f}")
-        # print(f"knn_acc: {output['knn_acc']:.3f}, log_reg_acc: {output['lreg_acc']:.3f}")
+
     if is_distributed:
         destroy_process_group()
 
@@ -166,6 +167,8 @@ if __name__ == "__main__":
         config["n_epochs_mlp"] = args.epochs_lin
     if args.distributed:
         config["distributed"] = args.distributed
+    if args.warmup_epochs:
+        config["warmup_epochs"] = args.warmup_epochs
     
     # setting seeds 
 

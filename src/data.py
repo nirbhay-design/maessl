@@ -251,10 +251,10 @@ def Cifar100DataLoader(**kwargs):
     train_dl_mlp = torch.utils.data.DataLoader(
         train_dataset_mlp,
         batch_size = kwargs['batch_size'],
-        shuffle=False if distributed else True,
+        shuffle=True,
         pin_memory=True,
-        num_workers = num_workers,
-        sampler = DistributedSampler(train_dataset_mlp) if distributed else None 
+        num_workers = num_workers
+        # sampler = DistributedSampler(train_dataset_mlp) if distributed else None 
     )
 
     test_dl = torch.utils.data.DataLoader(
@@ -310,10 +310,10 @@ def Cifar10DataLoader(**kwargs):
     train_dl_mlp = torch.utils.data.DataLoader(
         train_dataset_mlp,
         batch_size = kwargs['batch_size'],
-        shuffle=False if distributed else True,
+        shuffle=True,
         pin_memory=True,
-        num_workers = num_workers,
-        sampler = DistributedSampler(train_dataset_mlp) if distributed else None 
+        num_workers = num_workers
+        # sampler = DistributedSampler(train_dataset_mlp) if distributed else None 
     )
 
     test_dl = torch.utils.data.DataLoader(
@@ -366,10 +366,10 @@ def tinyimagenet_dataloader(**kwargs):
     train_dl_mlp = torch.utils.data.DataLoader(
         train_dataset_mlp,
         batch_size = kwargs['batch_size'],
-        shuffle=False if distributed else True,
+        shuffle=True,
         pin_memory=True,
-        num_workers = num_workers,
-        sampler = DistributedSampler(train_dataset_mlp) if distributed else None 
+        num_workers = num_workers
+        # sampler = DistributedSampler(train_dataset_mlp) if distributed else None 
     )
 
     test_dl = torch.utils.data.DataLoader(

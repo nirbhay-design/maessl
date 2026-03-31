@@ -5,7 +5,7 @@ import torch.nn.functional as F
 
 def train_btclr(
         model, train_loader, loss_base, loss_clr, 
-        optimizer, opt_lr_schedular, 
+        optimizer, opt_lr_schedular, scaler, warmup_lr_schedular, warmup_epochs,
         n_epochs, device_id, eval_id, return_logs=False, progress=None): 
     
     if device_id == eval_id:
@@ -21,28 +21,33 @@ def train_btclr(
         for idx , (data, data_cap, _) in enumerate(train_loader):
             data = data.to(device)
             data_cap = data_cap.to(device)
-            
-            output = model(data)
-            output_cap = model(data_cap)
 
-            _, proj_clr, proj_other = output["features"], output["proj_clr"], output["proj_other"]
-            _, proj_clr_cap, proj_other_cap = output_cap["features"], output_cap["proj_clr"], output_cap["proj_other"]
+            with torch.cuda.amp.autocast():
+                output = model(data)
+                output_cap = model(data_cap)
 
-            loss_simclr = loss_clr(proj_clr, proj_clr_cap)
-            loss_red = loss_base(proj_other, proj_other_cap)
+                _, proj_clr, proj_other = output["features"], output["proj_clr"], output["proj_other"]
+                _, proj_clr_cap, proj_other_cap = output_cap["features"], output_cap["proj_clr"], output_cap["proj_other"]
 
-            loss_con = loss_red + 0.1 * loss_simclr
+                loss_simclr = loss_clr(proj_clr, proj_clr_cap)
+                loss_red = loss_base(proj_other, proj_other_cap)
+
+                loss_con = loss_red + 0.1 * loss_simclr
 
             optimizer.zero_grad()
-            loss_con.backward()
-            optimizer.step()
+            scaler.scale(loss_con).backward()
+            scaler.step(optimizer)
+            scaler.update()
 
             cur_loss += loss_con.item() / (len_train)
             
             if return_logs:
                 progress(idx+1,len(train_loader), loss_simclr=loss_simclr.item(), loss_red=loss_red.item(), loss_con=loss_con.item(), GPU = device_id)
         
-        opt_lr_schedular.step()
+        if epochs < warmup_epochs:
+            warmup_lr_schedular.step()
+        else:
+            opt_lr_schedular.step()
               
         print(f"[GPU{device_id}] epochs: [{epochs+1}/{n_epochs}] train_loss_con: {cur_loss:.3f}")
 
