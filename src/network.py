@@ -3,7 +3,7 @@ import torch
 import torchvision 
 import torch.nn as nn 
 import torch.nn.functional as F
-from .ssl import proj_dict, pred_dict
+from .ssl import proj_dict
 import warnings; warnings.filterwarnings("ignore")
 
 class MLP(nn.Module): # MLP for linear protocol

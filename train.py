@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import numpy as np
 from src.network import Network, EnergyScoreNet, BaseEncoder
-from src.ssl import pred_dict, pretrain_algo 
+from src.ssl import pretrain_algo 
 from train_utils import yaml_loader, model_optimizer, progress, \
                         loss_function, load_dataset, get_tsne_knn_logreg
 from test import train_linear_probe
@@ -27,18 +27,12 @@ def get_args():
     parser.add_argument("--verbose", action="store_true", help="verbose or not")
     parser.add_argument("--epochs", type=int, default = None, help="epochs for SSL pretraining")
     parser.add_argument("--epochs_lin", type=int, default = None, help="epochs for linear probing")
-    parser.add_argument("--opt", type=str, default=None, help="SGD/ADAM/AdamW")
+    parser.add_argument("--opt", type=str, default=None, help="SGD/ADAM/AdamW/LARS")
     parser.add_argument("--lr", type=float, default = None, help="lr for SSL")
     parser.add_argument("--wd", type=float, default = None, help="weight decay for SSL")
-    # parser.add_argument("--linear_lr", type=float, default = None, help="lr for linear probing")
-    ## NODEL / CARL
-    parser.add_argument("--ode_steps", type=int, default = None, help="steps to return from ODE solver")
-    # DARe
-    parser.add_argument("--vae_out", type=int, default = None, help="out dimension for vae for DAiLEMa")
-    # ScAlRe / LEMa
-    parser.add_argument("--net_type", type=str, default = None, help="net type: score / energy")
-    parser.add_argument("--langevin_steps", type=int, default = None, help="steps for Langevin dynamics for ScAlRe")
     parser.add_argument("--warmup_epochs", type=int, default = None, help="warmup epochs before starting ScAlRe")
+    parser.add_argument("--distributed", action="store_true", help="distributed training")
+    
     # evaluation 
     # parser.add_argument("--mlp_type", type=str, default=None, help="hidden/linear")
     parser.add_argument("--test", action="store_true", help="test or not")
@@ -61,86 +55,85 @@ def train_network(**kwargs):
     model = pretrain_algo[train_algo](**kwargs)
     return model 
 
-def main_single():
+def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False):
+    if is_distributed:
+        ddp_setup(rank, world_size)
+
+    device = config['gpu_id']
     train_algo = config['train_algo']
 
-    model = Network(**config['model_params'])
-    print(model)
-    print(f"NOC: {config['dataset'][args.dataset]['num_classes']}")
+    model = Network(**config['model_params']).to(rank)
+    if rank == device:
+        print(model)
+        print(f"NOC: {config['dataset'][args.dataset]['num_classes']}")
 
     optimizer = model_optimizer(model, config['opt'], **config['opt_params'])
     opt_lr_schedular = optim.lr_scheduler.CosineAnnealingLR(optimizer, **config['schedular_params'])
 
-    loss = loss_function(loss_type = config['loss'], **config.get('loss_params', {}))
-    print(f"loss: {loss}")
-            
     train_dl, train_dl_mlp, test_dl, train_ds, test_ds = load_dataset(
         dataset_name = args.dataset,
-        distributed = False,
+        distributed = is_distributed,
         **config["dataset"][args.dataset]["params"])
     
-    print(f"# of Training Images: {len(train_ds)}")
-    print(f"# of Testing Images: {len(test_ds)}")
+    if rank == device:
+        print(f"# of Training Images: {len(train_ds)}")
+        print(f"# of Testing Images: {len(test_ds)}")
 
+    if train_algo in ["bt_clr", "vicreg_clr"]:
+        loss_clr = loss_function(loss_type = "simclr", **config.get('loss_params', {}).get("simclr", {}))
+        base_algo = train_algo.split("_")[0]
+        loss_base = loss_function(loss_type = base_algo, **config.get('loss_params', {}).get(base_algo, {}))
+        if rank == device:
+            print(f"loss: {loss_clr}")
+            print(f"loss: {loss_base}")
+
+    if is_distributed:
+        model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
+        model = DDP(model, device_ids=[rank])
 
     return_logs = config['return_logs']
     eval_every = config['eval_every']
     n_epochs = config['n_epochs']
     n_epochs_mlp = config['n_epochs_mlp']
-    device = config['gpu_id']
 
     tsne_name = "_".join(config["model_save_path"].split('/')[-1].split('.')[:-1]) + ".png"
     
     ## defining parameter configs for each training algorithm
 
     param_config = {"train_algo": train_algo, "model": model, "train_loader": train_dl,
-        "lossfunction": loss, "optimizer": optimizer, "opt_lr_schedular": opt_lr_schedular, "progress": progress,
-        "n_epochs": n_epochs, "device_id": device, "eval_id": device, "return_logs": return_logs}
-    
-    if train_algo in ["byol-sc", "byol"]:
-        target_net = Network(**config['model_params'])
-        target_net.load_state_dict(model.state_dict())
-        target_net.pred = None # no predictor for target network 
-        ema_tau = config['ema_tau']
-
-        param_config.pop("model")
-        param_config["online_model"] = model 
-        param_config["target_model"] = target_net 
-        param_config["ema_beta"] = ema_tau
-
-    if train_algo in ["scalre", "bt-sc", "simsiam-sc", "byol-sc", "vicreg-sc"]:
-        energy_model = EnergyScoreNet(model.ci, **config["energy_model_params"])
-        energy_optimizer = model_optimizer(energy_model, config["energy_opt"], **config["energy_model_opt_params"])
-        
-        param_config["energy_model"] = energy_model
-        param_config["energy_optimizer"] = energy_optimizer
+        "loss_base": loss_base, "loss_clr": loss_clr, "optimizer": optimizer, "opt_lr_schedular": opt_lr_schedular, "progress": progress,
+        "n_epochs": n_epochs, "device_id": rank, "eval_id": device, "return_logs": return_logs}
 
     final_model = train_network(**param_config)
 
-    torch.save(final_model.base_encoder.state_dict(), config["model_save_path"])
-    print("Model weights saved")
+    if rank == device:
+        final_model = final_model.module if is_distributed else final_model 
+        torch.save(final_model.base_encoder.state_dict(), config["model_save_path"])
+        print("Model weights saved")
 
-    print(model.base_encoder.load_state_dict(torch.load(config["model_save_path"], map_location="cpu")))
+        # print(model.base_encoder.load_state_dict(torch.load(config["model_save_path"], map_location="cpu")))
 
-    train_linear_probe(
-            pretrain_model=model.base_encoder,
-            train_loader=train_dl_mlp,
-            test_loader=test_dl,
-            num_classes=config["dataset"][args.dataset]["num_classes"],
-            device=device,
-            epochs=n_epochs_mlp,
-            eval_every=eval_every,
-            return_logs=return_logs
-        )
+        train_linear_probe(
+                pretrain_model=final_model.base_encoder,
+                train_loader=train_dl_mlp,
+                test_loader=test_dl,
+                num_classes=config["dataset"][args.dataset]["num_classes"],
+                device=device,
+                epochs=n_epochs_mlp,
+                eval_every=eval_every,
+                return_logs=return_logs
+            )
 
-    test_config = {"model": model.base_encoder, "train_loader": train_dl_mlp, "test_loader": test_dl, 
-                    "device": device, "return_logs": return_logs, "umap": False, "cmet": True,
-                    "tsne": args.dataset=="cifar10", "knn": True, "log_reg": True, "tsne_name": tsne_name}
-    
-    output = get_tsne_knn_logreg(**test_config)
-    for key, value in output.items():
-        print(f"{key}: {value:.3f}")
-    # print(f"knn_acc: {output['knn_acc']:.3f}, log_reg_acc: {output['lreg_acc']:.3f}")
+        test_config = {"model": final_model.base_encoder, "train_loader": train_dl_mlp, "test_loader": test_dl, 
+                        "device": device, "return_logs": return_logs, "umap": False, "cmet": True,
+                        "tsne": args.dataset=="cifar10", "knn": True, "log_reg": True, "tsne_name": tsne_name}
+        
+        output = get_tsne_knn_logreg(**test_config)
+        for key, value in output.items():
+            print(f"{key}: {value:.3f}")
+        # print(f"knn_acc: {output['knn_acc']:.3f}, log_reg_acc: {output['lreg_acc']:.3f}")
+    if is_distributed:
+        destroy_process_group()
 
 if __name__ == "__main__":
     # editing config based on arguments 
@@ -171,14 +164,8 @@ if __name__ == "__main__":
         config["schedular_params"]["T_max"] = args.epochs
     if args.epochs_lin:
         config["n_epochs_mlp"] = args.epochs_lin
-    if args.ode_steps:
-        config["model_params"]["ode_steps"] = args.ode_steps
-    if args.vae_out:
-        config["model_params"]["vae_out"] = args.vae_out
-    if args.net_type:
-        config["energy_model_params"]["net_type"] = args.net_type
-    if args.langevin_steps:
-        config["energy_model_params"]["steps"] = args.langevin_steps
+    if args.distributed:
+        config["distributed"] = args.distributed
     
     # setting seeds 
 
@@ -198,4 +185,9 @@ if __name__ == "__main__":
 
     print("-"*50)
 
-    main_single()
+    if args.distributed:
+        world_size = torch.cuda.device_count()
+        print(f"Launching DDP across {world_size} GPUs")
+        mp.spawn(main_single, args=(world_size, config, args, True), nprocs=world_size)
+    else:
+        main_single(rank=args.gpu, world_size=1, config=config, args=args, is_distributed=False)

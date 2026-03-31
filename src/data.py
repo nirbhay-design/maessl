@@ -16,6 +16,8 @@ class Solarization(object):
             return ImageOps.solarize(img)
         else:
             return img
+    def __repr__(self):
+        return f"Solarization(p = {self.p})"
 
 class GaussianBlur(object):
     def __init__(self, p):
@@ -27,6 +29,8 @@ class GaussianBlur(object):
             return img.filter(ImageFilter.GaussianBlur(sigma))
         else:
             return img
+    def __repr__(self):
+        return f"GaussianBlur(p = {self.p})"
 
 def get_transforms(image_size, data_name = "cifar10", algo='supcon'):
     if data_name == 'cifar10':

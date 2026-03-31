@@ -1,5 +1,5 @@
 SEED: 42
-train_algo: &algo bt
+train_algo: &algo bt_clr
 dataset: 
   cifar10: 
     num_classes: 10
@@ -50,10 +50,15 @@ model_params:
   pretrained: False 
   proj_dim: 4096
   barlow_hidden: 4096
+  clr_proj: 128
   algo_type: *algo 
 mlp_type: "hidden"
 loss: *algo
 loss_params: 
-  lambd: 0.005
+  simclr:
+    sim: 'cosine'
+    tau: 0.5
+  bt:
+    lambd: 0.005
 distributed: False
 model_save_path: saved_models

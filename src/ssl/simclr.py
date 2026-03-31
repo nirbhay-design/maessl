@@ -56,7 +56,8 @@ class SupConLoss(nn.Module):
 class SimCLR(nn.Module):
     def __init__(self, sim = 'cosine', tau = 1.0):
         super().__init__()
-
+        self.sim = sim 
+        self.tau = tau 
         self.supcon = SupConLoss(sim, tau)
 
     def forward(self, x, x_cap):
@@ -69,6 +70,9 @@ class SimCLR(nn.Module):
         x_full = torch.cat([x,x_cap], dim = 0)
 
         return self.supcon(x_full, fake_labels)
+    
+    def __repr__(self):
+        return f"SimCLR(sim={self.sim}, tau={self.tau})"
 
 
 class BYOL_mlp(nn.Module): # pred and proj net for carl

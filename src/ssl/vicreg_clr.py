@@ -4,11 +4,12 @@ import torch.nn as nn
 import torch.nn.functional as F 
 
 def train_vicregclr(
-        model, train_loader, loss_vicreg, loss_clr,
+        model, train_loader, loss_base, loss_clr,
         optimizer, opt_lr_schedular, 
         n_epochs, device_id, eval_id, return_logs=False, progress=None): 
     
-    print(f"### VICReg + SimCLR Training begins")
+    if device_id == eval_id:
+        print(f"### VICReg + SimCLR Training begins")
 
     device = torch.device(f"cuda:{device_id}")
     model = model.to(device)
@@ -27,7 +28,7 @@ def train_vicregclr(
             _, proj_clr_cap, proj_other_cap = output_cap["features"], output_cap["proj_clr"], output_cap["proj_other"]
 
             loss_simclr = loss_clr(proj_clr, proj_clr_cap)
-            loss_vic = loss_vicreg(proj_other, proj_other_cap)
+            loss_vic = loss_base(proj_other, proj_other_cap)
 
             loss_con = loss_vic + 0.1 * loss_simclr
             

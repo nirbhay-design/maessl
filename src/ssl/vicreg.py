@@ -31,7 +31,10 @@ class VICRegLoss(nn.Module):
         cov_loss = self.off_diagonal(cov_za).pow(2).sum().div(D) +\
                     self.off_diagonal(cov_zb).pow(2).sum().div(D)
 
-        return self._lambda * sim_loss + self.mu * var_loss + self.nu * cov_loss  
+        return self._lambda * sim_loss + self.mu * var_loss + self.nu * cov_loss 
+
+    def __repr__(self):
+        return f"VICReg(lambda={self._lambda}, mu={self.mu}, nu={self.nu})" 
 
 class vicreg_proj(nn.Module):
     def __init__(self, in_features, barlow_hidden, proj_dim):

@@ -23,6 +23,9 @@ class BarlowTwinLoss(nn.Module):
 
         return diag_elem.sum() + self.lambd * diff.sum()
 
+    def __repr__(self):
+        return f"BT(lambda={self.lambd})"
+
 class bt_proj(nn.Module):
     def __init__(self, in_features, barlow_hidden, proj_dim):
         super().__init__()
