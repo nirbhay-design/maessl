@@ -7,10 +7,10 @@ YAML: configs/vicreg.yaml
 ==> eval_every: 10
 ==> n_epochs: 800
 ==> n_epochs_mlp: 100
-==> gpu_id: 1
+==> gpu_id: 0
 ==> opt: LARS
 ==> opt_params: {'lr': 0.4, 'momentum': 0.9, 'weight_decay': 1e-06}
-==> schedular_params: {'T_max': 800, 'eta_min': 0.001}
+==> schedular_params: {'T_max': 790, 'eta_min': 0.001}
 ==> mlp_opt: SGD
 ==> mlp_opt_params: {'lr': 0.01, 'momentum': 0.9}
 ==> model_params: {'model_name': 'resnet18', 'pretrained': False, 'proj_dim': 4096, 'barlow_hidden': 4096, 'clr_proj': 128, 'algo_type': 'vicreg_clr'}
@@ -19,38 +19,10 @@ YAML: configs/vicreg.yaml
 ==> loss_params: {'simclr': {'sim': 'cosine', 'tau': 0.5}, 'vicreg': {'_lambda': 25.0, 'mu': 25.0, 'nu': 1.0}}
 ==> distributed: True
 ==> model_save_path: saved_models/vicreg.clr.r18.timg.pth
-==> warmup_epochs: 40
+==> warmup_epochs: 10
 ==> config: configs/vicreg.yaml
 --------------------------------------------------
 Launching DDP across 2 GPUs
-using optimizer: LARS
-augmentation for vicreg_clr: 
-Compose(
-    RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
-    RandomHorizontalFlip(p=0.5)
-    RandomApply(
-    p=0.8
-    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
-)
-    RandomGrayscale(p=0.2)
-    Solarization(p = 0.0)
-    ToTensor()
-    Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
-)
-Compose(
-    RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
-    RandomHorizontalFlip(p=0.5)
-    RandomApply(
-    p=0.8
-    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
-)
-    RandomGrayscale(p=0.2)
-    Solarization(p = 0.1)
-    ToTensor()
-    Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
-)
-loss function: simclr
-loss function: vicreg
 Network(
   (base_encoder): BaseEncoder(
     (feat_extractor): Sequential(
@@ -157,7 +129,6 @@ Network(
   )
 )
 NOC: 200
-using optimizer: LARS
 augmentation for vicreg_clr: 
 Compose(
     RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
@@ -185,8 +156,37 @@ Compose(
 )
 # of Training Images: 100000
 # of Testing Images: 10000
+using optimizer: LARS
 loss function: simclr
 loss function: vicreg
 loss: SimCLR(sim=cosine, tau=0.5)
 loss: VICReg(lambda=25.0, mu=25.0, nu=1.0)
 ### VICReg + SimCLR Training begins
+augmentation for vicreg_clr: 
+Compose(
+    RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Solarization(p = 0.0)
+    ToTensor()
+    Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+)
+Compose(
+    RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Solarization(p = 0.1)
+    ToTensor()
+    Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+)
+using optimizer: LARS
+loss function: simclr
+loss function: vicreg

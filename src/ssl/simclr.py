@@ -2,6 +2,8 @@ import torch
 import torchvision
 import torch.nn as nn 
 import torch.nn.functional as F 
+import torch.distributed.nn.functional as dist_F
+import torch.distributed as dist 
 
 ## loss definition 
 
@@ -61,6 +63,10 @@ class SimCLR(nn.Module):
         self.supcon = SupConLoss(sim, tau)
 
     def forward(self, x, x_cap):
+        if dist.is_initialized():
+            x = torch.cat(dist_F.all_gather(x), dim = 0)
+            x_cap = torch.cat(dist_F.all_gather(x_cap), dim = 0)
+
         B = x.shape[0]
         device = x.device 
 

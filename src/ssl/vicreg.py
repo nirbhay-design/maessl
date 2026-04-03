@@ -2,6 +2,8 @@ import torch
 import torchvision
 import torch.nn as nn 
 import torch.nn.functional as F 
+import torch.distributed.nn.functional as dist_F
+import torch.distributed as dist
 
 class VICRegLoss(nn.Module):
     def __init__(self, _lambda = 25.0, mu = 25.0, nu = 1.0):
@@ -16,6 +18,10 @@ class VICRegLoss(nn.Module):
 
     def forward(self, za, zb):
         sim_loss = F.mse_loss(za, zb)
+
+        if dist.is_initialized():
+            za = torch.cat(dist_F.all_gather(za), dim = 0)
+            zb = torch.cat(dist_F.all_gather(zb), dim = 0)
 
         za_var = torch.sqrt(za.var(dim = 0) + 1e-04)
         zb_var = torch.sqrt(zb.var(dim = 0) + 1e-04)

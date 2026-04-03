@@ -2,6 +2,8 @@ import torch
 import torchvision
 import torch.nn as nn 
 import torch.nn.functional as F 
+import torch.distributed.nn.functional as dist_F
+import torch.distributed as dist 
 
 class BarlowTwinLoss(nn.Module):
     def __init__(self, lambd = 0.1):
@@ -9,6 +11,10 @@ class BarlowTwinLoss(nn.Module):
         self.lambd = lambd
 
     def forward(self, za, zb): # za and zb are already batch normalized 
+        if dist.is_initialized():
+            za = torch.cat(dist_F.all_gather(za), dim = 0)
+            zb = torch.cat(dist_F.all_gather(zb), dim = 0)
+
         N, D = za.shape
 
         C = torch.mm(za.T, zb) / N # DxD

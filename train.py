@@ -12,6 +12,7 @@ import torch.multiprocessing as mp
 from torch.nn.parallel import DistributedDataParallel as DDP 
 from torch.distributed import init_process_group, destroy_process_group
 from torch.cuda.amp import GradScaler
+import torch.distributed as dist 
 import os 
 import argparse
 import json 
@@ -69,11 +70,6 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         print(model)
         print(f"NOC: {config['dataset'][args.dataset]['num_classes']}")
 
-    optimizer = model_optimizer(model, config['opt'], **config['opt_params'])
-    opt_lr_schedular = optim.lr_scheduler.CosineAnnealingLR(optimizer, **config['schedular_params'])
-    warmup_lr_schedular = optim.lr_scheduler.LinearLR(optimizer, start_factor=1e-4, end_factor=1.0, total_iters = config["warmup_epochs"])
-    scaler = GradScaler()
-
     train_dl, train_dl_mlp, test_dl, train_ds, test_ds = load_dataset(
         dataset_name = args.dataset,
         distributed = is_distributed,
@@ -83,6 +79,18 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         print(f"# of Training Images: {len(train_ds)}")
         print(f"# of Testing Images: {len(test_ds)}")
 
+    optimizer = model_optimizer(model, config['opt'], **config['opt_params'])
+    config["schedular_params"]["T_max"] = config["schedular_params"]["T_max"] * len(train_dl)
+    warmup_steps = len(train_dl) * config["warmup_epochs"]
+    opt_lr_schedular = optim.lr_scheduler.CosineAnnealingLR(optimizer, **config['schedular_params'])
+    warmup_lr_schedular = optim.lr_scheduler.LinearLR(optimizer, start_factor=1e-4, end_factor=1.0, total_iters = warmup_steps)
+    schedular = optim.lr_scheduler.SequentialLR(
+        optimizer,
+        schedulers=[warmup_lr_schedular, opt_lr_schedular],
+        milestones=[warmup_steps] 
+    )
+    scaler = GradScaler()
+    
     if train_algo in ["bt_clr", "vicreg_clr"]:
         loss_clr = loss_function(loss_type = "simclr", **config.get('loss_params', {}).get("simclr", {}))
         base_algo = train_algo.split("_")[0]
@@ -104,11 +112,14 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
     
     ## defining parameter configs for each training algorithm
 
-    param_config = {"train_algo": train_algo, "model": model, "train_loader": train_dl, "scaler": scaler, "warmup_epochs": config["warmup_epochs"],
-        "loss_base": loss_base, "loss_clr": loss_clr, "optimizer": optimizer, "opt_lr_schedular": opt_lr_schedular, "progress": progress,
-        "n_epochs": n_epochs, "device_id": rank, "eval_id": device, "return_logs": return_logs, "warmup_lr_schedular": warmup_lr_schedular}
+    param_config = {"train_algo": train_algo, "model": model, "train_loader": train_dl, "scaler": scaler,
+        "loss_base": loss_base, "loss_clr": loss_clr, "optimizer": optimizer, "opt_lr_schedular": schedular, "progress": progress,
+        "n_epochs": n_epochs, "device_id": rank, "eval_id": device, "return_logs": return_logs}
 
     final_model = train_network(**param_config)
+
+    if is_distributed:
+        dist.barrier()
 
     if rank == device:
         final_model = final_model.module if is_distributed else final_model 
@@ -161,15 +172,15 @@ if __name__ == "__main__":
         config["opt_params"]["lr"] = args.lr 
     if args.wd:
         config["opt_params"]["weight_decay"] = args.wd
+    if args.warmup_epochs:
+        config["warmup_epochs"] = args.warmup_epochs
     if args.epochs:
         config["n_epochs"] = args.epochs
-        config["schedular_params"]["T_max"] = args.epochs
+        config["schedular_params"]["T_max"] = args.epochs - config["warmup_epochs"]
     if args.epochs_lin:
         config["n_epochs_mlp"] = args.epochs_lin
     if args.distributed:
         config["distributed"] = args.distributed
-    if args.warmup_epochs:
-        config["warmup_epochs"] = args.warmup_epochs
     
     # setting seeds 
 

@@ -5,7 +5,7 @@ import torch.nn.functional as F
 
 def train_vicregclr(
         model, train_loader, loss_base, loss_clr,
-        optimizer, opt_lr_schedular, scaler, warmup_lr_schedular, warmup_epochs,
+        optimizer, opt_lr_schedular, scaler,
         n_epochs, device_id, eval_id, return_logs=False, progress=None): 
     
     if device_id == eval_id:
@@ -38,15 +38,14 @@ def train_vicregclr(
             scaler.step(optimizer)
             scaler.update()
 
+            opt_lr_schedular.step()
+
+
             cur_loss += loss_con.item() / (len_train)
             
             if return_logs:
                 progress(idx+1,len(train_loader), loss_simclr=loss_simclr.item(), loss_vic=loss_vic.item(), loss_con=loss_con.item(), GPU = device_id)
   
-        if epochs < warmup_epochs:
-            warmup_lr_schedular.step()
-        else:
-            opt_lr_schedular.step()
               
         print(f"[GPU{device_id}] epochs: [{epochs+1}/{n_epochs}] train_loss_con: {cur_loss:.3f}")
 

@@ -7,10 +7,10 @@ YAML: configs/bt.yaml
 ==> eval_every: 10
 ==> n_epochs: 800
 ==> n_epochs_mlp: 100
-==> gpu_id: 1
+==> gpu_id: 0
 ==> opt: LARS
 ==> opt_params: {'lr': 0.4, 'momentum': 0.9, 'weight_decay': 0.0001}
-==> schedular_params: {'T_max': 800, 'eta_min': 0.001}
+==> schedular_params: {'T_max': 790, 'eta_min': 0.001}
 ==> mlp_opt: SGD
 ==> mlp_opt_params: {'lr': 0.01, 'momentum': 0.9}
 ==> model_params: {'model_name': 'resnet18', 'pretrained': False, 'proj_dim': 4096, 'barlow_hidden': 4096, 'clr_proj': 128, 'algo_type': 'bt_clr'}
@@ -19,11 +19,10 @@ YAML: configs/bt.yaml
 ==> loss_params: {'simclr': {'sim': 'cosine', 'tau': 0.5}, 'bt': {'lambd': 0.005}}
 ==> distributed: True
 ==> model_save_path: saved_models/bt.clr.r18.timg.pth
-==> warmup_epochs: 40
+==> warmup_epochs: 10
 ==> config: configs/bt.yaml
 --------------------------------------------------
 Launching DDP across 2 GPUs
-using optimizer: LARS
 augmentation for bt_clr: 
 Compose(
     RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
@@ -49,6 +48,7 @@ Compose(
     ToTensor()
     Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
 )
+using optimizer: LARS
 loss function: simclr
 loss function: bt
 Network(
@@ -158,7 +158,6 @@ Network(
   )
 )
 NOC: 200
-using optimizer: LARS
 augmentation for bt_clr: 
 Compose(
     RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
@@ -186,6 +185,7 @@ Compose(
 )
 # of Training Images: 100000
 # of Testing Images: 10000
+using optimizer: LARS
 loss function: simclr
 loss function: bt
 loss: SimCLR(sim=cosine, tau=0.5)
