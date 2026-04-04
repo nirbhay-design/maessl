@@ -186,7 +186,9 @@ if __name__ == "__main__":
             config["opt_params"].pop("momentum", -1)
             config["opt_params"].pop("nesterov", -1)
     if args.lr:
-        config["opt_params"]["lr"] = args.lr 
+        bs = config["dataset"][args.dataset]["params"]["batch_size"] # batch_size per gpu
+        ws = torch.cuda.device_count() if args.distributed else 1.0
+        config["opt_params"]["lr"] = args.lr * bs * ws / 256.0
     if args.wd:
         config["opt_params"]["weight_decay"] = args.wd
     if args.warmup_epochs is not None:

@@ -1,0 +1,109 @@
+environment: 
+YAML: configs/bt.yaml
+==> SEED: 42
+==> train_algo: bt
+==> dataset: {'cifar10': {'num_classes': 10, 'params': {'data_dir': 'datasets/cifar10', 'batch_size': 512, 'num_workers': 1, 'image_size': 32, 'algo': 'bt'}}, 'cifar100': {'num_classes': 100, 'params': {'data_dir': 'datasets/cifar100', 'batch_size': 512, 'num_workers': 1, 'image_size': 32, 'algo': 'bt'}}, 'timg': {'num_classes': 200, 'params': {'data_dir': 'datasets/tinyimagenet/tiny-imagenet-200', 'batch_size': 256, 'num_workers': 1, 'image_size': 64, 'algo': 'bt'}}}
+==> return_logs: False
+==> eval_every: 10
+==> n_epochs: 800
+==> n_epochs_mlp: 100
+==> gpu_id: 2
+==> opt: LARS
+==> opt_params: {'lr': 0.8, 'momentum': 0.9, 'weight_decay': 1e-06}
+==> schedular_params: {'T_max': 790, 'eta_min': 0.001}
+==> mlp_opt: SGD
+==> mlp_opt_params: {'lr': 0.01, 'momentum': 0.9}
+==> model_params: {'model_name': 'resnet18', 'pretrained': False, 'proj_dim': 4096, 'barlow_hidden': 4096, 'algo_type': 'bt'}
+==> mlp_type: hidden
+==> loss: bt
+==> loss_params: {'lambd': 0.005}
+==> distributed: True
+==> model_save_path: saved_models/bt.r18.c100.pth
+==> warmup_epochs: 10
+==> config: configs/bt.yaml
+--------------------------------------------------
+Launching DDP across 2 GPUs
+augmentation for bt: 
+Compose(
+    RandomResizedCrop(size=(32, 32), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Solarization(p = 0.0)
+    ToTensor()
+    Normalize(mean=(0.5071, 0.4867, 0.4408), std=(0.2675, 0.2565, 0.2761))
+)
+Compose(
+    RandomResizedCrop(size=(32, 32), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Solarization(p = 0.1)
+    ToTensor()
+    Normalize(mean=(0.5071, 0.4867, 0.4408), std=(0.2675, 0.2565, 0.2761))
+)
+using optimizer: LARS
+loss function: bt
+augmentation for bt: 
+Compose(
+    RandomResizedCrop(size=(32, 32), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Solarization(p = 0.0)
+    ToTensor()
+    Normalize(mean=(0.5071, 0.4867, 0.4408), std=(0.2675, 0.2565, 0.2761))
+)
+Compose(
+    RandomResizedCrop(size=(32, 32), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Solarization(p = 0.1)
+    ToTensor()
+    Normalize(mean=(0.5071, 0.4867, 0.4408), std=(0.2675, 0.2565, 0.2761))
+)
+using optimizer: LARS
+loss function: bt
+[GPU1] epochs: [1/800] train_loss_con: 3213.492
+[GPU0] epochs: [1/800] train_loss_con: 3213.492
+[GPU1] epochs: [2/800] train_loss_con: 2394.554
+[GPU0] epochs: [2/800] train_loss_con: 2394.554
+[GPU1] epochs: [3/800] train_loss_con: 2072.740
+[GPU0] epochs: [3/800] train_loss_con: 2072.740
+[GPU1] epochs: [4/800] train_loss_con: 1923.072
+[GPU0] epochs: [4/800] train_loss_con: 1923.072
+[GPU1] epochs: [5/800] train_loss_con: 1780.061
+[GPU0] epochs: [5/800] train_loss_con: 1780.061
+[GPU1] epochs: [6/800] train_loss_con: 1711.964
+[GPU0] epochs: [6/800] train_loss_con: 1711.964
+[GPU1] epochs: [7/800] train_loss_con: 1624.196
+[GPU0] epochs: [7/800] train_loss_con: 1624.196
+[GPU1] epochs: [8/800] train_loss_con: 1571.394
+[GPU0] epochs: [8/800] train_loss_con: 1571.394
+[GPU1] epochs: [9/800] train_loss_con: 1517.792
+[GPU0] epochs: [9/800] train_loss_con: 1517.792
+[GPU1] epochs: [10/800] train_loss_con: 1468.817
+[GPU0] epochs: [10/800] train_loss_con: 1468.817
+[GPU1] epochs: [11/800] train_loss_con: 1422.191
+[GPU0] epochs: [11/800] train_loss_con: 1422.191
+[GPU1] epochs: [12/800] train_loss_con: 1371.049
+[GPU0] epochs: [12/800] train_loss_con: 1371.049
+[GPU1] epochs: [13/800] train_loss_con: 1345.371
+[GPU0] epochs: [13/800] train_loss_con: 1345.371
+[GPU1] epochs: [14/800] train_loss_con: 1301.973
+[GPU0] epochs: [14/800] train_loss_con: 1301.973
+[GPU1] epochs: [15/800] train_loss_con: 1268.009
+[GPU0] epochs: [15/800] train_loss_con: 1268.009
