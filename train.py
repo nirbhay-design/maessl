@@ -130,30 +130,37 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
 
     if is_distributed:
         dist.barrier()
+        print(f"rank:{rank} reached barrier")
 
-    if rank == device:
-        final_model = final_model.module if is_distributed else final_model 
-        torch.save(final_model.base_encoder.state_dict(), config["model_save_path"])
-        print("Model weights saved")
+    if rank != device:
+        if is_distributed:
+            print(f"destroying for rank: {rank}")
+            destroy_process_group()
 
-        train_linear_probe(
-                pretrain_model=final_model.base_encoder,
-                train_loader=train_dl_mlp,
-                test_loader=test_dl,
-                num_classes=config["dataset"][args.dataset]["num_classes"],
-                device=device,
-                epochs=n_epochs_mlp,
-                eval_every=eval_every,
-                return_logs=return_logs
-            )
+    print(f"rank:{rank} starting linear probing")
 
-        test_config = {"model": final_model.base_encoder, "train_loader": train_dl_mlp, "test_loader": test_dl, 
-                        "device": device, "return_logs": return_logs, "umap": False, "cmet": True,
-                        "tsne": args.dataset=="cifar10", "knn": True, "log_reg": True, "tsne_name": tsne_name}
-        
-        output = get_tsne_knn_logreg(**test_config)
-        for key, value in output.items():
-            print(f"{key}: {value:.3f}")
+    final_model = final_model.module if is_distributed else final_model 
+    torch.save(final_model.base_encoder.state_dict(), config["model_save_path"])
+    print("Model weights saved")
+
+    train_linear_probe(
+            pretrain_model=final_model.base_encoder,
+            train_loader=train_dl_mlp,
+            test_loader=test_dl,
+            num_classes=config["dataset"][args.dataset]["num_classes"],
+            device=device,
+            epochs=n_epochs_mlp,
+            eval_every=eval_every,
+            return_logs=return_logs
+        )
+
+    test_config = {"model": final_model.base_encoder, "train_loader": train_dl_mlp, "test_loader": test_dl, 
+                    "device": device, "return_logs": return_logs, "umap": False, "cmet": True,
+                    "tsne": args.dataset=="cifar10", "knn": True, "log_reg": True, "tsne_name": tsne_name}
+    
+    output = get_tsne_knn_logreg(**test_config)
+    for key, value in output.items():
+        print(f"{key}: {value:.3f}")
 
     if is_distributed:
         destroy_process_group()
@@ -182,7 +189,7 @@ if __name__ == "__main__":
         config["opt_params"]["lr"] = args.lr 
     if args.wd:
         config["opt_params"]["weight_decay"] = args.wd
-    if args.warmup_epochs >= 0:
+    if args.warmup_epochs is not None:
         config["warmup_epochs"] = args.warmup_epochs
     if args.epochs:
         config["n_epochs"] = args.epochs

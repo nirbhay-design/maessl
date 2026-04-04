@@ -81,6 +81,8 @@ def train_bt(
             scaler.scale(loss_con).backward()
             scaler.step(optimizer)
             scaler.update()       
+            # loss_con.backward()
+            # optimizer.step()
             opt_lr_schedular.step()
 
             cur_loss += loss_con.item() / (len_train)
