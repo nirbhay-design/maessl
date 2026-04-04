@@ -19,5 +19,6 @@ proj_dict = {
 pretrain_algo = {
     # "lema": train_lema
     "vicreg_clr": train_vicregclr,
-    "bt_clr": train_btclr
+    "bt_clr": train_btclr,
+    "bt": train_bt
 }

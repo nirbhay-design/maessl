@@ -143,18 +143,26 @@ class Network(nn.Module):
             "vicreg": (self.ci, kwargs.get("barlow_hidden", 8192), proj_dim),
         }
 
-        self.proj_clr = proj_dict["simclr"](*self.proj_args["simclr"])
-        base_algo = self.algo_type.split("_")[0]
-        self.proj_other = proj_dict[base_algo](*self.proj_args[base_algo])
+        if self.algo_type in ["bt_clr", "vicreg_clr"]:
+            self.proj_clr = proj_dict["simclr"](*self.proj_args["simclr"])
+            base_algo = self.algo_type.split("_")[0]
+            self.proj_other = proj_dict[base_algo](*self.proj_args[base_algo])
+
+        elif self.algo_type in ["bt"]:
+            self.proj_other = proj_dict[self.algo_type](*self.proj_args[self.algo_type])
 
     def forward(self, x, test=None):
         features = self.base_encoder(x)
         if test:
             return {"features": features}
         
-        proj_clr = self.proj_clr(features)
+        if self.algo_type in ["bt_clr", "vicreg_clr"]:
+            proj_clr = self.proj_clr(features)
+            proj_other = self.proj_other(features)
+            return {"features": features, "proj_clr": proj_clr, "proj_other": proj_other}
+        
         proj_other = self.proj_other(features)
-        return {"features": features, "proj_clr": proj_clr, "proj_other": proj_other}
+        return {"features": features, "proj": proj_other}
 
 if __name__ == "__main__":
     device=torch.device('cuda:0')
