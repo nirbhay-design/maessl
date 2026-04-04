@@ -2299,3 +2299,11 @@ MLP: MLP(
 [GPU0] epochs: [23/100] train_acc: 0.462 train_loss_sup: 2.544
 [GPU0] epochs: [24/100] train_acc: 0.464 train_loss_sup: 2.514
 [GPU0] epochs: [25/100] train_acc: 0.460 train_loss_sup: 2.585
+[GPU0] epochs: [26/100] train_acc: 0.458 train_loss_sup: 2.650
+[GPU0] epochs: [27/100] train_acc: 0.462 train_loss_sup: 2.586
+[GPU0] epochs: [28/100] train_acc: 0.458 train_loss_sup: 2.560
+[GPU0] epochs: [29/100] train_acc: 0.461 train_loss_sup: 2.603
+[GPU0] epochs: [30/100] train_acc: 0.460 train_loss_sup: 2.612
+[GPU0] Test Accuracy at epoch: 30: 0.465
+[GPU0] epochs: [31/100] train_acc: 0.462 train_loss_sup: 2.549
+[GPU0] epochs: [32/100] train_acc: 0.464 train_loss_sup: 2.546
