@@ -60,6 +60,7 @@ def train_bt(
 
     for epochs in range(n_epochs):
         if dist.is_initialized():
+            # print(f'setting up epoch: {epochs}')
             train_loader.sampler.set_epoch(epochs)
         model.train()
         cur_loss = 0
