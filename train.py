@@ -62,6 +62,8 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
     if is_distributed:
         ddp_setup(rank, world_size, args.port)
 
+    torch.cuda.set_device(rank)
+
     device = config['gpu_id']
     train_algo = config['train_algo']
 

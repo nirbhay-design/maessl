@@ -10,24 +10,22 @@ class BarlowTwinLoss(nn.Module):
         super().__init__()
         self.lambd = lambd
 
+    def off_diagonal(self, x):
+        n, _ = x.shape 
+        return x.flatten()[:-1].view(n-1, n+1)[:,1:].flatten()
+
     def forward(self, za, zb): # za and zb are already batch normalized 
-        if dist.is_initialized():
-            za = torch.cat(dist_F.all_gather(za), dim = 0)
-            zb = torch.cat(dist_F.all_gather(zb), dim = 0)
-
         N, D = za.shape
+        C = torch.mm(za.T, zb) / N # DxD        
 
-        C = torch.mm(za.T, zb) / N # DxD
+        if dist.is_initialized():   
+            C.div_(torch.cuda.device_count())
+            torch.distributed.all_reduce(C)
 
         I = torch.eye(D, device=za.device)
-
         diff = (I - C).pow(2)
-
         diag_elem = torch.diag(diff)
-
-        diff.fill_diagonal_(0.0)
-
-        return diag_elem.sum() + self.lambd * diff.sum()
+        return diag_elem.sum() + self.lambd * self.off_diagonal(diff).sum()
 
     def __repr__(self):
         return f"BT(lambda={self.lambd})"
@@ -61,6 +59,8 @@ def train_bt(
     # model = model.to(device)
 
     for epochs in range(n_epochs):
+        if dist.is_initialized():
+            train_loader.sampler.set_epoch(epochs)
         model.train()
         cur_loss = 0
         len_train = len(train_loader)
@@ -68,21 +68,21 @@ def train_bt(
             data = data.to(device)
             data_cap = data_cap.to(device)
 
-            with torch.cuda.amp.autocast():
-                output = model(data)
-                output_cap = model(data_cap)
+            # with torch.cuda.amp.autocast():
+            output = model(data)
+            output_cap = model(data_cap)
 
-                _, proj = output["features"], output["proj"]
-                _, proj_cap = output_cap["features"], output_cap["proj"]
+            _, proj = output["features"], output["proj"]
+            _, proj_cap = output_cap["features"], output_cap["proj"]
 
-                loss_con = loss_base(proj, proj_cap)
+            loss_con = loss_base(proj, proj_cap)
 
             optimizer.zero_grad()
-            scaler.scale(loss_con).backward()
-            scaler.step(optimizer)
-            scaler.update()       
-            # loss_con.backward()
-            # optimizer.step()
+            # scaler.scale(loss_con).backward()
+            # scaler.step(optimizer)
+            # scaler.update()       
+            loss_con.backward()
+            optimizer.step()
             opt_lr_schedular.step()
 
             cur_loss += loss_con.item() / (len_train)
