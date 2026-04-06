@@ -19,7 +19,7 @@ class BarlowTwinLoss(nn.Module):
         C = torch.mm(za.T, zb) / N # DxD        
 
         if dist.is_initialized():   
-            C.div_(torch.cuda.device_count())
+            C.div_(dist.get_world_size())
             torch.distributed.all_reduce(C)
 
         I = torch.eye(D, device=za.device)
@@ -84,12 +84,13 @@ def train_bt(
             # scaler.update()       
             loss_con.backward()
             optimizer.step()
-            opt_lr_schedular.step()
 
             cur_loss += loss_con.item() / (len_train)
             
             if return_logs:
                 progress(idx+1,len(train_loader), loss_con=loss_con.item(), GPU = device_id)
+        
+        opt_lr_schedular.step()
         
         print(f"[GPU{device_id}] epochs: [{epochs+1}/{n_epochs}] train_loss_con: {cur_loss:.3f}")
 

@@ -12,6 +12,10 @@
 
 # CUDA_VISIBLE_DEVICES=0,1,2 OPENBLAS_NUM_THREADS=1 nohup python train.py --config configs/bt.yaml --dataset cifar100 --save_path bt.r18.c100.lars.pth --gpu 0 --model resnet18 --epochs 800 --lr 0.2 --opt LARS --wd 1e-6 --warmup_epochs 10 --distributed --port 8342 > logs/bt.r18.c100.lars.log &
 
-CUDA_VISIBLE_DEVICES=0,1,2 OPENBLAS_NUM_THREADS=1 nohup python train.py --config configs/bt.yaml --dataset cifar100 --save_path bt.r18.c100.we0.pth --gpu 0 --model resnet18 --epochs 800 --lr 0.2 --opt SGD --wd 1e-4 --warmup_epochs 0 > logs/bt.r18.c100.we0.log &
+# CUDA_VISIBLE_DEVICES=0,1,2 OPENBLAS_NUM_THREADS=1 nohup python train.py --config configs/bt.yaml --dataset cifar100 --save_path bt.r18.c100.we0.pth --gpu 0 --model resnet18 --epochs 800 --lr 0.2 --opt SGD --wd 1e-4 --warmup_epochs 0 > logs/bt.r18.c100.we0.log &
 
-CUDA_VISIBLE_DEVICES=0,1,2 OPENBLAS_NUM_THREADS=1 nohup python train.py --config configs/bt.yaml --dataset cifar100 --save_path bt.r18.c100.dist.we0.pth --gpu 0 --model resnet18 --epochs 800 --lr 0.2 --opt SGD --wd 1e-4 --warmup_epochs 0 --distributed --port 8342 > logs/bt.r18.c100.dist.we0.log &
+# CUDA_VISIBLE_DEVICES=0,1,2 OPENBLAS_NUM_THREADS=1 nohup python train.py --config configs/bt.yaml --dataset cifar100 --save_path bt.r18.c100.dist.we0.pth --gpu 0 --model resnet18 --epochs 800 --lr 0.2 --opt SGD --wd 1e-4 --warmup_epochs 0 --distributed --port 8342 > logs/bt.r18.c100.dist.we0.log &
+
+CUDA_VISIBLE_DEVICES=0,2 OPENBLAS_NUM_THREADS=1 nohup python train.py --config configs/bt.yaml --dataset cifar100 --save_path bt.r18.c100.we10.pth --gpu 0 --model resnet18 --epochs 800 --lr 0.2 --opt SGD --wd 1e-4 --warmup_epochs 10 > logs/bt.r18.c100.we10.log &
+
+CUDA_VISIBLE_DEVICES=0,2 OPENBLAS_NUM_THREADS=1 nohup python train.py --config configs/bt.yaml --dataset cifar100 --save_path bt.r18.c100.dist.we10.pth --gpu 0 --model resnet18 --epochs 800 --lr 0.2 --opt LARS --wd 1e-6 --warmup_epochs 10 --distributed --port 8348 > logs/bt.r18.c100.dist.we10.log &

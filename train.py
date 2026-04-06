@@ -78,11 +78,11 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         **config["dataset"][args.dataset]["params"])
 
     optimizer = model_optimizer(model, config['opt'], **config['opt_params'])
-    config["schedular_params"]["T_max"] = config["schedular_params"]["T_max"] * len(train_dl)
+    # config["schedular_params"]["T_max"] = config["schedular_params"]["T_max"] * len(train_dl)
     if config["warmup_epochs"] > 0:
-        warmup_steps = len(train_dl) * config["warmup_epochs"]
+        warmup_steps = config["warmup_epochs"] # len(train_dl) * config["warmup_epochs"]
         opt_lr_schedular = optim.lr_scheduler.CosineAnnealingLR(optimizer, **config['schedular_params'])
-        warmup_lr_schedular = optim.lr_scheduler.LinearLR(optimizer, start_factor=1e-4, end_factor=1.0, total_iters = warmup_steps)
+        warmup_lr_schedular = optim.lr_scheduler.LinearLR(optimizer, start_factor=1e-6, end_factor=1.0, total_iters = warmup_steps)
         schedular = optim.lr_scheduler.SequentialLR(
             optimizer,
             schedulers=[warmup_lr_schedular, opt_lr_schedular],
