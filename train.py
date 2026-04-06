@@ -5,7 +5,7 @@ import torch.optim as optim
 import numpy as np
 from src.network import Network, EnergyScoreNet, BaseEncoder
 from src.ssl import pretrain_algo 
-from train_utils import yaml_loader, model_optimizer, progress, \
+from train_utils import yaml_loader, model_optimizer, progress, format_time, \
                         loss_function, load_dataset, get_tsne_knn_logreg
 from test import train_linear_probe
 import torch.multiprocessing as mp 
@@ -15,7 +15,7 @@ from torch.cuda.amp import GradScaler
 import torch.distributed as dist 
 import os 
 import argparse
-import json 
+import json, time 
 
 def get_args():
     parser = argparse.ArgumentParser(description="Training script")
@@ -72,7 +72,7 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         print(model)
         print(f"NOC: {config['dataset'][args.dataset]['num_classes']}")
 
-    train_dl, train_dl_mlp, test_dl, train_ds, test_ds = load_dataset(
+    train_dl, _, _, train_ds, test_ds = load_dataset(
         dataset_name = args.dataset,
         distributed = is_distributed,
         **config["dataset"][args.dataset]["params"])
@@ -113,11 +113,11 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         model = DDP(model, device_ids=[rank])
 
     return_logs = config['return_logs']
-    eval_every = config['eval_every']
+    # eval_every = config['eval_every']
     n_epochs = config['n_epochs']
-    n_epochs_mlp = config['n_epochs_mlp']
+    # n_epochs_mlp = config['n_epochs_mlp']
 
-    tsne_name = "_".join(config["model_save_path"].split('/')[-1].split('.')[:-1]) + ".png"
+    # tsne_name = "_".join(config["model_save_path"].split('/')[-1].split('.')[:-1]) + ".png"
     
     ## defining parameter configs for each training algorithm
 
@@ -135,37 +135,13 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         print(f"rank:{rank} reached barrier")
 
     if rank == device:
-        print(f"rank:{rank} starting linear probing")
-
         final_model = final_model.module if is_distributed else final_model 
         torch.save(final_model.base_encoder.state_dict(), config["model_save_path"])
         print("Model weights saved")
 
-        train_linear_probe(
-                pretrain_model=final_model.base_encoder,
-                train_loader=train_dl_mlp,
-                test_loader=test_dl,
-                num_classes=config["dataset"][args.dataset]["num_classes"],
-                device=device,
-                epochs=n_epochs_mlp,
-                eval_every=eval_every,
-                return_logs=return_logs
-            )
-
-        test_config = {"model": final_model.base_encoder, "train_loader": train_dl_mlp, "test_loader": test_dl, 
-                        "device": device, "return_logs": return_logs, "umap": False, "cmet": True,
-                        "tsne": args.dataset=="cifar10", "knn": True, "log_reg": True, "tsne_name": tsne_name}
-        
-        output = get_tsne_knn_logreg(**test_config)
-        for key, value in output.items():
-            print(f"{key}: {value:.3f}")
-
-        if is_distributed:
-            destroy_process_group()
-    else:
-        if is_distributed:
-            print(f"destroying for rank: {rank}")
-            destroy_process_group() 
+    if is_distributed:
+        print(f"destroying for rank: {rank}")
+        destroy_process_group() 
 
 if __name__ == "__main__":
     # editing config based on arguments 
@@ -221,9 +197,52 @@ if __name__ == "__main__":
 
     print("-"*50)
 
+    pt1 = time.perf_counter()
+    # pretraining phase
     if args.distributed:
         world_size = torch.cuda.device_count()
         print(f"Launching DDP across {world_size} GPUs")
         mp.spawn(main_single, args=(world_size, config, args, True), nprocs=world_size)
     else:
         main_single(rank=args.gpu, world_size=1, config=config, args=args, is_distributed=False)
+    pt2 = time.perf_counter()
+
+    print("-"*50)
+    # Running Linear probing 
+    lpt1 = time.perf_counter()
+
+    print("starting linear probing")
+    encoder = BaseEncoder(model_name=args.model, pretrained=False)
+    device = torch.device(f"cuda:{args.gpu}")
+    print(encoder.load_state_dict(torch.load(config["model_save_path"], map_location=device)))
+
+    _, train_dl_mlp, test_dl, _, _ = load_dataset(
+        dataset_name = args.dataset,
+        distributed = False,
+        **config["dataset"][args.dataset]["params"])
+    
+    train_linear_probe(
+        pretrain_model=encoder,
+        train_loader=train_dl_mlp,
+        test_loader=test_dl,
+        num_classes=config["dataset"][args.dataset]["num_classes"],
+        device=args.gpu,
+        epochs=config["n_epochs_mlp"],
+        eval_every=config['eval_every'],
+        return_logs=args.verbose
+    )
+    
+    tsne_name = ".".join(config["model_save_path"].split('/')[-1].split('.')[:-1]) + ".png"
+    test_config = {"model": encoder, "train_loader": train_dl_mlp, "test_loader": test_dl, 
+                    "device": device, "return_logs": args.verbose, "umap": False, "cmet": True,
+                    "tsne": args.dataset == "cifar10", "knn": True, "log_reg": True, "tsne_name": tsne_name}
+    
+    output = get_tsne_knn_logreg(**test_config)
+    for key, value in output.items():
+        print(f"{key}: {value:.3f}")
+    
+    lpt2 = time.perf_counter()
+
+    print(f"pretraining time: {format_time(pt2 - pt1)}")
+    print(f"linear probing time: {format_time(lpt2 - lpt1)}")
+    

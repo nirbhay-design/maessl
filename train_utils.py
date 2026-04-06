@@ -38,6 +38,12 @@ def progress(current, total, **kwargs):
     if (current == total):
         print()
 
+def format_time(seconds):
+    hours = int(seconds // 3600)
+    minutes = int((seconds % 3600) // 60)
+    secs = int(seconds % 60)
+    return f"{hours}h {minutes}m {secs}s"
+
 def get_features_labels(model, loader, device, return_logs = False):
     model = model.to(device)
     model.eval()
