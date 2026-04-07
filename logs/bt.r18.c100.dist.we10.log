@@ -8,8 +8,8 @@ YAML: configs/bt.yaml
 ==> n_epochs: 800
 ==> n_epochs_mlp: 100
 ==> gpu_id: 0
-==> opt: LARS
-==> opt_params: {'lr': 0.8, 'momentum': 0.9, 'weight_decay': 1e-06}
+==> opt: SGD
+==> opt_params: {'lr': 0.8, 'momentum': 0.9, 'weight_decay': 0.0001}
 ==> schedular_params: {'T_max': 790, 'eta_min': 0.001}
 ==> mlp_opt: SGD
 ==> mlp_opt_params: {'lr': 0.01, 'momentum': 0.9}
@@ -23,6 +23,33 @@ YAML: configs/bt.yaml
 ==> config: configs/bt.yaml
 --------------------------------------------------
 Launching DDP across 2 GPUs
+augmentation for bt: 
+Compose(
+    RandomResizedCrop(size=(32, 32), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Solarization(p = 0.0)
+    ToTensor()
+    Normalize(mean=(0.5071, 0.4867, 0.4408), std=(0.2675, 0.2565, 0.2761))
+)
+Compose(
+    RandomResizedCrop(size=(32, 32), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Solarization(p = 0.1)
+    ToTensor()
+    Normalize(mean=(0.5071, 0.4867, 0.4408), std=(0.2675, 0.2565, 0.2761))
+)
+using optimizer: SGD
+loss function: bt
 Network(
   (base_encoder): BaseEncoder(
     (feat_extractor): Sequential(
@@ -147,48 +174,15 @@ Compose(
     ToTensor()
     Normalize(mean=(0.5071, 0.4867, 0.4408), std=(0.2675, 0.2565, 0.2761))
 )
-using optimizer: LARS
+using optimizer: SGD
 # of Training Images: 50000
 # of Testing Images: 10000
-schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x7c4b7c9623b0>
+schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x77aeffc0a350>
 loss function: bt
 ### Barlow Twins Training begins
-augmentation for bt: 
-Compose(
-    RandomResizedCrop(size=(32, 32), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
-    RandomHorizontalFlip(p=0.5)
-    RandomApply(
-    p=0.8
-    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
-)
-    RandomGrayscale(p=0.2)
-    Solarization(p = 0.0)
-    ToTensor()
-    Normalize(mean=(0.5071, 0.4867, 0.4408), std=(0.2675, 0.2565, 0.2761))
-)
-Compose(
-    RandomResizedCrop(size=(32, 32), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
-    RandomHorizontalFlip(p=0.5)
-    RandomApply(
-    p=0.8
-    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
-)
-    RandomGrayscale(p=0.2)
-    Solarization(p = 0.1)
-    ToTensor()
-    Normalize(mean=(0.5071, 0.4867, 0.4408), std=(0.2675, 0.2565, 0.2761))
-)
-using optimizer: LARS
-loss function: bt
-[GPU1] epochs: [1/800] train_loss_con: 3723.377
-[GPU0] epochs: [1/800] train_loss_con: 3723.377
-[GPU1] epochs: [2/800] train_loss_con: 3019.817
-[GPU0] epochs: [2/800] train_loss_con: 3019.817
-[GPU0] epochs: [3/800] train_loss_con: 2402.176
-[GPU1] epochs: [3/800] train_loss_con: 2402.176
-[GPU0] epochs: [4/800] train_loss_con: 2099.108
-[GPU1] epochs: [4/800] train_loss_con: 2099.108
-[GPU1] epochs: [5/800] train_loss_con: 1934.983
-[GPU0] epochs: [5/800] train_loss_con: 1934.983
-[GPU0] epochs: [6/800] train_loss_con: 1802.635
-[GPU1] epochs: [6/800] train_loss_con: 1802.635
+[GPU1] epochs: [1/800] train_loss_con: 3434.143
+[GPU0] epochs: [1/800] train_loss_con: 3434.143
+[GPU1] epochs: [2/800] train_loss_con: 3756.854
+[GPU0] epochs: [2/800] train_loss_con: 3756.854
+[GPU1] epochs: [3/800] train_loss_con: 3561.218
+[GPU0] epochs: [3/800] train_loss_con: 3561.218
