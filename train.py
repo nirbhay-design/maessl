@@ -35,7 +35,7 @@ def get_args():
     parser.add_argument("--warmup_epochs", type=int, default = None, help="warmup epochs before starting base_lr")
     parser.add_argument("--port", type=str, default = "4084", help="port to run distributed training")
     parser.add_argument("--distributed", action="store_true", help="distributed training")
-    
+    parser.add_argument("--bs", type=int, default = None, help="batch size per gpu")    
     # evaluation 
     # parser.add_argument("--mlp_type", type=str, default=None, help="hidden/linear")
     parser.add_argument("--test", action="store_true", help="test or not")
@@ -158,6 +158,8 @@ if __name__ == "__main__":
     config["return_logs"] = args.verbose
     config["model_save_path"] = os.path.join(config.get("model_save_path", "saved_models"), args.save_path)
 
+    if args.bs:
+        config["dataset"][args.dataset]["params"]["batch_size"] = args.bs
     if args.opt:
         config["opt"] = args.opt
         if args.opt in ["ADAM", "AdamW"]:
