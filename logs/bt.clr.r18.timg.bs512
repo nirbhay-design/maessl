@@ -192,3 +192,26 @@ Compose(
 using optimizer: SGD
 loss function: simclr
 loss function: bt
+[GPU1] epochs: [1/800] train_loss_con: 3105.606
+[GPU0] epochs: [1/800] train_loss_con: 3105.606
+[GPU0] epochs: [2/800] train_loss_con: 3423.192
+[GPU1] epochs: [2/800] train_loss_con: 3423.192
+[GPU1] epochs: [3/800] train_loss_con: 3216.387
+[GPU0] epochs: [3/800] train_loss_con: 3216.387
+[GPU1] epochs: [4/800] train_loss_con: 2898.214
+[GPU0] epochs: [4/800] train_loss_con: 2898.214
+[GPU0] epochs: [5/800] train_loss_con: 2675.459
+[GPU1] epochs: [5/800] train_loss_con: 2675.459
+W0408 17:32:54.246000 1797411 torch/multiprocessing/spawn.py:174] Terminating process 1797534 via signal SIGTERM
+Traceback (most recent call last):
+  File "/data1/home/nirbhays/maessl/train.py", line 210, in <module>
+    mp.spawn(main_single, args=(world_size, config, args, True), nprocs=world_size)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 364, in spawn
+    return start_processes(fn, args, nprocs, join, daemon, start_method="spawn")
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 320, in start_processes
+    while not context.join():
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 201, in join
+    raise ProcessExitedException(
+torch.multiprocessing.spawn.ProcessExitedException: process 0 terminated with signal SIGKILL
+/data1/home/nirbhays/.local/share/uv/python/cpython-3.10-linux-x86_64-gnu/lib/python3.10/multiprocessing/resource_tracker.py:224: UserWarning: resource_tracker: There appear to be 22 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
