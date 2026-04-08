@@ -36,6 +36,7 @@ def get_args():
     parser.add_argument("--port", type=str, default = "4084", help="port to run distributed training")
     parser.add_argument("--distributed", action="store_true", help="distributed training")
     parser.add_argument("--bs", type=int, default = None, help="batch size per gpu")    
+    parser.add_argument("--tbs", type=int, default = None, help="batch size per gpu for testing")    
     # evaluation 
     # parser.add_argument("--mlp_type", type=str, default=None, help="hidden/linear")
     parser.add_argument("--test", action="store_true", help="test or not")
@@ -160,6 +161,8 @@ if __name__ == "__main__":
 
     if args.bs:
         config["dataset"][args.dataset]["params"]["batch_size"] = args.bs
+    if args.tbs: 
+        config["dataset"][args.dataset]["params"]["test_batch_size"] = args.tbs
     if args.opt:
         config["opt"] = args.opt
         if args.opt in ["ADAM", "AdamW"]:

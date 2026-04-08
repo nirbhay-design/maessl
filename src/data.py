@@ -250,7 +250,7 @@ def Cifar100DataLoader(**kwargs):
 
     train_dl_mlp = torch.utils.data.DataLoader(
         train_dataset_mlp,
-        batch_size = kwargs['batch_size'],
+        batch_size = kwargs['test_batch_size'],
         shuffle=True,
         pin_memory=True,
         num_workers = num_workers
@@ -309,7 +309,7 @@ def Cifar10DataLoader(**kwargs):
 
     train_dl_mlp = torch.utils.data.DataLoader(
         train_dataset_mlp,
-        batch_size = kwargs['batch_size'],
+        batch_size = kwargs['test_batch_size'],
         shuffle=True,
         pin_memory=True,
         num_workers = num_workers
@@ -365,7 +365,7 @@ def tinyimagenet_dataloader(**kwargs):
 
     train_dl_mlp = torch.utils.data.DataLoader(
         train_dataset_mlp,
-        batch_size = kwargs['batch_size'],
+        batch_size = kwargs['test_batch_size'],
         shuffle=True,
         pin_memory=True,
         num_workers = num_workers

@@ -5,7 +5,8 @@ dataset:
     num_classes: 10
     params: 
       data_dir: datasets/cifar10
-      batch_size: 512
+      batch_size: &bs 512
+      test_batch_size: *bs
       num_workers: 1
       image_size: 32
       algo: *algo 
@@ -14,6 +15,7 @@ dataset:
     params: 
       data_dir: datasets/cifar100
       batch_size: 512
+      test_batch_size: *bs 
       num_workers: 1
       image_size: 32
       algo: *algo
@@ -21,7 +23,8 @@ dataset:
     num_classes: 200
     params: 
       data_dir: datasets/tinyimagenet/tiny-imagenet-200
-      batch_size: 256
+      batch_size: &tibs 256
+      test_batch_size: *tibs
       num_workers: 1
       image_size: 64
       algo: *algo 
