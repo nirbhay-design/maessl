@@ -8,4 +8,4 @@
 
 # CUDA_VISIBLE_DEVICES=0,1 OPENBLAS_NUM_THREADS=1 nohup python train.py --config configs/vicreg_clr.yaml --dataset timg --save_path vicreg.clr.r18.timg.pth --gpu 1 --model resnet18 --epochs 800 --lr 0.2 --opt LARS --wd 1e-6 --warmup_epochs 10 > logs/vicreg.clr.r18.timg &
 
-CUDA_VISIBLE_DEVICES=0,1 OPENBLAS_NUM_THREADS=1 nohup python train.py --config configs/bt_clr.yaml --dataset timg --save_path bt.clr.r18.timg.bs512.pth --gpu 0 --model resnet18 --epochs 800 --lr 0.2 --opt SGD --wd 1e-4 --warmup_epochs 10 --bs 256 --tbs 512 --distributed --port 8988 > logs/bt.clr.r18.timg.bs512 &
+CUDA_VISIBLE_DEVICES=0,1,2 OPENBLAS_NUM_THREADS=1 nohup python train.py --config configs/bt_clr.yaml --dataset timg --save_path bt.clr.r18.timg.bs512.pth --gpu 2 --model resnet18 --epochs 800 --lr 0.2 --opt SGD --wd 1e-4 --warmup_epochs 10 --bs 512 --tbs 512 > logs/bt.clr.r18.timg.bs512 &

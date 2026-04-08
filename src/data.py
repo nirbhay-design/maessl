@@ -91,6 +91,11 @@ def get_transforms(image_size, data_name = "cifar10", algo='supcon'):
             "train_transforms_mlp": train_transforms_mlp, 
             "test_transforms": test_transforms}
 
+
+class CustomImagenet100TrainDataset():
+    def __init__(self, data_dir, labels_json):
+        pass 
+
 class CustomImagenetTrainDataset():
     def __init__(self,img_path, wnids_path, n_class, pretrain=True, transform=None):
         self.img_path = img_path

@@ -2,12 +2,12 @@ environment:
 YAML: configs/bt_clr.yaml
 ==> SEED: 42
 ==> train_algo: bt_clr
-==> dataset: {'cifar10': {'num_classes': 10, 'params': {'data_dir': 'datasets/cifar10', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'algo': 'bt_clr'}}, 'cifar100': {'num_classes': 100, 'params': {'data_dir': 'datasets/cifar100', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'algo': 'bt_clr'}}, 'timg': {'num_classes': 200, 'params': {'data_dir': 'datasets/tinyimagenet/tiny-imagenet-200', 'batch_size': 256, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 64, 'algo': 'bt_clr'}}}
+==> dataset: {'cifar10': {'num_classes': 10, 'params': {'data_dir': 'datasets/cifar10', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'algo': 'bt_clr'}}, 'cifar100': {'num_classes': 100, 'params': {'data_dir': 'datasets/cifar100', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'algo': 'bt_clr'}}, 'timg': {'num_classes': 200, 'params': {'data_dir': 'datasets/tinyimagenet/tiny-imagenet-200', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 64, 'algo': 'bt_clr'}}}
 ==> return_logs: False
 ==> eval_every: 10
 ==> n_epochs: 800
 ==> n_epochs_mlp: 100
-==> gpu_id: 0
+==> gpu_id: 2
 ==> opt: SGD
 ==> opt_params: {'lr': 0.4, 'momentum': 0.9, 'weight_decay': 0.0001}
 ==> schedular_params: {'T_max': 790, 'eta_min': 0.001}
@@ -17,12 +17,11 @@ YAML: configs/bt_clr.yaml
 ==> mlp_type: hidden
 ==> loss: bt_clr
 ==> loss_params: {'simclr': {'sim': 'cosine', 'tau': 0.5}, 'bt': {'lambd': 0.005}}
-==> distributed: True
+==> distributed: False
 ==> model_save_path: saved_models/bt.clr.r18.timg.bs512.pth
 ==> warmup_epochs: 10
 ==> config: configs/bt_clr.yaml
 --------------------------------------------------
-Launching DDP across 2 GPUs
 Network(
   (base_encoder): BaseEncoder(
     (feat_extractor): Sequential(
@@ -158,60 +157,150 @@ Compose(
 using optimizer: SGD
 # of Training Images: 100000
 # of Testing Images: 10000
-schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x7e6b5c0d1960>
+schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x7700c71190c0>
 loss function: simclr
 loss function: bt
 loss: SimCLR(sim=cosine, tau=0.5)
 loss: BT(lambda=0.005)
 ### Barlow Twins + SimCLR Training begins
-augmentation for bt_clr: 
-Compose(
-    RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
-    RandomHorizontalFlip(p=0.5)
-    RandomApply(
-    p=0.8
-    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
-)
-    RandomGrayscale(p=0.2)
-    Solarization(p = 0.0)
-    ToTensor()
-    Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
-)
-Compose(
-    RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
-    RandomHorizontalFlip(p=0.5)
-    RandomApply(
-    p=0.8
-    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
-)
-    RandomGrayscale(p=0.2)
-    Solarization(p = 0.1)
-    ToTensor()
-    Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
-)
-using optimizer: SGD
-loss function: simclr
-loss function: bt
-[GPU1] epochs: [1/800] train_loss_con: 3105.606
-[GPU0] epochs: [1/800] train_loss_con: 3105.606
-[GPU0] epochs: [2/800] train_loss_con: 3423.192
-[GPU1] epochs: [2/800] train_loss_con: 3423.192
-[GPU1] epochs: [3/800] train_loss_con: 3216.387
-[GPU0] epochs: [3/800] train_loss_con: 3216.387
-[GPU1] epochs: [4/800] train_loss_con: 2898.214
-[GPU0] epochs: [4/800] train_loss_con: 2898.214
-[GPU0] epochs: [5/800] train_loss_con: 2675.459
-[GPU1] epochs: [5/800] train_loss_con: 2675.459
-W0408 17:32:54.246000 1797411 torch/multiprocessing/spawn.py:174] Terminating process 1797534 via signal SIGTERM
-Traceback (most recent call last):
-  File "/data1/home/nirbhays/maessl/train.py", line 210, in <module>
-    mp.spawn(main_single, args=(world_size, config, args, True), nprocs=world_size)
-  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 364, in spawn
-    return start_processes(fn, args, nprocs, join, daemon, start_method="spawn")
-  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 320, in start_processes
-    while not context.join():
-  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 201, in join
-    raise ProcessExitedException(
-torch.multiprocessing.spawn.ProcessExitedException: process 0 terminated with signal SIGKILL
-/data1/home/nirbhays/.local/share/uv/python/cpython-3.10-linux-x86_64-gnu/lib/python3.10/multiprocessing/resource_tracker.py:224: UserWarning: resource_tracker: There appear to be 22 leaked semaphore objects to clean up at shutdown
-  warnings.warn('resource_tracker: There appear to be %d '
+[GPU2] epochs: [1/800] train_loss_con: 2963.406
+[GPU2] epochs: [2/800] train_loss_con: 3416.842
+[GPU2] epochs: [3/800] train_loss_con: 3108.773
+[GPU2] epochs: [4/800] train_loss_con: 2762.115
+[GPU2] epochs: [5/800] train_loss_con: 2501.048
+[GPU2] epochs: [6/800] train_loss_con: 2312.437
+[GPU2] epochs: [7/800] train_loss_con: 2106.413
+[GPU2] epochs: [8/800] train_loss_con: 1912.017
+[GPU2] epochs: [9/800] train_loss_con: 1742.205
+[GPU2] epochs: [10/800] train_loss_con: 1598.299
+[GPU2] epochs: [11/800] train_loss_con: 1481.945
+[GPU2] epochs: [12/800] train_loss_con: 1372.576
+[GPU2] epochs: [13/800] train_loss_con: 1276.324
+[GPU2] epochs: [14/800] train_loss_con: 1188.401
+[GPU2] epochs: [15/800] train_loss_con: 1121.664
+[GPU2] epochs: [16/800] train_loss_con: 1057.084
+[GPU2] epochs: [17/800] train_loss_con: 1015.970
+[GPU2] epochs: [18/800] train_loss_con: 980.996
+[GPU2] epochs: [19/800] train_loss_con: 946.775
+[GPU2] epochs: [20/800] train_loss_con: 922.386
+[GPU2] epochs: [21/800] train_loss_con: 901.917
+[GPU2] epochs: [22/800] train_loss_con: 881.497
+[GPU2] epochs: [23/800] train_loss_con: 861.273
+[GPU2] epochs: [24/800] train_loss_con: 843.292
+[GPU2] epochs: [25/800] train_loss_con: 835.882
+[GPU2] epochs: [26/800] train_loss_con: 815.815
+[GPU2] epochs: [27/800] train_loss_con: 805.028
+[GPU2] epochs: [28/800] train_loss_con: 796.174
+[GPU2] epochs: [29/800] train_loss_con: 790.861
+[GPU2] epochs: [30/800] train_loss_con: 783.590
+[GPU2] epochs: [31/800] train_loss_con: 768.270
+[GPU2] epochs: [32/800] train_loss_con: 765.196
+[GPU2] epochs: [33/800] train_loss_con: 759.516
+[GPU2] epochs: [34/800] train_loss_con: 749.214
+[GPU2] epochs: [35/800] train_loss_con: 750.103
+[GPU2] epochs: [36/800] train_loss_con: 740.492
+[GPU2] epochs: [37/800] train_loss_con: 737.317
+[GPU2] epochs: [38/800] train_loss_con: 735.825
+[GPU2] epochs: [39/800] train_loss_con: 726.131
+[GPU2] epochs: [40/800] train_loss_con: 725.139
+[GPU2] epochs: [41/800] train_loss_con: 723.167
+[GPU2] epochs: [42/800] train_loss_con: 716.506
+[GPU2] epochs: [43/800] train_loss_con: 718.294
+[GPU2] epochs: [44/800] train_loss_con: 708.158
+[GPU2] epochs: [45/800] train_loss_con: 705.938
+[GPU2] epochs: [46/800] train_loss_con: 701.785
+[GPU2] epochs: [47/800] train_loss_con: 702.491
+[GPU2] epochs: [48/800] train_loss_con: 692.066
+[GPU2] epochs: [49/800] train_loss_con: 692.892
+[GPU2] epochs: [50/800] train_loss_con: 691.488
+[GPU2] epochs: [51/800] train_loss_con: 689.883
+[GPU2] epochs: [52/800] train_loss_con: 685.757
+[GPU2] epochs: [53/800] train_loss_con: 680.932
+[GPU2] epochs: [54/800] train_loss_con: 679.807
+[GPU2] epochs: [55/800] train_loss_con: 681.236
+[GPU2] epochs: [56/800] train_loss_con: 675.791
+[GPU2] epochs: [57/800] train_loss_con: 672.433
+[GPU2] epochs: [58/800] train_loss_con: 679.430
+[GPU2] epochs: [59/800] train_loss_con: 669.691
+[GPU2] epochs: [60/800] train_loss_con: 672.050
+[GPU2] epochs: [61/800] train_loss_con: 667.900
+[GPU2] epochs: [62/800] train_loss_con: 667.302
+[GPU2] epochs: [63/800] train_loss_con: 665.589
+[GPU2] epochs: [64/800] train_loss_con: 668.912
+[GPU2] epochs: [65/800] train_loss_con: 662.478
+[GPU2] epochs: [66/800] train_loss_con: 660.585
+[GPU2] epochs: [67/800] train_loss_con: 661.897
+[GPU2] epochs: [68/800] train_loss_con: 656.265
+[GPU2] epochs: [69/800] train_loss_con: 657.527
+[GPU2] epochs: [70/800] train_loss_con: 650.379
+[GPU2] epochs: [71/800] train_loss_con: 650.533
+[GPU2] epochs: [72/800] train_loss_con: 657.824
+[GPU2] epochs: [73/800] train_loss_con: 649.404
+[GPU2] epochs: [74/800] train_loss_con: 646.815
+[GPU2] epochs: [75/800] train_loss_con: 647.472
+[GPU2] epochs: [76/800] train_loss_con: 651.471
+[GPU2] epochs: [77/800] train_loss_con: 648.647
+[GPU2] epochs: [78/800] train_loss_con: 648.081
+[GPU2] epochs: [79/800] train_loss_con: 648.182
+[GPU2] epochs: [80/800] train_loss_con: 641.927
+[GPU2] epochs: [81/800] train_loss_con: 644.084
+[GPU2] epochs: [82/800] train_loss_con: 643.728
+[GPU2] epochs: [83/800] train_loss_con: 644.330
+[GPU2] epochs: [84/800] train_loss_con: 641.108
+[GPU2] epochs: [85/800] train_loss_con: 640.354
+[GPU2] epochs: [86/800] train_loss_con: 642.252
+[GPU2] epochs: [87/800] train_loss_con: 642.580
+[GPU2] epochs: [88/800] train_loss_con: 634.698
+[GPU2] epochs: [89/800] train_loss_con: 640.478
+[GPU2] epochs: [90/800] train_loss_con: 636.144
+[GPU2] epochs: [91/800] train_loss_con: 635.986
+[GPU2] epochs: [92/800] train_loss_con: 639.570
+[GPU2] epochs: [93/800] train_loss_con: 637.956
+[GPU2] epochs: [94/800] train_loss_con: 634.270
+[GPU2] epochs: [95/800] train_loss_con: 631.654
+[GPU2] epochs: [96/800] train_loss_con: 635.220
+[GPU2] epochs: [97/800] train_loss_con: 634.466
+[GPU2] epochs: [98/800] train_loss_con: 634.485
+[GPU2] epochs: [99/800] train_loss_con: 634.890
+[GPU2] epochs: [100/800] train_loss_con: 632.096
+[GPU2] epochs: [101/800] train_loss_con: 631.591
+[GPU2] epochs: [102/800] train_loss_con: 629.396
+[GPU2] epochs: [103/800] train_loss_con: 628.649
+[GPU2] epochs: [104/800] train_loss_con: 629.363
+[GPU2] epochs: [105/800] train_loss_con: 629.428
+[GPU2] epochs: [106/800] train_loss_con: 631.265
+[GPU2] epochs: [107/800] train_loss_con: 629.093
+[GPU2] epochs: [108/800] train_loss_con: 620.877
+[GPU2] epochs: [109/800] train_loss_con: 629.566
+[GPU2] epochs: [110/800] train_loss_con: 627.764
+[GPU2] epochs: [111/800] train_loss_con: 623.631
+[GPU2] epochs: [112/800] train_loss_con: 618.265
+[GPU2] epochs: [113/800] train_loss_con: 624.119
+[GPU2] epochs: [114/800] train_loss_con: 625.117
+[GPU2] epochs: [115/800] train_loss_con: 624.971
+[GPU2] epochs: [116/800] train_loss_con: 629.676
+[GPU2] epochs: [117/800] train_loss_con: 625.449
+[GPU2] epochs: [118/800] train_loss_con: 624.868
+[GPU2] epochs: [119/800] train_loss_con: 621.875
+[GPU2] epochs: [120/800] train_loss_con: 621.841
+[GPU2] epochs: [121/800] train_loss_con: 618.245
+[GPU2] epochs: [122/800] train_loss_con: 619.477
+[GPU2] epochs: [123/800] train_loss_con: 616.388
+[GPU2] epochs: [124/800] train_loss_con: 625.486
+[GPU2] epochs: [125/800] train_loss_con: 620.847
+[GPU2] epochs: [126/800] train_loss_con: 621.878
+[GPU2] epochs: [127/800] train_loss_con: 622.698
+[GPU2] epochs: [128/800] train_loss_con: 625.330
+[GPU2] epochs: [129/800] train_loss_con: 618.599
+[GPU2] epochs: [130/800] train_loss_con: 620.091
+[GPU2] epochs: [131/800] train_loss_con: 618.068
+[GPU2] epochs: [132/800] train_loss_con: 614.857
+[GPU2] epochs: [133/800] train_loss_con: 614.852
+[GPU2] epochs: [134/800] train_loss_con: 619.442
+[GPU2] epochs: [135/800] train_loss_con: 619.049
+[GPU2] epochs: [136/800] train_loss_con: 617.006
+[GPU2] epochs: [137/800] train_loss_con: 618.546
+[GPU2] epochs: [138/800] train_loss_con: 612.685
+[GPU2] epochs: [139/800] train_loss_con: 612.402
+[GPU2] epochs: [140/800] train_loss_con: 614.742
+[GPU2] epochs: [141/800] train_loss_con: 620.628
