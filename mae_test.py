@@ -1,22 +1,27 @@
-from src.mae import * 
+# from src.mae import * 
 
-model = mae_vit_base_patch16()
+# model = mae_vit_base_patch16()
 
-print(model)
+# print(model)
 
-img = torch.rand(4,3,224,224)
-model = model.to(0)
-img = img.to(0)
+# img = torch.rand(4,3,224,224)
+# model = model.to(0)
+# img = img.to(0)
 
-output = model(img, mask_ratio=0.8)
+# output = model(img, mask_ratio=0.8)
 
-params = lambda model: sum(p.numel() for p in model.parameters())
+# params = lambda model: sum(p.numel() for p in model.parameters())
 
-loss, pred, mask, latent = output["loss"], output["pred"], output["mask"], output["features"]
+# loss, pred, mask, latent = output["loss"], output["pred"], output["mask"], output["features"]
 
-print(loss)
-print(pred.shape)
-print(mask.shape)
-print(mask.sum(dim = -1))
-print(latent.shape)
-print(f"params: {params(model)}")
+# print(loss)
+# print(pred.shape)
+# print(mask.shape)
+# print(mask.sum(dim = -1))
+# print(latent.shape)
+# print(f"params: {params(model)}")
+
+from src.data import * 
+
+customimg = CustomImagenet100TestDataset("datasets/imagenet100", "Labels.json")
+print(customimg)

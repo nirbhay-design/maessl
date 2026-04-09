@@ -158,6 +158,8 @@ def load_dataset(dataset_name, **kwargs):
         return Cifar100DataLoader(**kwargs)
     if dataset_name == "timg":
         return tinyimagenet_dataloader(**kwargs)
+    if dataset_name == "img100":
+        return imagenet100_dataloader(**kwargs)
     else:
         print(f"{dataset_name} is not supported")
         return None

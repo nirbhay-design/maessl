@@ -4,7 +4,7 @@ import torchvision.transforms as transforms
 import os, random
 import numpy as np
 from PIL import Image, ImageOps, ImageFilter
-import pickle 
+import pickle, json 
 from torch.utils.data.distributed import DistributedSampler
 
 class Solarization(object):
@@ -42,12 +42,19 @@ def get_transforms(image_size, data_name = "cifar10", algo='supcon'):
     elif data_name == "tinyimagenet":
         mean = (0.485, 0.456, 0.406)
         std = (0.229, 0.224, 0.225)
+    elif data_name == "imagenet100":
+        mean = [0.485, 0.456, 0.406]
+        std = [0.229, 0.224, 0.225]
 
     # for solarization 
-    solarize_algo = ["vicreg", "bt", "vicreg_clr", "bt_clr"]
+    solarize_algo = ["vicreg", "bt", "vicreg_clr", "bt_clr", "mae_bt"]
     solarize_p = 0.0
+    gaussian_blur_p = 0.0
+    gaussian_blur_p_prime = 0.0
     if any([i in algo for i in solarize_algo]):
         solarize_p = 0.1
+        gaussian_blur_p = 1.0
+        gaussian_blur_p_prime = 0.1
     
     s = 0.5
 
@@ -57,6 +64,7 @@ def get_transforms(image_size, data_name = "cifar10", algo='supcon'):
         transforms.RandomHorizontalFlip(p=0.5),
         transforms.RandomApply([transforms.ColorJitter(0.8*s, 0.8*s, 0.8*s, 0.2*s)], p=0.8),
         transforms.RandomGrayscale(p = 0.2),
+        GaussianBlur(gaussian_blur_p) if data_name == "imagenet100" else torch.nn.Identity(),
         Solarization(p = 0.0),
         transforms.ToTensor(),
         transforms.Normalize(mean = mean, std=std)
@@ -67,6 +75,7 @@ def get_transforms(image_size, data_name = "cifar10", algo='supcon'):
         transforms.RandomHorizontalFlip(p=0.5),
         transforms.RandomApply([transforms.ColorJitter(0.8*s, 0.8*s, 0.8*s, 0.2*s)], p=0.8),
         transforms.RandomGrayscale(p = 0.2),
+        GaussianBlur(gaussian_blur_p_prime) if data_name == "imagenet100" else torch.nn.Identity(),
         Solarization(p = solarize_p),
         transforms.ToTensor(),
         transforms.Normalize(mean = mean, std=std)
@@ -93,8 +102,72 @@ def get_transforms(image_size, data_name = "cifar10", algo='supcon'):
 
 
 class CustomImagenet100TrainDataset():
-    def __init__(self, data_dir, labels_json):
-        pass 
+    def __init__(self, data_dir, labels_json, pretrain = True, transform = None):
+        dirs = [os.path.join(data_dir, f"train.X{i}") for i in range(1,5)]
+        label_dir = []
+        for folder in dirs:
+            label_dir.extend(list(map(lambda x: os.path.join(folder, x), os.listdir(folder))))
+        
+        with open(os.path.join(data_dir, labels_json), "r") as f:
+            labels = json.load(f)
+    
+        self.label_idx = dict(zip(labels.keys(), list(range(len(labels.keys())))))
+
+        self.img_map = []
+        for img_dir in label_dir:
+            label = img_dir.split('/')[-1]
+            img_path = list(map(lambda x: os.path.join(img_dir, x), os.listdir(img_dir)))
+            self.img_map.extend(list(zip([self.label_idx.get(label, -1) for _ in range(len(img_path))], img_path)))
+        
+        self.pretrain = pretrain
+        if self.pretrain:
+            self.target_transform = transform.get("train_transforms", None)
+            self.target_transform_prime = transform.get("train_transforms_prime", None)
+        else:
+            self.transform_mlp = transform
+
+    def __len__(self):
+        return len(self.img_map)
+    
+    def __getitem__(self, idx):
+        cls_idx, image_path = self.img_map[idx]
+
+        img = Image.open(image_path).convert('RGB')
+        if self.pretrain:
+            img1 = self.target_transform(img)
+            img2 = self.target_transform_prime(img)
+            return img1, img2, cls_idx 
+        else:
+            img = self.transform_mlp(img)
+        return (img, cls_idx)
+    
+class CustomImagenet100TestDataset():
+    def __init__(self, data_dir, labels_json, transform = None):
+        dirs = os.path.join(data_dir, f"val.X")
+        label_dir = list(map(lambda x: os.path.join(dirs, x), os.listdir(dirs)))
+        
+        with open(os.path.join(data_dir, labels_json), "r") as f:
+            labels = json.load(f)
+    
+        self.label_idx = dict(zip(labels.keys(), list(range(len(labels.keys())))))
+
+        self.img_map = []
+        for img_dir in label_dir:
+            label = img_dir.split('/')[-1]
+            img_path = list(map(lambda x: os.path.join(img_dir, x), os.listdir(img_dir)))
+            self.img_map.extend(list(zip([self.label_idx.get(label, -1) for _ in range(len(img_path))], img_path)))
+        
+        self.transform = transform 
+
+    def __len__(self):
+        return len(self.img_map)
+    
+    def __getitem__(self, idx):
+        cls_idx, image_path = self.img_map[idx]
+
+        img = Image.open(image_path).convert('RGB')
+        img = self.transform(img)
+        return (img, cls_idx)
 
 class CustomImagenetTrainDataset():
     def __init__(self,img_path, wnids_path, n_class, pretrain=True, transform=None):
@@ -358,6 +431,57 @@ def tinyimagenet_dataloader(**kwargs):
     
     test_dataset = CustomImagenetTestDataset(img_path = test_image_path, wnids = wnids_path, test_anno = test_anno_path,
                                              n_class = n_class, transform = all_transforms["test_transforms"])
+
+    train_dl = torch.utils.data.DataLoader(
+        train_dataset,
+        batch_size = kwargs['batch_size'],
+        shuffle=False if distributed else True,
+        pin_memory=True,
+        num_workers = num_workers,
+        sampler = DistributedSampler(train_dataset) if distributed else None 
+    )
+
+    train_dl_mlp = torch.utils.data.DataLoader(
+        train_dataset_mlp,
+        batch_size = kwargs['test_batch_size'],
+        shuffle=True,
+        pin_memory=True,
+        num_workers = num_workers
+        # sampler = DistributedSampler(train_dataset_mlp) if distributed else None 
+    )
+
+    test_dl = torch.utils.data.DataLoader(
+        test_dataset,
+        batch_size = 32,
+        shuffle=True,
+        pin_memory=True,
+        num_workers= num_workers
+    )
+
+    return train_dl, train_dl_mlp, test_dl, train_dataset, test_dataset
+
+def imagenet100_dataloader(**kwargs):
+    image_size = kwargs['image_size']
+    data_dir = kwargs['data_dir']
+    labels_json = kwargs["labels_json"]
+    algo = kwargs['algo']
+
+    all_transforms = get_transforms(image_size, data_name = "imagenet100", algo=algo)
+
+    distributed = kwargs['distributed']
+    num_workers = kwargs['num_workers']
+
+    train_transforms = {"train_transforms": all_transforms["train_transforms"],
+                        "train_transforms_prime": all_transforms["train_transforms_prime"]}
+
+    train_dataset = CustomImagenet100TrainDataset(data_dir = data_dir, label_json = labels_json, 
+                                               pretrain=True, transform = train_transforms)
+
+    train_dataset_mlp = CustomImagenet100TrainDataset(data_dir = data_dir, label_json = labels_json, 
+                                               pretrain=False, transform = all_transforms["train_transforms_mlp"])
+    
+    test_dataset = CustomImagenet100TestDataset(data_dir = data_dir, label_json = labels_json, 
+                                                transform = all_transforms["test_transforms"])
 
     train_dl = torch.utils.data.DataLoader(
         train_dataset,

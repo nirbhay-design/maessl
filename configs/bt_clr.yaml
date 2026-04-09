@@ -28,6 +28,16 @@ dataset:
       num_workers: 1
       image_size: 64
       algo: *algo 
+  img100:
+    num_classes: 100
+    params: 
+      data_dir: datasets/imagenet100
+      labels_json: Labels.json
+      batch_size: &imgnt 256
+      test_batch_size: *imgnt
+      num_workers: 1
+      image_size: 224
+      algo: *algo 
 return_logs: False
 eval_every: 10
 n_epochs: &epoch 800
