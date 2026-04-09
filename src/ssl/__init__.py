@@ -3,6 +3,8 @@ from .vicreg import *
 from .barlow_twins import *
 from .bt_clr import * 
 from .vicreg_clr import * 
+from .mae_base import *
+from .mae_bt import * 
 
 loss_dict = {
     "simclr": SimCLR,
@@ -20,5 +22,7 @@ pretrain_algo = {
     # "lema": train_lema
     "vicreg_clr": train_vicregclr,
     "bt_clr": train_btclr,
-    "bt": train_bt
+    "bt": train_bt,
+    "mae": train_mae,
+    "mae_bt": train_maebt
 }

@@ -3,34 +3,27 @@ import torchvision
 import torch.nn as nn 
 import torch.nn.functional as F 
 
-def train_maebt(
-        model, train_loader, loss_base, 
+def train_mae(
+        model, train_loader, # train_dl_mlp
         optimizer, opt_lr_schedular, scaler,
         n_epochs, device_id, eval_id, return_logs=False, progress=None): 
     
     if device_id == eval_id:
-        print(f"### mae + bt Training begins")
+        print(f"### MAE Training begins")
 
     device = torch.device(f"cuda:{device_id}")
     # model = model.to(device)
 
+    model.train()
     for epochs in range(n_epochs):
-        model.train()
         cur_loss = 0
         len_train = len(train_loader)
-        for idx , (data, data_cap, _) in enumerate(train_loader):
+        for idx , (data, _) in enumerate(train_loader):
             data = data.to(device)
-            data_cap = data_cap.to(device)
 
-            # with torch.cuda.amp.autocast():
             output = model(data)
-            output_cap = model(data_cap)
-
-            proj, proj_cap = output["proj"], output_cap["proj"]
-
-            loss_red = loss_base(proj, proj_cap)
-
-            loss_con = 0.5 *(output["loss"] + output_cap["loss"]) + 0.1 * loss_red
+            
+            loss_con = output["loss"]
 
             optimizer.zero_grad()
             loss_con.backward()
@@ -42,7 +35,7 @@ def train_maebt(
             cur_loss += loss_con.item() / (len_train)
             
             if return_logs:
-                progress(idx+1,len(train_loader), loss_red=loss_red.item(), loss_con=loss_con.item(), GPU = device_id)
+                progress(idx+1,len(train_loader), loss_con=loss_con.item(), GPU = device_id)
         
         opt_lr_schedular.step()
         

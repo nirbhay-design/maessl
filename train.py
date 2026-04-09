@@ -4,6 +4,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import numpy as np
 from src.network import Network, EnergyScoreNet, BaseEncoder
+from src.mae import * 
 from src.ssl import pretrain_algo 
 from train_utils import yaml_loader, model_optimizer, progress, format_time, \
                         loss_function, load_dataset, get_tsne_knn_logreg
@@ -14,6 +15,7 @@ from torch.distributed import init_process_group, destroy_process_group
 from torch.cuda.amp import GradScaler
 import torch.distributed as dist 
 import os 
+from functools import partial
 import argparse
 import json, time 
 
@@ -25,7 +27,7 @@ def get_args():
     parser.add_argument("--dataset", type=str, default = "cifar10", required=True, help="dataset name")
     parser.add_argument("--save_path", type=str, default="model.pth", required=True, help="path to save model")
     parser.add_argument("--gpu", type=int, default = 0, help="gpu_id")
-    parser.add_argument("--model", type=str, default="resnet50", help="resnet18/resnet50")
+    parser.add_argument("--model", type=str, default="resnet50", help="resnet18/resnet50/vit")
     parser.add_argument("--verbose", action="store_true", help="verbose or not")
     parser.add_argument("--epochs", type=int, default = None, help="epochs for SSL pretraining")
     parser.add_argument("--epochs_lin", type=int, default = None, help="epochs for linear probing")
@@ -68,12 +70,15 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
     device = config['gpu_id']
     train_algo = config['train_algo']
 
-    model = Network(**config['model_params']).to(rank)
+    if args.model == "vit":
+        model = MaskedAutoencoderViT(**config["model_params"], norm_layer=partial(nn.LayerNorm, eps=1e-6)).to(rank)
+    else:
+        model = Network(**config['model_params']).to(rank)
     if rank == device:
         print(model)
         print(f"NOC: {config['dataset'][args.dataset]['num_classes']}")
 
-    train_dl, _, _, train_ds, test_ds = load_dataset(
+    train_dl, train_dl_mlp, _, train_ds, test_ds = load_dataset(
         dataset_name = args.dataset,
         distributed = is_distributed,
         **config["dataset"][args.dataset]["params"])
@@ -98,6 +103,7 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         print(f"# of Testing Images: {len(test_ds)}")
         print(f"schedular: {schedular}")
     
+    loss_base = None # for instance for mae this will be none 
     if train_algo in ["bt_clr", "vicreg_clr"]:
         loss_clr = loss_function(loss_type = "simclr", **config.get('loss_params', {}).get("simclr", {}))
         base_algo = train_algo.split("_")[0]
@@ -106,8 +112,8 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
             print(f"loss: {loss_clr}")
             print(f"loss: {loss_base}")
     
-    elif train_algo in ["bt"]:
-        loss_base = loss_function(loss_type = train_algo, **config.get('loss_params', {}))
+    elif train_algo in ["bt", "mae_bt"]:
+        loss_base = loss_function(loss_type = "bt", **config.get('loss_params', {}))
 
     if is_distributed:
         model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
@@ -128,6 +134,11 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
 
     if train_algo in ["bt_clr", "vicreg_clr"]:
         param_config["loss_clr"] = loss_clr
+
+    if train_algo in ["mae"]:
+        print("using basic dataloader for MAE")
+        param_config.pop("loss_base", -1) # not required for mae 
+        param_config["train_loader"] = train_dl_mlp # this data loader is used for mae (less heavy augmentations)
 
     final_model = train_network(**param_config)
 
@@ -168,6 +179,7 @@ if __name__ == "__main__":
         if args.opt in ["ADAM", "AdamW"]:
             config["opt_params"].pop("momentum", -1)
             config["opt_params"].pop("nesterov", -1)
+            config["opt_params"]["betas"] = (0.9, 0.95) # for mae
     if args.lr:
         bs = config["dataset"][args.dataset]["params"]["batch_size"] # batch_size per gpu
         ws = torch.cuda.device_count() if args.distributed else 1.0
@@ -217,7 +229,13 @@ if __name__ == "__main__":
     lpt1 = time.perf_counter()
 
     print("starting linear probing")
-    encoder = BaseEncoder(model_name=args.model, pretrained=False)
+    if args.model == "vit":
+        model_params = config["model_params"]
+        encoder = MAEEncoder(img_size=model_params["img_size"], patch_size=model_params["patch_size"], in_chans=model_params["in_chans"],
+                 embed_dim=model_params["embed_dim"], depth=model_params["depth"], num_heads=model_params["num_heads"],
+                 mlp_ratio=model_params["mlp_ratio"], norm_layer=partial(nn.LayerNorm, eps=1e-6))
+    else:
+        encoder = BaseEncoder(model_name=args.model, pretrained=False)
     device = torch.device(f"cuda:{args.gpu}")
     print(encoder.load_state_dict(torch.load(config["model_save_path"], map_location=device)))
 

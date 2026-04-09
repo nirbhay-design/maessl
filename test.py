@@ -14,7 +14,7 @@ def get_args():
     parser.add_argument("--dataset", type=str, default = "cifar10", required=True, help="dataset name")
     parser.add_argument("--saved_path", type=str, default="model.pth", required=True, help="path for pretrained model")
     parser.add_argument("--gpu", type=int, default = 0, help="gpu_id")
-    parser.add_argument("--model", type=str, default="resnet18", help="resnet18/resnet50")
+    parser.add_argument("--model", type=str, default="resnet18", help="resnet18/resnet50/vit")
     parser.add_argument("--verbose", action="store_true", help="verbose or not")
     parser.add_argument("--epochs", type=int, default = 100, help="epochs for linear probing")
     parser.add_argument("--eval_every", type=int, default = 10, help="evaluation interval")

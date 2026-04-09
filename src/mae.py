@@ -10,7 +10,7 @@
 # --------------------------------------------------------
 
 from functools import partial
-
+from .ssl import proj_dict
 import torch
 import torch.nn as nn
 import numpy as np 
@@ -74,6 +74,7 @@ class MAEEncoder(nn.Module):
 
         self.patch_embed = PatchEmbed(img_size, patch_size, in_chans, embed_dim)
         num_patches = self.patch_embed.num_patches
+        self.classifier_infeatures = embed_dim 
 
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dim))
         self.pos_embed = nn.Parameter(torch.zeros(1, num_patches + 1, embed_dim), requires_grad=False)  # fixed sin-cos embedding
@@ -135,7 +136,7 @@ class MAEEncoder(nn.Module):
 
         return x_masked, mask, ids_restore
 
-    def forward(self, x, mask_ratio):
+    def forward(self, x, mask_ratio = 0.0):
         # embed patches
         x = self.patch_embed(x)
 
@@ -154,12 +155,13 @@ class MAEEncoder(nn.Module):
         # apply Transformer blocks
         for blk in self.blocks:
             x = blk(x)
-        x = self.norm(x)
 
+        x = self.norm(x)
+        
         if mask_ratio > 0.0:
             return {"features": x, "mask": mask, "ids_restore": ids_restore}
         
-        return {"features": x} 
+        return x[:, 0] # only cls token  
 
 class MAEDecoder(nn.Module):
     def __init__(self, embed_dim=1024, decoder_embed_dim=512, decoder_depth=8, 
@@ -218,7 +220,7 @@ class MaskedAutoencoderViT(nn.Module):
     def __init__(self, img_size=224, patch_size=16, in_chans=3,
                  embed_dim=1024, depth=24, num_heads=16,
                  decoder_embed_dim=512, decoder_depth=8, decoder_num_heads=16,
-                 mlp_ratio=4., norm_layer=nn.LayerNorm, norm_pix_loss=False):
+                 mlp_ratio=4., norm_layer=nn.LayerNorm, norm_pix_loss=False, **kwargs):
         super().__init__()
 
         # --------------------------------------------------------------------------
@@ -239,6 +241,14 @@ class MaskedAutoencoderViT(nn.Module):
 
         self.norm_pix_loss = norm_pix_loss
         self.apply(self._init_weights)
+
+        self.algo = kwargs.get("algo_type", "mae") 
+        self.proj = None 
+        if self.algo == "mae_bt":
+            self.proj_args = {
+                "bt": (self.ci, kwargs.get("barlow_hidden", 8192), kwargs.get("proj_dim", 8192)),
+            }
+            self.proj = proj_dict["bt"](*self.proj_args["bt"])
 
     def _init_weights(self, m):
         if isinstance(m, nn.Linear):
@@ -300,10 +310,17 @@ class MaskedAutoencoderViT(nn.Module):
         output = self.base_encoder(imgs, mask_ratio)
         pred = self.decoder(output["features"], output["ids_restore"])  # [N, L, p*p*3]
         loss = self.forward_loss(imgs, pred, output["mask"])
-        return {"loss": loss, 
+        
+        output = {"loss": loss, 
                 "pred": pred, 
                 "mask": output["mask"], 
                 "features": output["features"]}
+        
+        if self.proj:
+            proj = self.proj(output["features"][:, 1:, :].mean(dim = 1)) # global pooling
+            output["proj"] = proj
+             
+        return output 
 
 def mae_vit_base_patch16_dec512d8b(**kwargs):
     model = MaskedAutoencoderViT(

@@ -474,13 +474,13 @@ def imagenet100_dataloader(**kwargs):
     train_transforms = {"train_transforms": all_transforms["train_transforms"],
                         "train_transforms_prime": all_transforms["train_transforms_prime"]}
 
-    train_dataset = CustomImagenet100TrainDataset(data_dir = data_dir, label_json = labels_json, 
+    train_dataset = CustomImagenet100TrainDataset(data_dir = data_dir, labels_json = labels_json, 
                                                pretrain=True, transform = train_transforms)
 
-    train_dataset_mlp = CustomImagenet100TrainDataset(data_dir = data_dir, label_json = labels_json, 
+    train_dataset_mlp = CustomImagenet100TrainDataset(data_dir = data_dir, labels_json = labels_json, 
                                                pretrain=False, transform = all_transforms["train_transforms_mlp"])
     
-    test_dataset = CustomImagenet100TestDataset(data_dir = data_dir, label_json = labels_json, 
+    test_dataset = CustomImagenet100TestDataset(data_dir = data_dir, labels_json = labels_json, 
                                                 transform = all_transforms["test_transforms"])
 
     train_dl = torch.utils.data.DataLoader(
