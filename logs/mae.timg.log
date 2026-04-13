@@ -120,6 +120,6 @@ Compose(
 using optimizer: AdamW
 # of Training Images: 100000
 # of Testing Images: 10000
-schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x769ad13ebb20>
+schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x70485cda9b40>
 using basic dataloader for MAE
 ### MAE Training begins

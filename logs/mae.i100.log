@@ -575,3 +575,7 @@ Scheduler: None
 MLP: MLP(
   (mlp): Linear(in_features=384, out_features=100, bias=True)
 )
+[GPU2] Test Accuracy at epoch: 0: 0.256
+[GPU2] epochs: [1/100] train_acc: 0.172 train_loss_sup: 3.993
+[GPU2] epochs: [2/100] train_acc: 0.277 train_loss_sup: 3.375
+[GPU2] epochs: [3/100] train_acc: 0.315 train_loss_sup: 3.081

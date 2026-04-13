@@ -133,6 +133,6 @@ Compose(
 using optimizer: AdamW
 # of Training Images: 100000
 # of Testing Images: 10000
-schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x7ccf1913dd50>
+schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x7405404c42b0>
 loss function: bt
 ### mae + bt Training begins
