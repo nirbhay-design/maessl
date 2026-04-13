@@ -2,9 +2,11 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from src.network import MLP, BaseEncoder
+from src.mae import MAEEncoder
 from train_utils import load_dataset, progress, yaml_loader, get_tsne_knn_logreg
 import itertools
 import argparse 
+from functools import partial
 import torch.nn.functional as F
 
 def get_args():
@@ -24,6 +26,7 @@ def get_args():
     parser.add_argument("--tsne", action="store_true", help="get test tsne or not")
     parser.add_argument("--umap", action="store_true", help="get test umap or not")
     parser.add_argument("--cmet", action="store_true", help="get clustering metrics or not")
+    parser.add_argument("--nw", type=int, default = 4, help="num workers for dataloading")
 
     args = parser.parse_args()
     return args
@@ -167,8 +170,15 @@ if __name__ == "__main__":
     print(args)
 
     config = yaml_loader("configs/test.yaml")
+    config["dataset"][args.dataset]["params"]["num_workers"] = args.nw # set the number of workers for data loading 
 
-    encoder = BaseEncoder(model_name=args.model, pretrained=False)
+    if args.model == "vit":
+        model_params = config["mae_model_params"]
+        encoder = MAEEncoder(img_size=model_params["img_size"], patch_size=model_params["patch_size"], in_chans=model_params["in_chans"],
+                 embed_dim=model_params["embed_dim"], depth=model_params["depth"], num_heads=model_params["num_heads"],
+                 mlp_ratio=model_params["mlp_ratio"], norm_layer=partial(nn.LayerNorm, eps=1e-6))
+    else:
+        encoder = BaseEncoder(model_name=args.model, pretrained=False)
     device = torch.device(f"cuda:{args.gpu}")
     print(encoder.load_state_dict(torch.load(args.saved_path, map_location=device)))
 

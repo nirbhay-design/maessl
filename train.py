@@ -46,6 +46,7 @@ def get_args():
     parser.add_argument("--lreg", action="store_true", help="evaluate logistic regression or not")
     parser.add_argument("--linprobe", action="store_true", help="evaluate linear probing or not ")
     parser.add_argument("--tsne", action="store_true", help="get test tsne or not")
+    parser.add_argument("--nw", type=int, default = 4, help="num workers for dataloading")
 
     args = parser.parse_args()
     return args
@@ -168,6 +169,7 @@ if __name__ == "__main__":
     config['gpu_id'] = args.gpu
     config['model_params']['model_name'] = args.model
     config["return_logs"] = args.verbose
+    config["dataset"][args.dataset]["params"]["num_workers"] = args.nw
     config["model_save_path"] = os.path.join(config.get("model_save_path", "saved_models"), args.save_path)
 
     if args.bs:
@@ -195,6 +197,10 @@ if __name__ == "__main__":
         config["n_epochs_mlp"] = args.epochs_lin
     if args.distributed:
         config["distributed"] = args.distributed
+    if args.model == "vit":
+        if args.dataset == "timg":
+            config["model_params"]["img_size"] = 64
+            config["model_params"]["patch_size"] = 4
     
     # setting seeds 
 

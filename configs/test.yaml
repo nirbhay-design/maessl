@@ -1,0 +1,51 @@
+dataset: 
+  cifar10: 
+    num_classes: 10
+    params: 
+      data_dir: datasets/cifar10
+      batch_size: 512
+      test_batch_size: 512
+      num_workers: 3
+      image_size: 32
+      algo: test 
+  cifar100: 
+    num_classes: 100
+    params: 
+      data_dir: datasets/cifar100
+      batch_size: 512
+      test_batch_size: 512
+      num_workers: 3
+      image_size: 32
+      algo: test
+  timg:
+    num_classes: 200
+    params: 
+      data_dir: datasets/tinyimagenet/tiny-imagenet-200
+      batch_size: 512
+      test_batch_size: 512
+      num_workers: 5
+      image_size: 64
+      algo: test
+  img100:
+    num_classes: 100
+    params: 
+      data_dir: datasets/imagenet100
+      labels_json: Labels.json
+      batch_size: &imgnt 256
+      test_batch_size: *imgnt
+      num_workers: 5
+      image_size: 224
+      algo: test 
+
+lr: [0.1, 1.0]
+wd: [1e-6, 1e-4, 0.0]
+
+
+mae_model_params:
+  img_size: 224
+  in_chans: 3
+  patch_size: 16 
+  embed_dim: 384
+  depth: 12
+  num_heads: 6
+  mlp_ratio: 4 

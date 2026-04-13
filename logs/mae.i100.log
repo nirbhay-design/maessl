@@ -559,39 +559,11 @@ Starting Hyperparameter Sweep on 0...
 Scheduler: None
 MLP: MLP(
   (mlp): Linear(in_features=384, out_features=100, bias=True)
+)Namespace(dataset='img100', saved_path='saved_models/mae.i100.pth', gpu=2, model='vit', verbose=False, epochs=100, eval_every=10, knn=True, lreg=True, linprobe=True, tsne=False, umap=False, cmet=True, nw=4)
+<All keys matched successfully>
+Starting Hyperparameter Sweep on 2...
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
 )
-Traceback (most recent call last):
-  File "/data1/home/nirbhays/maessl/train.py", line 247, in <module>
-    train_linear_probe(
-  File "/data1/home/nirbhays/maessl/test.py", line 146, in train_linear_probe
-    mlp, tval = train_mlp(
-  File "/data1/home/nirbhays/maessl/test.py", line 99, in train_mlp
-    cur_test_acc = evaluate(model, mlp, test_loader, device, return_logs)
-  File "/data1/home/nirbhays/maessl/test.py", line 37, in evaluate
-    for idx,(x,y) in enumerate(loader):
-  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 741, in __next__
-    data = self._next_data()
-  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1548, in _next_data
-    return self._process_data(data, worker_id)
-  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1586, in _process_data
-    data.reraise()
-  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/_utils.py", line 775, in reraise
-    raise exception
-RuntimeError: Caught RuntimeError in DataLoader worker process 0.
-Original Traceback (most recent call last):
-  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/utils/data/_utils/worker.py", line 358, in _worker_loop
-    data = fetcher.fetch(index)  # type: ignore[possibly-undefined]
-  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 57, in fetch
-    return self.collate_fn(data)
-  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/utils/data/_utils/collate.py", line 401, in default_collate
-    return collate(batch, collate_fn_map=default_collate_fn_map)
-  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/utils/data/_utils/collate.py", line 214, in collate
-    return [
-  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/utils/data/_utils/collate.py", line 215, in <listcomp>
-    collate(samples, collate_fn_map=collate_fn_map)
-  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/utils/data/_utils/collate.py", line 155, in collate
-    return collate_fn_map[elem_type](batch, collate_fn_map=collate_fn_map)
-  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/utils/data/_utils/collate.py", line 275, in collate_tensor_fn
-    return torch.stack(batch, 0, out=out)
-RuntimeError: stack expects each tensor to be equal size, but got [3, 375, 500] at entry 0 and [3, 362, 500] at entry 1
-

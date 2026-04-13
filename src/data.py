@@ -85,11 +85,20 @@ def get_transforms(image_size, data_name = "cifar10", algo='supcon'):
                                           transforms.RandomHorizontalFlip(p=0.5),
                                           transforms.ToTensor(),
                                           transforms.Normalize(mean = mean, std = std)])
+    # test_transforms for imagenet100
+    if data_name == "imagenet100":
+        test_transforms = transforms.Compose([
+            transforms.Resize(256),
+            transforms.CenterCrop(image_size),
+            transforms.ToTensor(),
+            transforms.Normalize(mean = mean, std = std)
+        ])
+    else:
+        test_transforms = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize(mean = mean, std = std)
+        ])
 
-    test_transforms = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize(mean = mean, std = std)
-    ])
     if algo != "test":
         print(f"augmentation for {algo}: ")
         print(train_transforms)
@@ -322,6 +331,7 @@ def Cifar100DataLoader(**kwargs):
         batch_size = kwargs['batch_size'],
         shuffle=False if distributed else True,
         pin_memory=True,
+        persistent_workers=True,
         num_workers = num_workers,
         sampler = DistributedSampler(train_dataset) if distributed else None 
     )
@@ -331,6 +341,7 @@ def Cifar100DataLoader(**kwargs):
         batch_size = kwargs['test_batch_size'],
         shuffle=True,
         pin_memory=True,
+        persistent_workers=True,
         num_workers = num_workers
         # sampler = DistributedSampler(train_dataset_mlp) if distributed else None 
     )
@@ -340,6 +351,7 @@ def Cifar100DataLoader(**kwargs):
         batch_size = 32,
         shuffle=True,
         pin_memory=True,
+        persistent_workers=True,
         num_workers= num_workers
     )
 
@@ -381,6 +393,7 @@ def Cifar10DataLoader(**kwargs):
         batch_size = kwargs['batch_size'],
         shuffle=False if distributed else True,
         pin_memory=True,
+        persistent_workers=True,
         num_workers = num_workers,
         sampler = DistributedSampler(train_dataset) if distributed else None 
     )
@@ -390,6 +403,7 @@ def Cifar10DataLoader(**kwargs):
         batch_size = kwargs['test_batch_size'],
         shuffle=True,
         pin_memory=True,
+        persistent_workers=True,
         num_workers = num_workers
         # sampler = DistributedSampler(train_dataset_mlp) if distributed else None 
     )
@@ -399,6 +413,7 @@ def Cifar10DataLoader(**kwargs):
         batch_size = 32,
         shuffle=True,
         pin_memory=True,
+        persistent_workers=True,
         num_workers= num_workers
     )
 
@@ -437,6 +452,7 @@ def tinyimagenet_dataloader(**kwargs):
         batch_size = kwargs['batch_size'],
         shuffle=False if distributed else True,
         pin_memory=True,
+        persistent_workers=True,
         num_workers = num_workers,
         sampler = DistributedSampler(train_dataset) if distributed else None 
     )
@@ -446,6 +462,7 @@ def tinyimagenet_dataloader(**kwargs):
         batch_size = kwargs['test_batch_size'],
         shuffle=True,
         pin_memory=True,
+        persistent_workers=True,
         num_workers = num_workers
         # sampler = DistributedSampler(train_dataset_mlp) if distributed else None 
     )
@@ -455,6 +472,7 @@ def tinyimagenet_dataloader(**kwargs):
         batch_size = 32,
         shuffle=True,
         pin_memory=True,
+        persistent_workers=True,
         num_workers= num_workers
     )
 
@@ -488,6 +506,7 @@ def imagenet100_dataloader(**kwargs):
         batch_size = kwargs['batch_size'],
         shuffle=False if distributed else True,
         pin_memory=True,
+        persistent_workers=True,
         num_workers = num_workers,
         sampler = DistributedSampler(train_dataset) if distributed else None 
     )
@@ -497,6 +516,7 @@ def imagenet100_dataloader(**kwargs):
         batch_size = kwargs['test_batch_size'],
         shuffle=True,
         pin_memory=True,
+        persistent_workers=True,
         num_workers = num_workers
         # sampler = DistributedSampler(train_dataset_mlp) if distributed else None 
     )
@@ -506,6 +526,7 @@ def imagenet100_dataloader(**kwargs):
         batch_size = 32,
         shuffle=True,
         pin_memory=True,
+        persistent_workers=True,
         num_workers= num_workers
     )
 

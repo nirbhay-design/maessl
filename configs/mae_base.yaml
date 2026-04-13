@@ -25,7 +25,7 @@ dataset:
       data_dir: datasets/tinyimagenet/tiny-imagenet-200
       batch_size: &tibs 256
       test_batch_size: *tibs
-      num_workers: 1
+      num_workers: 6
       image_size: 64
       algo: *algo 
   img100:
@@ -35,7 +35,7 @@ dataset:
       labels_json: Labels.json
       batch_size: &imgnt 256
       test_batch_size: *imgnt
-      num_workers: 1
+      num_workers: 6
       image_size: 224
       algo: *algo 
 return_logs: False

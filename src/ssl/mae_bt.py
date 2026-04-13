@@ -23,14 +23,14 @@ def train_maebt(
             data_cap = data_cap.to(device)
 
             # with torch.cuda.amp.autocast():
-            output = model(data)
-            output_cap = model(data_cap)
+            data_combine = torch.cat([data, data_cap], dim = 0)
+            output_combine = model(data_combine)
 
-            proj, proj_cap = output["proj"], output_cap["proj"]
+            proj, proj_cap = output_combine["proj"].chunk(2, dim = 0)
 
             loss_red = loss_base(proj, proj_cap)
 
-            loss_con = 0.5 *(output["loss"] + output_cap["loss"]) + 0.1 * loss_red
+            loss_con = output_combine["loss"] + 0.1 * loss_red
 
             optimizer.zero_grad()
             loss_con.backward()
