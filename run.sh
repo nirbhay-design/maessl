@@ -13,11 +13,11 @@
 # nohup python train.py --config configs/mae_bt.yaml --dataset img100 --gpu 0 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 40 --bs 512 --tbs 512 --save_path mae.bt.i100.pth --model vit > logs/mae.bt.i100.log &
 
 
-# CUDA_VISIBLE_DEVICES=0,1,2 OPENBLAS_NUM_THREADS=1 nohup python train.py --config configs/mae_base.yaml --dataset timg --gpu 1 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 512 --tbs 512 --save_path mae.timg.pth --model vit --nw 6 > logs/mae.timg.log &
+# CUDA_VISIBLE_DEVICES=0,1,2 OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_base.yaml --dataset timg --gpu 1 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 512 --tbs 512 --save_path mae.timg.pth --model vit --nw 6 > logs/mae.timg.log &
 
-# OPENBLAS_NUM_THREADS=1 nohup python train.py --config configs/mae_bt.yaml --dataset timg --gpu 2 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 512 --tbs 512 --save_path mae.bt.timg.pth --model vit --nw 6 > logs/mae.bt.timg.log &
+# OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_bt.yaml --dataset timg --gpu 2 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 512 --tbs 512 --save_path mae.bt.timg.pth --model vit --nw 6 > logs/mae.bt.timg.log &
 
 
 ###################### ** Test code ** ################################
 
-# nohup python test.py --dataset img100 --saved_path saved_models/mae.i100.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet >> logs/mae.i100.log &
+# nohup python -u test.py --dataset img100 --saved_path saved_models/mae.i100.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet >> logs/mae.i100.log &
