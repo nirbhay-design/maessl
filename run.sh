@@ -21,3 +21,5 @@
 ###################### ** Test code ** ################################
 
 # nohup python -u test.py --dataset img100 --saved_path saved_models/mae.i100.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet >> logs/mae.i100.log &
+
+OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.bt.i100.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 6 >> logs/mae.bt.i100.log &
