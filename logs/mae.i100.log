@@ -1630,3 +1630,8 @@ MLP: MLP(
 )
 [GPU2] Test Accuracy at epoch: 0: 0.363
 [GPU2] epochs: [1/100] train_acc: 0.284 train_loss_sup: 3.020
+[GPU2] epochs: [2/100] train_acc: 0.388 train_loss_sup: 2.427
+[GPU2] epochs: [3/100] train_acc: 0.421 train_loss_sup: 2.276
+[GPU2] epochs: [4/100] train_acc: 0.435 train_loss_sup: 2.197
+[GPU2] epochs: [5/100] train_acc: 0.448 train_loss_sup: 2.142
+[GPU2] epochs: [6/100] train_acc: 0.456 train_loss_sup: 2.103
