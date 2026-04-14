@@ -5,7 +5,7 @@ import torch.optim as optim
 import numpy as np
 from src.network import Network, EnergyScoreNet, BaseEncoder
 from src.mae import * 
-from src.ssl import pretrain_algo 
+from src.ssl import pretrain_algo, proj_dict
 from train_utils import yaml_loader, model_optimizer, progress, format_time, \
                         loss_function, load_dataset, get_tsne_knn_logreg
 from test import train_linear_probe
@@ -78,13 +78,20 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
     if rank == device:
         print(model)
         print(f"NOC: {config['dataset'][args.dataset]['num_classes']}")
+    
+    rotnet = None # keep rotnet None by default
+    if train_algo in ["mae_rot"]:
+        rotnet = proj_dict[train_algo](model.ci, **config["rotnet_params"]).to(rank)
+        print(rotnet)
 
+    # loading the dataset 
     train_dl, train_dl_mlp, _, train_ds, test_ds = load_dataset(
         dataset_name = args.dataset,
         distributed = is_distributed,
         **config["dataset"][args.dataset]["params"])
 
-    optimizer = model_optimizer(model, config['opt'], **config['opt_params'])
+
+    optimizer = model_optimizer(model, config['opt'], model2 = rotnet, **config['opt_params'])
     # config["schedular_params"]["T_max"] = config["schedular_params"]["T_max"] * len(train_dl)
     if config["warmup_epochs"] > 0:
         warmup_steps = config["warmup_epochs"] # len(train_dl) * config["warmup_epochs"]
@@ -119,6 +126,9 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
     if is_distributed:
         model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
         model = DDP(model, device_ids=[rank])
+        if rotnet is not None: # wrappnig up rotnet also 
+            rotnet = torch.nn.SyncBatchNorm.convert_sync_batchnorm(rotnet)
+            rotnet = DDP(rotnet, device_ids=[rank])
 
     return_logs = config['return_logs']
     # eval_every = config['eval_every']
@@ -140,6 +150,12 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         print("using basic dataloader for MAE")
         param_config.pop("loss_base", -1) # not required for mae 
         param_config["train_loader"] = train_dl_mlp # this data loader is used for mae (less heavy augmentations)
+
+    if train_algo in ["mae_rot"]:
+        print("using basic dataloader for MAE")
+        param_config.pop("loss_base", -1) # not required for mae 
+        param_config["train_loader"] = train_dl_mlp # this data loader is used for mae (less heavy augmentations)
+        param_config["rotnet"] = rotnet
 
     final_model = train_network(**param_config)
 

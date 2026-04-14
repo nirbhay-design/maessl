@@ -308,6 +308,9 @@ class MaskedAutoencoderViT(nn.Module):
 
     def forward(self, imgs, mask_ratio=0.75):
         output = self.base_encoder(imgs, mask_ratio)
+        if mask_ratio == 0.0:
+            return {"features": output} 
+        
         pred = self.decoder(output["features"], output["ids_restore"])  # [N, L, p*p*3]
         loss = self.forward_loss(imgs, pred, output["mask"])
         

@@ -5,6 +5,7 @@ from .bt_clr import *
 from .vicreg_clr import * 
 from .mae_base import *
 from .mae_bt import * 
+from .mae_rotnet import * 
 
 loss_dict = {
     "simclr": SimCLR,
@@ -15,7 +16,8 @@ loss_dict = {
 proj_dict = {
     "bt": bt_proj,
     "vicreg": vicreg_proj,
-    "simclr": BYOL_mlp
+    "simclr": BYOL_mlp, 
+    "mae_rot": rotnet_cls
 }
 
 pretrain_algo = {
@@ -24,5 +26,6 @@ pretrain_algo = {
     "bt_clr": train_btclr,
     "bt": train_bt,
     "mae": train_mae,
-    "mae_bt": train_maebt
+    "mae_bt": train_maebt,
+    "mae_rot": train_maerotnet
 }

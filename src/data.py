@@ -111,7 +111,7 @@ def get_transforms(image_size, data_name = "cifar10", algo='supcon'):
 
 
 class CustomImagenet100TrainDataset():
-    def __init__(self, data_dir, labels_json, pretrain = True, transform = None):
+    def __init__(self, algo, data_dir, labels_json, pretrain = True, transform = None):
         dirs = [os.path.join(data_dir, f"train.X{i}") for i in range(1,5)]
         label_dir = []
         for folder in dirs:
@@ -135,6 +135,8 @@ class CustomImagenet100TrainDataset():
         else:
             self.transform_mlp = transform
 
+        self.algo = algo 
+
     def __len__(self):
         return len(self.img_map)
     
@@ -145,10 +147,30 @@ class CustomImagenet100TrainDataset():
         if self.pretrain:
             img1 = self.target_transform(img)
             img2 = self.target_transform_prime(img)
-            return img1, img2, cls_idx 
+
+            if self.algo in ["mae_rot", "mae_bt_rot"]:
+                # rotating the image
+                rimg1, rota1 = self._rotate_img(img1)
+                rimg2, rota2 = self._rotate_img(img2)
+                return (img1, img2, rimg1, rimg2, cls_idx, rota1, rota2)
+            else:
+                return (img1, img2, cls_idx)
+        
         else:
             img = self.transform_mlp(img)
+
+            if self.algo in ["mae_rot"]:
+                rimg, rota = self._rotate_img(img)
+                return (img, rimg, cls_idx, rota)
+
         return (img, cls_idx)
+    
+    def _rotate_img(self, img):
+        angle = random.randint(0,3)
+        if angle == 0:
+            return img, angle
+        return torch.rot90(img, angle, dims = (1,2)), angle 
+        
     
 class CustomImagenet100TestDataset():
     def __init__(self, data_dir, labels_json, transform = None):
@@ -179,7 +201,7 @@ class CustomImagenet100TestDataset():
         return (img, cls_idx)
 
 class CustomImagenetTrainDataset():
-    def __init__(self,img_path, wnids_path, n_class, pretrain=True, transform=None):
+    def __init__(self, algo, img_path, wnids_path, n_class, pretrain=True, transform=None):
         self.img_path = img_path
         with open(wnids_path) as f:
             self.wnids = f.read().split('\n')
@@ -201,6 +223,8 @@ class CustomImagenetTrainDataset():
         
         else:
             self.transform_mlp = transform
+
+        self.algo = algo 
             
     def __len__(self):
         return len(self.img_map)
@@ -213,10 +237,28 @@ class CustomImagenetTrainDataset():
         if self.pretrain:
             img1 = self.target_transform(img)
             img2 = self.target_transform_prime(img)
-            return img1, img2, cls_idx 
+
+            if self.algo in ["mae_rot", "mae_bt_rot"]:
+                # rotating the image
+                rimg1, rota1 = self._rotate_img(img1)
+                rimg2, rota2 = self._rotate_img(img2)
+                return (img1, img2, rimg1, rimg2, cls_idx, rota1, rota2)
+            else:
+                return (img1, img2, cls_idx)
         else:
             img = self.transform_mlp(img)
+
+            if self.algo in ["mae_rot"]:
+                rimg, rota = self._rotate_img(img)
+                return (img, rimg, cls_idx, rota)
+            
         return (img, cls_idx)
+    
+    def _rotate_img(self, img):
+        angle = random.randint(0,3)
+        if angle == 0:
+            return img, angle
+        return torch.rot90(img, angle, dims = (1,2)), angle 
     
 class CustomImagenetTestDataset():
     def __init__(self,img_path, wnids, test_anno, n_class, transform=None):
@@ -438,10 +480,10 @@ def tinyimagenet_dataloader(**kwargs):
     test_anno_path = os.path.join(data_dir, "val", "val_annotations.txt")
     n_class = 200
 
-    train_dataset = CustomImagenetTrainDataset(img_path = image_path, wnids_path = wnids_path, 
+    train_dataset = CustomImagenetTrainDataset(algo = algo, img_path = image_path, wnids_path = wnids_path, 
                                                n_class = n_class, pretrain=True, transform = train_transforms)
 
-    train_dataset_mlp = CustomImagenetTrainDataset(img_path = image_path, wnids_path = wnids_path, 
+    train_dataset_mlp = CustomImagenetTrainDataset(algo = algo, img_path = image_path, wnids_path = wnids_path, 
                                                n_class = n_class, pretrain=False, transform = all_transforms["train_transforms_mlp"])
     
     test_dataset = CustomImagenetTestDataset(img_path = test_image_path, wnids = wnids_path, test_anno = test_anno_path,
@@ -492,10 +534,10 @@ def imagenet100_dataloader(**kwargs):
     train_transforms = {"train_transforms": all_transforms["train_transforms"],
                         "train_transforms_prime": all_transforms["train_transforms_prime"]}
 
-    train_dataset = CustomImagenet100TrainDataset(data_dir = data_dir, labels_json = labels_json, 
+    train_dataset = CustomImagenet100TrainDataset(algo = algo, data_dir = data_dir, labels_json = labels_json, 
                                                pretrain=True, transform = train_transforms)
 
-    train_dataset_mlp = CustomImagenet100TrainDataset(data_dir = data_dir, labels_json = labels_json, 
+    train_dataset_mlp = CustomImagenet100TrainDataset(algo = algo, data_dir = data_dir, labels_json = labels_json, 
                                                pretrain=False, transform = all_transforms["train_transforms_mlp"])
     
     test_dataset = CustomImagenet100TestDataset(data_dir = data_dir, labels_json = labels_json, 
