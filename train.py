@@ -85,11 +85,15 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         print(rotnet)
 
     # loading the dataset 
-    train_dl, train_dl_mlp, _, train_ds, test_ds = load_dataset(
+    dataloaders = load_dataset(
         dataset_name = args.dataset,
         distributed = is_distributed,
         **config["dataset"][args.dataset]["params"])
-
+    
+    train_dl = dataloaders.get("train_dl", None)
+    # train_dl_mlp = dataloaders.get("train_dl_mlp", None)
+    train_ds = dataloaders.get("train_dataset", None)
+    test_ds = dataloaders.get("test_dataset", None)
 
     optimizer = model_optimizer(model, config['opt'], model2 = rotnet, **config['opt_params'])
     # config["schedular_params"]["T_max"] = config["schedular_params"]["T_max"] * len(train_dl)
@@ -149,12 +153,14 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
     if train_algo in ["mae"]:
         print("using basic dataloader for MAE")
         param_config.pop("loss_base", -1) # not required for mae 
-        param_config["train_loader"] = train_dl_mlp # this data loader is used for mae (less heavy augmentations)
+        train_dl_mlp_pretrain = dataloaders.get('train_dl_mlp_pretrain', None)
+        param_config["train_loader"] = train_dl_mlp_pretrain # this data loader is used for mae (less heavy augmentations)
 
     if train_algo in ["mae_rot"]:
         print("using basic dataloader for MAE")
         param_config.pop("loss_base", -1) # not required for mae 
-        param_config["train_loader"] = train_dl_mlp # this data loader is used for mae (less heavy augmentations)
+        train_dl_mlp_pretrain = dataloaders.get('train_dl_mlp_pretrain', None)
+        param_config["train_loader"] = train_dl_mlp_pretrain # this data loader is used for mae (less heavy augmentations)
         param_config["rotnet"] = rotnet
 
     final_model = train_network(**param_config)
@@ -261,10 +267,13 @@ if __name__ == "__main__":
     device = torch.device(f"cuda:{args.gpu}")
     print(encoder.load_state_dict(torch.load(config["model_save_path"], map_location=device)))
 
-    _, train_dl_mlp, test_dl, _, _ = load_dataset(
+    dataloaders = load_dataset(
         dataset_name = args.dataset,
         distributed = False,
         **config["dataset"][args.dataset]["params"])
+    
+    train_dl_mlp = dataloaders.get("train_dl_mlp", None)
+    test_dl = dataloaders.get("test_dl", None)
     
     train_linear_probe(
         pretrain_model=encoder,

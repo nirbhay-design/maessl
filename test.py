@@ -174,6 +174,9 @@ if __name__ == "__main__":
 
     if args.model == "vit":
         model_params = config["mae_model_params"]
+        if args.dataset == "timg":
+            model_params["img_size"] = 64
+            model_params["patch_size"] = 4
         encoder = MAEEncoder(img_size=model_params["img_size"], patch_size=model_params["patch_size"], in_chans=model_params["in_chans"],
                  embed_dim=model_params["embed_dim"], depth=model_params["depth"], num_heads=model_params["num_heads"],
                  mlp_ratio=model_params["mlp_ratio"], norm_layer=partial(nn.LayerNorm, eps=1e-6))
@@ -182,10 +185,13 @@ if __name__ == "__main__":
     device = torch.device(f"cuda:{args.gpu}")
     print(encoder.load_state_dict(torch.load(args.saved_path, map_location=device)))
 
-    _, train_dl_mlp, test_dl, _, _ = load_dataset(
+    dataloaders = load_dataset(
         dataset_name = args.dataset,
         distributed = False,
         **config["dataset"][args.dataset]["params"])
+    
+    train_dl_mlp = dataloaders.get("train_dl_mlp", None)
+    test_dl = dataloaders.get("test_dl", None)
 
     if args.linprobe:
         train_linear_probe(

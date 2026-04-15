@@ -397,7 +397,11 @@ def Cifar100DataLoader(**kwargs):
         num_workers= num_workers
     )
 
-    return train_dl, train_dl_mlp, test_dl, train_dataset, test_dataset
+    return {"train_dl": train_dl, 
+            "train_dl_mlp": train_dl_mlp, 
+            "test_dl": test_dl, 
+            "train_dataset": train_dataset, 
+            "test_dataset": test_dataset}
 
 def Cifar10DataLoader(**kwargs):
     image_size = kwargs['image_size']
@@ -459,7 +463,11 @@ def Cifar10DataLoader(**kwargs):
         num_workers= num_workers
     )
 
-    return train_dl, train_dl_mlp, test_dl, train_dataset, test_dataset
+    return {"train_dl": train_dl, 
+            "train_dl_mlp": train_dl_mlp, 
+            "test_dl": test_dl, 
+            "train_dataset": train_dataset, 
+            "test_dataset": test_dataset}
 
 def tinyimagenet_dataloader(**kwargs):
     image_size = kwargs['image_size']
@@ -483,7 +491,10 @@ def tinyimagenet_dataloader(**kwargs):
     train_dataset = CustomImagenetTrainDataset(algo = algo, img_path = image_path, wnids_path = wnids_path, 
                                                n_class = n_class, pretrain=True, transform = train_transforms)
 
-    train_dataset_mlp = CustomImagenetTrainDataset(algo = algo, img_path = image_path, wnids_path = wnids_path, 
+    train_dataset_mlp_pretrain = CustomImagenetTrainDataset(algo = algo, img_path = image_path, wnids_path = wnids_path, 
+                                               n_class = n_class, pretrain=False, transform = all_transforms["train_transforms_mlp"])
+    
+    train_dataset_mlp = CustomImagenetTrainDataset(algo = f"{algo}_test", img_path = image_path, wnids_path = wnids_path, 
                                                n_class = n_class, pretrain=False, transform = all_transforms["train_transforms_mlp"])
     
     test_dataset = CustomImagenetTestDataset(img_path = test_image_path, wnids = wnids_path, test_anno = test_anno_path,
@@ -509,6 +520,16 @@ def tinyimagenet_dataloader(**kwargs):
         # sampler = DistributedSampler(train_dataset_mlp) if distributed else None 
     )
 
+    train_dl_mlp_pretrain = torch.utils.data.DataLoader(
+        train_dataset_mlp_pretrain,
+        batch_size = kwargs['test_batch_size'],
+        shuffle=False if distributed else True,
+        pin_memory=True,
+        persistent_workers=True,
+        num_workers = num_workers,
+        sampler = DistributedSampler(train_dataset_mlp_pretrain) if distributed else None 
+    )
+
     test_dl = torch.utils.data.DataLoader(
         test_dataset,
         batch_size = 32,
@@ -518,7 +539,12 @@ def tinyimagenet_dataloader(**kwargs):
         num_workers= num_workers
     )
 
-    return train_dl, train_dl_mlp, test_dl, train_dataset, test_dataset
+    return {"train_dl": train_dl, 
+            "train_dl_mlp": train_dl_mlp, 
+            "test_dl": test_dl, 
+            "train_dl_mlp_pretrain": train_dl_mlp_pretrain, # for mae
+            "train_dataset": train_dataset, 
+            "test_dataset": test_dataset}
 
 def imagenet100_dataloader(**kwargs):
     image_size = kwargs['image_size']
@@ -537,7 +563,10 @@ def imagenet100_dataloader(**kwargs):
     train_dataset = CustomImagenet100TrainDataset(algo = algo, data_dir = data_dir, labels_json = labels_json, 
                                                pretrain=True, transform = train_transforms)
 
-    train_dataset_mlp = CustomImagenet100TrainDataset(algo = algo, data_dir = data_dir, labels_json = labels_json, 
+    train_dataset_mlp = CustomImagenet100TrainDataset(algo = f"{algo}_test", data_dir = data_dir, labels_json = labels_json, 
+                                               pretrain=False, transform = all_transforms["train_transforms_mlp"])
+
+    train_dataset_mlp_pretrain = CustomImagenet100TrainDataset(algo = algo, data_dir = data_dir, labels_json = labels_json, 
                                                pretrain=False, transform = all_transforms["train_transforms_mlp"])
     
     test_dataset = CustomImagenet100TestDataset(data_dir = data_dir, labels_json = labels_json, 
@@ -563,6 +592,16 @@ def imagenet100_dataloader(**kwargs):
         # sampler = DistributedSampler(train_dataset_mlp) if distributed else None 
     )
 
+    train_dl_mlp_pretrain = torch.utils.data.DataLoader(
+        train_dataset_mlp_pretrain,
+        batch_size = kwargs['test_batch_size'],
+        shuffle=False if distributed else True,
+        pin_memory=True,
+        persistent_workers=True,
+        num_workers = num_workers,
+        sampler = DistributedSampler(train_dataset_mlp_pretrain) if distributed else None 
+    )
+
     test_dl = torch.utils.data.DataLoader(
         test_dataset,
         batch_size = 32,
@@ -572,4 +611,9 @@ def imagenet100_dataloader(**kwargs):
         num_workers= num_workers
     )
 
-    return train_dl, train_dl_mlp, test_dl, train_dataset, test_dataset
+    return {"train_dl": train_dl, 
+            "train_dl_mlp": train_dl_mlp, 
+            "test_dl": test_dl, 
+            "train_dl_mlp_pretrain": train_dl_mlp_pretrain, # for mae
+            "train_dataset": train_dataset, 
+            "test_dataset": test_dataset}
