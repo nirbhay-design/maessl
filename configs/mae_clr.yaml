@@ -1,0 +1,83 @@
+SEED: 42
+train_algo: &algo mae_clr
+dataset: 
+  cifar10: 
+    num_classes: 10
+    params: 
+      data_dir: datasets/cifar10
+      batch_size: &bs 512
+      test_batch_size: *bs
+      num_workers: 1
+      image_size: 32
+      algo: *algo 
+  cifar100: 
+    num_classes: 100
+    params: 
+      data_dir: datasets/cifar100
+      batch_size: 512
+      test_batch_size: *bs 
+      num_workers: 1
+      image_size: 32
+      algo: *algo
+  timg:
+    num_classes: 200
+    params: 
+      data_dir: datasets/tinyimagenet/tiny-imagenet-200
+      batch_size: &tibs 256
+      test_batch_size: *tibs
+      num_workers: 6
+      image_size: 64
+      algo: *algo 
+  img100:
+    num_classes: 100
+    params: 
+      data_dir: datasets/imagenet100
+      labels_json: Labels.json
+      batch_size: &imgnt 256
+      test_batch_size: *imgnt
+      num_workers: 6
+      image_size: 224
+      algo: *algo 
+return_logs: False
+eval_every: 10
+n_epochs: &epoch 800
+n_epochs_mlp: 100
+gpu_id: 3
+opt: SGD
+opt_params:
+  lr: !!float 4e-1
+  momentum: 0.9
+  weight_decay: !!float 1e-4
+# schedular_params:
+#   step_size: 40 
+#   gamma: 0.1
+schedular_params:
+  T_max: *epoch 
+  eta_min: 0.001
+mlp_opt: SGD
+mlp_opt_params:
+  lr: !!float 0.01
+  momentum: 0.9
+model_params:
+  img_size: 224
+  in_chans: 3
+  patch_size: 16 
+  embed_dim: 384
+  depth: 12
+  num_heads: 6
+  decoder_embed_dim: 256
+  decoder_depth: 4
+  decoder_num_heads: 8
+  mlp_ratio: 4 
+  norm_pix_loss: False 
+  proj_dim: 128
+  algo_type: *algo 
+mlp_type: "hidden"
+loss: *algo
+loss_params: 
+  sim: 'cosine'
+  tau: 0.5
+distributed: False
+model_save_path: saved_models
+warmup_epochs: 30
+weight: 0.1

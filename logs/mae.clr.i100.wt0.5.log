@@ -1,8 +1,8 @@
 environment: 
-YAML: configs/mae_bt.yaml
+YAML: configs/mae_clr.yaml
 ==> SEED: 42
-==> train_algo: mae_bt
-==> dataset: {'cifar10': {'num_classes': 10, 'params': {'data_dir': 'datasets/cifar10', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'algo': 'mae_bt'}}, 'cifar100': {'num_classes': 100, 'params': {'data_dir': 'datasets/cifar100', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'algo': 'mae_bt'}}, 'timg': {'num_classes': 200, 'params': {'data_dir': 'datasets/tinyimagenet/tiny-imagenet-200', 'batch_size': 256, 'test_batch_size': 256, 'num_workers': 6, 'image_size': 64, 'algo': 'mae_bt'}}, 'img100': {'num_classes': 100, 'params': {'data_dir': 'datasets/imagenet100', 'labels_json': 'Labels.json', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 6, 'image_size': 224, 'algo': 'mae_bt'}}}
+==> train_algo: mae_clr
+==> dataset: {'cifar10': {'num_classes': 10, 'params': {'data_dir': 'datasets/cifar10', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'algo': 'mae_clr'}}, 'cifar100': {'num_classes': 100, 'params': {'data_dir': 'datasets/cifar100', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'algo': 'mae_clr'}}, 'timg': {'num_classes': 200, 'params': {'data_dir': 'datasets/tinyimagenet/tiny-imagenet-200', 'batch_size': 256, 'test_batch_size': 256, 'num_workers': 6, 'image_size': 64, 'algo': 'mae_clr'}}, 'img100': {'num_classes': 100, 'params': {'data_dir': 'datasets/imagenet100', 'labels_json': 'Labels.json', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 6, 'image_size': 224, 'algo': 'mae_clr'}}}
 ==> return_logs: False
 ==> eval_every: 10
 ==> n_epochs: 400
@@ -10,18 +10,18 @@ YAML: configs/mae_bt.yaml
 ==> gpu_id: 0
 ==> opt: AdamW
 ==> opt_params: {'lr': 0.0003, 'weight_decay': 0.05, 'betas': (0.9, 0.95)}
-==> schedular_params: {'T_max': 360, 'eta_min': 0.001}
+==> schedular_params: {'T_max': 380, 'eta_min': 0.001}
 ==> mlp_opt: SGD
 ==> mlp_opt_params: {'lr': 0.01, 'momentum': 0.9}
-==> model_params: {'img_size': 224, 'in_chans': 3, 'patch_size': 16, 'embed_dim': 384, 'depth': 12, 'num_heads': 6, 'decoder_embed_dim': 256, 'decoder_depth': 4, 'decoder_num_heads': 8, 'mlp_ratio': 4, 'norm_pix_loss': False, 'proj_dim': 4096, 'barlow_hidden': 4096, 'algo_type': 'mae_bt', 'model_name': 'vit'}
+==> model_params: {'img_size': 224, 'in_chans': 3, 'patch_size': 16, 'embed_dim': 384, 'depth': 12, 'num_heads': 6, 'decoder_embed_dim': 256, 'decoder_depth': 4, 'decoder_num_heads': 8, 'mlp_ratio': 4, 'norm_pix_loss': False, 'proj_dim': 128, 'algo_type': 'mae_clr', 'model_name': 'vit'}
 ==> mlp_type: hidden
-==> loss: mae_bt
-==> loss_params: {'lambd': 0.005}
+==> loss: mae_clr
+==> loss_params: {'sim': 'cosine', 'tau': 0.5}
 ==> distributed: False
-==> model_save_path: saved_models/mae.bt.i100.wt0.5.pth
-==> warmup_epochs: 40
+==> model_save_path: saved_models/mae.clr.i100.wt0.5.pth
+==> warmup_epochs: 20
 ==> weight: 0.5
-==> config: configs/mae_bt.yaml
+==> config: configs/mae_clr.yaml
 --------------------------------------------------
 MaskedAutoencoderViT(
   (base_encoder): MAEEncoder(
@@ -90,21 +90,17 @@ MaskedAutoencoderViT(
     (decoder_norm): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
     (decoder_pred): Linear(in_features=256, out_features=768, bias=True)
   )
-  (proj): bt_proj(
-    (proj): Sequential(
-      (0): Linear(in_features=384, out_features=4096, bias=False)
-      (1): BatchNorm1d(4096, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (proj): BYOL_mlp(
+    (mlp): Sequential(
+      (0): Linear(in_features=384, out_features=384, bias=False)
+      (1): BatchNorm1d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
       (2): ReLU()
-      (3): Linear(in_features=4096, out_features=4096, bias=False)
-      (4): BatchNorm1d(4096, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (5): ReLU()
-      (6): Linear(in_features=4096, out_features=4096, bias=True)
-      (7): BatchNorm1d(4096, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      (3): Linear(in_features=384, out_features=128, bias=True)
     )
   )
 )
 NOC: 100
-augmentation for mae_bt: 
+augmentation for mae_clr: 
 Compose(
     RandomResizedCrop(size=(224, 224), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
     RandomHorizontalFlip(p=0.5)
@@ -113,7 +109,7 @@ Compose(
     ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
 )
     RandomGrayscale(p=0.2)
-    GaussianBlur(p = 1.0)
+    GaussianBlur(p = 0.0)
     Solarization(p = 0.0)
     ToTensor()
     Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
@@ -126,29 +122,15 @@ Compose(
     ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
 )
     RandomGrayscale(p=0.2)
-    GaussianBlur(p = 0.1)
-    Solarization(p = 0.1)
+    GaussianBlur(p = 0.0)
+    Solarization(p = 0.0)
     ToTensor()
     Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 )
 using optimizer: AdamW
 # of Training Images: 130000
 # of Testing Images: 5000
-schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x7e4423efd3f0>
-loss function: bt
+schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x7b121019b790>
+loss function: simclr
+loss: SimCLR(sim=cosine, tau=0.5)
 ### mae + bt Training begins
-[GPU0] epochs: [1/400] train_loss_con: 1698.673
-[GPU0] epochs: [2/400] train_loss_con: 1231.572
-[GPU0] epochs: [3/400] train_loss_con: 985.126
-[GPU0] epochs: [4/400] train_loss_con: 889.581
-[GPU0] epochs: [5/400] train_loss_con: 828.168
-[GPU0] epochs: [6/400] train_loss_con: 781.054
-[GPU0] epochs: [7/400] train_loss_con: 744.368
-[GPU0] epochs: [8/400] train_loss_con: 711.213
-[GPU0] epochs: [9/400] train_loss_con: 686.363
-[GPU0] epochs: [10/400] train_loss_con: 663.004
-[GPU0] epochs: [11/400] train_loss_con: 644.390
-[GPU0] epochs: [12/400] train_loss_con: 627.677
-[GPU0] epochs: [13/400] train_loss_con: 614.203
-[GPU0] epochs: [14/400] train_loss_con: 602.857
-[GPU0] epochs: [15/400] train_loss_con: 593.396

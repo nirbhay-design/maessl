@@ -127,6 +127,11 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
     
     elif train_algo in ["bt", "mae_bt"]:
         loss_base = loss_function(loss_type = "bt", **config.get('loss_params', {}))
+        print(f"loss: {loss_base}")
+    
+    elif train_algo in ["mae_clr"]:
+        loss_base = loss_function(loss_type = "simclr", **config.get("loss_params", {}))
+        print(f"loss: {loss_base}")
 
     if is_distributed:
         model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
@@ -258,6 +263,7 @@ if __name__ == "__main__":
     else:
         main_single(rank=args.gpu, world_size=1, config=config, args=args, is_distributed=False)
     pt2 = time.perf_counter()
+    print(f"pretraining time: {format_time(pt2 - pt1)}")
 
     print("-"*50)
     # Running Linear probing 

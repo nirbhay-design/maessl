@@ -249,6 +249,11 @@ class MaskedAutoencoderViT(nn.Module):
                 "bt": (self.ci, kwargs.get("barlow_hidden", 8192), kwargs.get("proj_dim", 8192)),
             }
             self.proj = proj_dict["bt"](*self.proj_args["bt"])
+        if self.algo == "mae_clr":
+            self.proj_args = {
+                "simclr": (self.ci, self.ci, kwargs.get("proj_dim", 128))
+            }
+            self.proj = proj_dict["simclr"](*self.proj_args["simclr"])
 
     def _init_weights(self, m):
         if isinstance(m, nn.Linear):
