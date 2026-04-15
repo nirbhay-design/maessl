@@ -522,7 +522,7 @@ def tinyimagenet_dataloader(**kwargs):
 
     train_dl_mlp_pretrain = torch.utils.data.DataLoader(
         train_dataset_mlp_pretrain,
-        batch_size = kwargs['test_batch_size'],
+        batch_size = kwargs['batch_size'],
         shuffle=False if distributed else True,
         pin_memory=True,
         persistent_workers=True,
@@ -594,7 +594,7 @@ def imagenet100_dataloader(**kwargs):
 
     train_dl_mlp_pretrain = torch.utils.data.DataLoader(
         train_dataset_mlp_pretrain,
-        batch_size = kwargs['test_batch_size'],
+        batch_size = kwargs['batch_size'],
         shuffle=False if distributed else True,
         pin_memory=True,
         persistent_workers=True,

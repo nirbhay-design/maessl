@@ -2,10 +2,11 @@ import torch
 import torchvision
 import torch.nn as nn 
 import torch.nn.functional as F 
+import torch.distributed as dist
 
 def train_maebt(
         model, train_loader, loss_base, 
-        optimizer, opt_lr_schedular, scaler,
+        optimizer, opt_lr_schedular, scaler, weight,
         n_epochs, device_id, eval_id, return_logs=False, progress=None): 
     
     if device_id == eval_id:
@@ -15,6 +16,9 @@ def train_maebt(
     # model = model.to(device)
 
     for epochs in range(n_epochs):
+        if dist.is_initialized():
+            # print(f'setting up epoch: {epochs}')
+            train_loader.sampler.set_epoch(epochs)
         model.train()
         cur_loss = 0
         len_train = len(train_loader)
@@ -30,7 +34,7 @@ def train_maebt(
 
             loss_red = loss_base(proj, proj_cap)
 
-            loss_con = output_combine["loss"] + 0.1 * loss_red
+            loss_con = output_combine["loss"] + weight * loss_red
 
             optimizer.zero_grad()
             loss_con.backward()

@@ -39,6 +39,7 @@ def get_args():
     parser.add_argument("--distributed", action="store_true", help="distributed training")
     parser.add_argument("--bs", type=int, default = None, help="batch size per gpu")    
     parser.add_argument("--tbs", type=int, default = None, help="batch size per gpu for testing")    
+    parser.add_argument("--wt", type=float, default = None, help="weight for additional loss function")    
     # evaluation 
     # parser.add_argument("--mlp_type", type=str, default=None, help="hidden/linear")
     parser.add_argument("--test", action="store_true", help="test or not")
@@ -147,6 +148,10 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         "loss_base": loss_base, "optimizer": optimizer, "opt_lr_schedular": schedular, "progress": progress,
         "n_epochs": n_epochs, "device_id": rank, "eval_id": device, "return_logs": return_logs}
 
+    wt = config.get('weight', -1)
+    if wt != -1:
+        param_config["weight"] = wt  
+
     if train_algo in ["bt_clr", "vicreg_clr"]:
         param_config["loss_clr"] = loss_clr
 
@@ -223,6 +228,8 @@ if __name__ == "__main__":
         if args.dataset == "timg":
             config["model_params"]["img_size"] = 64
             config["model_params"]["patch_size"] = 4
+    if args.wt:
+        config["weight"] = args.wt
     
     # setting seeds 
 

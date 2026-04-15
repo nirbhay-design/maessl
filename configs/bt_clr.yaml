@@ -76,3 +76,4 @@ loss_params:
 distributed: False
 model_save_path: saved_models
 warmup_epochs: 30
+weight: 0.1

@@ -22,7 +22,7 @@ class rotnet_cls(nn.Module):
 
 def train_maerotnet(
         model, rotnet, train_loader, # train_dl_mlp
-        optimizer, opt_lr_schedular, scaler,
+        optimizer, opt_lr_schedular, scaler, weight,
         n_epochs, device_id, eval_id, return_logs=False, progress=None): 
     
     if device_id == eval_id:
@@ -33,6 +33,9 @@ def train_maerotnet(
     model.train()
     rotnet.train()
     for epochs in range(n_epochs):
+        if dist.is_initialized():
+            # print(f'setting up epoch: {epochs}')
+            train_loader.sampler.set_epoch(epochs)
         cur_loss = 0
         len_train = len(train_loader)
         for idx , (data, rot_data, _, rot_label) in enumerate(train_loader):
@@ -44,7 +47,7 @@ def train_maerotnet(
             output_rot = model(rot_data, mask_ratio = 0.0) # get the features for rotnet
             pred_rot = rotnet(output_rot["features"]) # labels for rotnet (predicted)
             
-            loss_con = output["loss"] + 0.1 * F.cross_entropy(pred_rot, rot_label)
+            loss_con = output["loss"] + weight * F.cross_entropy(pred_rot, rot_label)
 
             optimizer.zero_grad()
             loss_con.backward()

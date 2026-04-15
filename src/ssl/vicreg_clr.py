@@ -2,10 +2,11 @@ import torch
 import torchvision
 import torch.nn as nn 
 import torch.nn.functional as F 
+import torch.distributed as dist
 
 def train_vicregclr(
         model, train_loader, loss_base, loss_clr,
-        optimizer, opt_lr_schedular, scaler,
+        optimizer, opt_lr_schedular, scaler, weight,
         n_epochs, device_id, eval_id, return_logs=False, progress=None): 
     
     if device_id == eval_id:
@@ -14,6 +15,9 @@ def train_vicregclr(
     device = torch.device(f"cuda:{device_id}")
     model = model.to(device)
     for epochs in range(n_epochs):
+        if dist.is_initialized():
+            # print(f'setting up epoch: {epochs}')
+            train_loader.sampler.set_epoch(epochs)
         model.train()
         cur_loss = 0
         len_train = len(train_loader)
@@ -31,7 +35,7 @@ def train_vicregclr(
             loss_simclr = loss_clr(proj_clr, proj_clr_cap)
             loss_vic = loss_base(proj_other, proj_other_cap)
 
-            loss_con = loss_vic + 0.1 * loss_simclr
+            loss_con = loss_vic + weight * loss_simclr
             
             optimizer.zero_grad()
             # scaler.scale(loss_con).backward()
