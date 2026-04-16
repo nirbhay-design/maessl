@@ -1946,3 +1946,59 @@ MLP: MLP(
 [GPU0] epochs: [60/100] train_acc: 0.540 train_loss_sup: 1.856
 [GPU0] Test Accuracy at epoch: 60: 0.533
 [GPU0] epochs: [61/100] train_acc: 0.538 train_loss_sup: 1.854
+[GPU0] epochs: [62/100] train_acc: 0.542 train_loss_sup: 1.852
+[GPU0] epochs: [63/100] train_acc: 0.543 train_loss_sup: 1.850
+[GPU0] epochs: [64/100] train_acc: 0.543 train_loss_sup: 1.844
+[GPU0] epochs: [65/100] train_acc: 0.542 train_loss_sup: 1.847
+[GPU0] epochs: [66/100] train_acc: 0.543 train_loss_sup: 1.843
+[GPU0] epochs: [67/100] train_acc: 0.542 train_loss_sup: 1.847
+[GPU0] epochs: [68/100] train_acc: 0.542 train_loss_sup: 1.842
+[GPU0] epochs: [69/100] train_acc: 0.544 train_loss_sup: 1.838
+[GPU0] epochs: [70/100] train_acc: 0.544 train_loss_sup: 1.834
+[GPU0] Test Accuracy at epoch: 70: 0.536
+[GPU0] epochs: [71/100] train_acc: 0.545 train_loss_sup: 1.834
+[GPU0] epochs: [72/100] train_acc: 0.544 train_loss_sup: 1.835
+[GPU0] epochs: [73/100] train_acc: 0.545 train_loss_sup: 1.835
+[GPU0] epochs: [74/100] train_acc: 0.545 train_loss_sup: 1.832
+[GPU0] epochs: [75/100] train_acc: 0.544 train_loss_sup: 1.832
+[GPU0] epochs: [76/100] train_acc: 0.546 train_loss_sup: 1.830
+[GPU0] epochs: [77/100] train_acc: 0.546 train_loss_sup: 1.828
+[GPU0] epochs: [78/100] train_acc: 0.546 train_loss_sup: 1.822
+[GPU0] epochs: [79/100] train_acc: 0.548 train_loss_sup: 1.827
+[GPU0] epochs: [80/100] train_acc: 0.547 train_loss_sup: 1.827
+[GPU0] Test Accuracy at epoch: 80: 0.542
+[GPU0] epochs: [81/100] train_acc: 0.547 train_loss_sup: 1.821
+[GPU0] epochs: [82/100] train_acc: 0.547 train_loss_sup: 1.826
+[GPU0] epochs: [83/100] train_acc: 0.548 train_loss_sup: 1.824
+[GPU0] epochs: [84/100] train_acc: 0.548 train_loss_sup: 1.822
+[GPU0] epochs: [85/100] train_acc: 0.548 train_loss_sup: 1.821
+[GPU0] epochs: [86/100] train_acc: 0.547 train_loss_sup: 1.825
+[GPU0] epochs: [87/100] train_acc: 0.547 train_loss_sup: 1.820
+[GPU0] epochs: [88/100] train_acc: 0.546 train_loss_sup: 1.825
+[GPU0] epochs: [89/100] train_acc: 0.547 train_loss_sup: 1.824
+[GPU0] epochs: [90/100] train_acc: 0.549 train_loss_sup: 1.822
+[GPU0] Test Accuracy at epoch: 90: 0.541
+[GPU0] epochs: [91/100] train_acc: 0.549 train_loss_sup: 1.819
+[GPU0] epochs: [92/100] train_acc: 0.546 train_loss_sup: 1.823
+[GPU0] epochs: [93/100] train_acc: 0.547 train_loss_sup: 1.823
+[GPU0] epochs: [94/100] train_acc: 0.547 train_loss_sup: 1.823
+[GPU0] epochs: [95/100] train_acc: 0.550 train_loss_sup: 1.818
+[GPU0] epochs: [96/100] train_acc: 0.549 train_loss_sup: 1.819
+[GPU0] epochs: [97/100] train_acc: 0.547 train_loss_sup: 1.821
+[GPU0] epochs: [98/100] train_acc: 0.549 train_loss_sup: 1.818
+[GPU0] epochs: [99/100] train_acc: 0.549 train_loss_sup: 1.818
+[GPU0] epochs: [100/100] train_acc: 0.548 train_loss_sup: 1.821
+[GPU0] Final Test Accuracy: 0.542
+LR: 1.000 | WD: 0.000000 | Cosine: True | test Acc: 0.542%
+------------------------------
+Best Test Accuracy: 0.560%
+Optimal Hyperparameters: LR=1.0, WD=0.0, Cosine=0
+knn evalution
+logistic regression evalution
+clustering metrics evalution
+knn_acc: 0.344
+lreg_acc: 0.423
+ari: 0.024
+nmi: 0.158
+ss: 0.032
+dbs: 2.873
