@@ -964,3 +964,11 @@ Traceback (most recent call last):
   File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1439, in _get_data
     raise RuntimeError("Pin memory thread exited unexpectedly")
 RuntimeError: Pin memory thread exited unexpectedly
+Namespace(dataset='img100', saved_path='saved_models/mae.clr.i100.wt0.5.pth', gpu=0, model='vit', verbose=False, epochs=100, eval_every=10, knn=True, lreg=True, linprobe=True, tsne=False, umap=False, cmet=True, nw=4)
+<All keys matched successfully>
+Starting Hyperparameter Sweep on 0...
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)

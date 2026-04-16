@@ -45,3 +45,11 @@
 # OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.rot.i100.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 6 >> logs/mae.rot.i100.log &
 
 # OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset timg --saved_path saved_models/mae.rot.timg.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 6 >> logs/mae.rot.timg.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.bt.i100.wt0.5.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 >> logs/mae.bt.i100.wt0.5.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset timg --saved_path saved_models/mae.bt.timg.wt0.5.pth --gpu 1 --model vit --linprobe --lreg --knn --cmet --nw 4 >> logs/mae.bt.timg.wt0.5.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.clr.i100.wt0.5.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 >> logs/mae.clr.i100.wt0.5.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset timg --saved_path saved_models/mae.clr.timg.wt0.5.pth --gpu 1 --model vit --linprobe --lreg --knn --cmet --nw 4 >> logs/mae.clr.timg.wt0.5.log &
