@@ -18,6 +18,7 @@ import os
 from functools import partial
 import argparse
 import json, time 
+import warnings; warnings.filterwarnings("ignore")
 
 def get_args():
     parser = argparse.ArgumentParser(description="Training script")
