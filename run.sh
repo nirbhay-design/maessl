@@ -35,6 +35,9 @@
 
 # OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_clr.yaml --dataset timg --gpu 1 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 512 --tbs 512 --save_path mae.clr.timg.wt0.5.pth --model vit --nw 6 --wt 0.5 > logs/mae.clr.timg.wt0.5.log &
 
+OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_clr_rot.yaml --dataset timg --gpu 1 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 256 --tbs 512 --save_path mae.clr.rot.timg.pth --model vit --nw 8 --wt 0.5 --wt2 0.5 > logs/mae.clr.rot.timg.log &
+
+OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_clr_rot.yaml --dataset img100 --gpu 2 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 512 --tbs 512 --save_path mae.clr.rot.i100.pth --model vit --nw 8 --wt 0.5 --wt2 0.5 > logs/mae.clr.rot.i100.log &
 
 ###################### ** Test code ** ################################
 

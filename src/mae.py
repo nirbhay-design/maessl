@@ -244,12 +244,12 @@ class MaskedAutoencoderViT(nn.Module):
 
         self.algo = kwargs.get("algo_type", "mae") 
         self.proj = None 
-        if self.algo == "mae_bt":
+        if self.algo in ["mae_bt", "mae_bt_rot"]:
             self.proj_args = {
                 "bt": (self.ci, kwargs.get("barlow_hidden", 8192), kwargs.get("proj_dim", 8192)),
             }
             self.proj = proj_dict["bt"](*self.proj_args["bt"])
-        if self.algo == "mae_clr":
+        if self.algo in ["mae_clr", "mae_clr_rot"]:
             self.proj_args = {
                 "simclr": (self.ci, self.ci, kwargs.get("proj_dim", 128))
             }

@@ -21,6 +21,7 @@ from sklearn.metrics import accuracy_score, silhouette_score,\
                             normalized_mutual_info_score, \
                             davies_bouldin_score
 import umap 
+import torch.distributed as dist 
 
 def yaml_loader(yaml_file):
     with open(yaml_file,'r') as f:
@@ -43,6 +44,13 @@ def format_time(seconds):
     minutes = int((seconds % 3600) // 60)
     secs = int(seconds % 60)
     return f"{hours}h {minutes}m {secs}s"
+
+def save_model(model, epochs, path):
+    # path format: dir/model.pth
+    cur_path = os.path.join(path.split('/')[0], '.'.join(path.split('/')[-1].split(".")[:-1]) + f".ec{epochs}.pth") 
+    final_model = model.module if dist.is_initialized() else model 
+    torch.save(final_model.base_encoder.state_dict(), cur_path)
+    print(f"Model saved at: {cur_path}")
 
 def get_features_labels(model, loader, device, return_logs = False):
     model = model.to(device)

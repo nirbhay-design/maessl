@@ -7,7 +7,7 @@ from src.network import Network, EnergyScoreNet, BaseEncoder
 from src.mae import * 
 from src.ssl import pretrain_algo, proj_dict
 from train_utils import yaml_loader, model_optimizer, progress, format_time, \
-                        loss_function, load_dataset, get_tsne_knn_logreg
+                        loss_function, load_dataset, get_tsne_knn_logreg, save_model
 from test import train_linear_probe
 import torch.multiprocessing as mp 
 from torch.nn.parallel import DistributedDataParallel as DDP 
@@ -40,6 +40,7 @@ def get_args():
     parser.add_argument("--bs", type=int, default = None, help="batch size per gpu")    
     parser.add_argument("--tbs", type=int, default = None, help="batch size per gpu for testing")    
     parser.add_argument("--wt", type=float, default = None, help="weight for additional loss function")    
+    parser.add_argument("--wt2", type=float, default = None, help="weight for additional loss function")    
     # evaluation 
     # parser.add_argument("--mlp_type", type=str, default=None, help="hidden/linear")
     parser.add_argument("--test", action="store_true", help="test or not")
@@ -81,7 +82,7 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         print(f"NOC: {config['dataset'][args.dataset]['num_classes']}")
     
     rotnet = None # keep rotnet None by default
-    if train_algo in ["mae_rot"]:
+    if train_algo in ["mae_rot", "mae_bt_rot", "mae_clr_rot"]:
         rotnet = proj_dict[train_algo](model.ci, **config["rotnet_params"]).to(rank)
         print(rotnet)
 
@@ -125,11 +126,11 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
             print(f"loss: {loss_clr}")
             print(f"loss: {loss_base}")
     
-    elif train_algo in ["bt", "mae_bt"]:
+    elif train_algo in ["bt", "mae_bt", "mae_bt_rot"]:
         loss_base = loss_function(loss_type = "bt", **config.get('loss_params', {}))
         print(f"loss: {loss_base}")
     
-    elif train_algo in ["mae_clr"]:
+    elif train_algo in ["mae_clr", "mae_clr_rot"]:
         loss_base = loss_function(loss_type = "simclr", **config.get("loss_params", {}))
         print(f"loss: {loss_base}")
 
@@ -172,6 +173,14 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         train_dl_mlp_pretrain = dataloaders.get('train_dl_mlp_pretrain', None)
         param_config["train_loader"] = train_dl_mlp_pretrain # this data loader is used for mae (less heavy augmentations)
         param_config["rotnet"] = rotnet
+
+    if train_algo in ["mae_clr_rot", "mae_bt_rot"]:
+        param_config["rotnet"] = rotnet
+        param_config["save_model"] = partial(save_model, path=config["model_save_path"])
+
+    print(f"param config for: {train_algo}")
+    print(param_config)
+    print(param_config.keys())
 
     final_model = train_network(**param_config)
 
@@ -235,6 +244,8 @@ if __name__ == "__main__":
             config["model_params"]["patch_size"] = 4
     if args.wt:
         config["weight"] = args.wt
+    if args.wt2:
+        config["weight"] = {"wt1": args.wt, "wt2": args.wt2}
     
     # setting seeds 
 

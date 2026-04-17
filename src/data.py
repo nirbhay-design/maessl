@@ -148,7 +148,7 @@ class CustomImagenet100TrainDataset():
             img1 = self.target_transform(img)
             img2 = self.target_transform_prime(img)
 
-            if self.algo in ["mae_rot", "mae_bt_rot"]:
+            if self.algo in ["mae_rot", "mae_bt_rot", "mae_clr_rot"]:
                 # rotating the image
                 rimg1, rota1 = self._rotate_img(img1)
                 rimg2, rota2 = self._rotate_img(img2)
@@ -238,7 +238,7 @@ class CustomImagenetTrainDataset():
             img1 = self.target_transform(img)
             img2 = self.target_transform_prime(img)
 
-            if self.algo in ["mae_rot", "mae_bt_rot"]:
+            if self.algo in ["mae_rot", "mae_bt_rot", "mae_clr_rot"]:
                 # rotating the image
                 rimg1, rota1 = self._rotate_img(img1)
                 rimg2, rota2 = self._rotate_img(img2)
