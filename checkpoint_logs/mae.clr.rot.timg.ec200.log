@@ -1,0 +1,8 @@
+Namespace(dataset='timg', saved_path='saved_models/mae.clr.rot.timg.ec200.pth', gpu=1, model='vit', verbose=False, epochs=100, eval_every=10, knn=True, lreg=True, linprobe=True, tsne=False, umap=False, cmet=True, nw=5)
+<All keys matched successfully>
+Starting Hyperparameter Sweep on 1...
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)

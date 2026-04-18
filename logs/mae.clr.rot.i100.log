@@ -2059,3 +2059,50 @@ MLP: MLP(
 [GPU2] epochs: [72/100] train_acc: 0.670 train_loss_sup: 1.203
 [GPU2] epochs: [73/100] train_acc: 0.669 train_loss_sup: 1.202
 [GPU2] epochs: [74/100] train_acc: 0.670 train_loss_sup: 1.201
+[GPU2] epochs: [75/100] train_acc: 0.670 train_loss_sup: 1.199
+[GPU2] epochs: [76/100] train_acc: 0.670 train_loss_sup: 1.201
+[GPU2] epochs: [77/100] train_acc: 0.670 train_loss_sup: 1.200
+[GPU2] epochs: [78/100] train_acc: 0.671 train_loss_sup: 1.199
+[GPU2] epochs: [79/100] train_acc: 0.669 train_loss_sup: 1.198
+[GPU2] epochs: [80/100] train_acc: 0.670 train_loss_sup: 1.199
+[GPU2] Test Accuracy at epoch: 80: 0.667
+[GPU2] epochs: [81/100] train_acc: 0.671 train_loss_sup: 1.199
+[GPU2] epochs: [82/100] train_acc: 0.670 train_loss_sup: 1.195
+[GPU2] epochs: [83/100] train_acc: 0.670 train_loss_sup: 1.196
+[GPU2] epochs: [84/100] train_acc: 0.671 train_loss_sup: 1.197
+[GPU2] epochs: [85/100] train_acc: 0.672 train_loss_sup: 1.198
+[GPU2] epochs: [86/100] train_acc: 0.671 train_loss_sup: 1.195
+[GPU2] epochs: [87/100] train_acc: 0.672 train_loss_sup: 1.193
+[GPU2] epochs: [88/100] train_acc: 0.671 train_loss_sup: 1.198
+[GPU2] epochs: [89/100] train_acc: 0.672 train_loss_sup: 1.194
+[GPU2] epochs: [90/100] train_acc: 0.671 train_loss_sup: 1.197
+[GPU2] Test Accuracy at epoch: 90: 0.669
+[GPU2] epochs: [91/100] train_acc: 0.672 train_loss_sup: 1.196
+[GPU2] epochs: [92/100] train_acc: 0.672 train_loss_sup: 1.198
+[GPU2] epochs: [93/100] train_acc: 0.670 train_loss_sup: 1.195
+[GPU2] epochs: [94/100] train_acc: 0.673 train_loss_sup: 1.192
+[GPU2] epochs: [95/100] train_acc: 0.671 train_loss_sup: 1.198
+[GPU2] epochs: [96/100] train_acc: 0.673 train_loss_sup: 1.196
+[GPU2] epochs: [97/100] train_acc: 0.672 train_loss_sup: 1.196
+[GPU2] epochs: [98/100] train_acc: 0.673 train_loss_sup: 1.196
+[GPU2] epochs: [99/100] train_acc: 0.672 train_loss_sup: 1.196
+[GPU2] epochs: [100/100] train_acc: 0.672 train_loss_sup: 1.191
+[GPU2] Final Test Accuracy: 0.67
+LR: 1.000 | WD: 0.000000 | Cosine: True | test Acc: 0.670%
+------------------------------
+Best Test Accuracy: 0.674%
+Optimal Hyperparameters: LR=1.0, WD=0.0, Cosine=0
+knn evalution
+OpenBLAS warning: precompiled NUM_THREADS exceeded, adding auxiliary array for thread metadata.
+To avoid this warning, please rebuild your copy of OpenBLAS with a larger NUM_THREADS setting
+or set the environment variable OPENBLAS_NUM_THREADS to 64 or lower
+logistic regression evalution
+clustering metrics evalution
+knn_acc: 0.507
+lreg_acc: 0.606
+ari: 0.102
+nmi: 0.352
+ss: 0.031
+dbs: 3.242
+pretraining time: 17h 47m 12s
+linear probing time: 12h 24m 50s

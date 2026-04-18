@@ -60,3 +60,14 @@
 # OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.clr.i100.wt0.5.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 >> logs/mae.clr.i100.wt0.5.log &
 
 # OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset timg --saved_path saved_models/mae.clr.timg.wt0.5.pth --gpu 1 --model vit --linprobe --lreg --knn --cmet --nw 4 >> logs/mae.clr.timg.wt0.5.log &
+
+
+## testing checkpoint models
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset timg --saved_path saved_models/mae.clr.rot.timg.ec200.pth --gpu 1 --model vit --linprobe --lreg --knn --cmet --nw 5 >> checkpoint_logs/mae.clr.rot.timg.ec200.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset timg --saved_path saved_models/mae.clr.rot.timg.ec300.pth --gpu 1 --model vit --linprobe --lreg --knn --cmet --nw 5 >> checkpoint_logs/mae.clr.rot.timg.ec300.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.clr.rot.i100.ec200.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet --nw 5 >> checkpoint_logs/mae.clr.rot.i100.ec200.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.clr.rot.i100.ec300.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet --nw 5 >> checkpoint_logs/mae.clr.rot.i100.ec300.log &
