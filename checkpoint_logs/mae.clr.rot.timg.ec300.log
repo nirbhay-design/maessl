@@ -1390,3 +1390,27 @@ MLP: MLP(
 [GPU1] epochs: [86/100] train_acc: 0.357 train_loss_sup: 2.849
 [GPU1] epochs: [87/100] train_acc: 0.357 train_loss_sup: 2.851
 [GPU1] epochs: [88/100] train_acc: 0.359 train_loss_sup: 2.845
+[GPU1] epochs: [89/100] train_acc: 0.359 train_loss_sup: 2.846
+[GPU1] epochs: [90/100] train_acc: 0.359 train_loss_sup: 2.844
+[GPU1] Test Accuracy at epoch: 90: 0.369
+[GPU1] epochs: [91/100] train_acc: 0.358 train_loss_sup: 2.846
+[GPU1] epochs: [92/100] train_acc: 0.359 train_loss_sup: 2.849
+[GPU1] epochs: [93/100] train_acc: 0.357 train_loss_sup: 2.847
+[GPU1] epochs: [94/100] train_acc: 0.359 train_loss_sup: 2.846
+[GPU1] epochs: [95/100] train_acc: 0.359 train_loss_sup: 2.846
+[GPU1] epochs: [96/100] train_acc: 0.360 train_loss_sup: 2.843
+[GPU1] epochs: [97/100] train_acc: 0.361 train_loss_sup: 2.842
+[GPU1] epochs: [98/100] train_acc: 0.358 train_loss_sup: 2.846
+[GPU1] epochs: [99/100] train_acc: 0.361 train_loss_sup: 2.840
+[GPU1] epochs: [100/100] train_acc: 0.357 train_loss_sup: 2.847
+[GPU1] Final Test Accuracy: 0.369
+LR: 1.000 | WD: 0.000000 | Cosine: True | test Acc: 0.369%
+------------------------------
+Best Test Accuracy: 0.373%
+Optimal Hyperparameters: LR=1.0, WD=1e-06, Cosine=0
+knn evalution
+OpenBLAS warning: precompiled NUM_THREADS exceeded, adding auxiliary array for thread metadata.
+To avoid this warning, please rebuild your copy of OpenBLAS with a larger NUM_THREADS setting
+or set the environment variable OPENBLAS_NUM_THREADS to 64 or lower
+logistic regression evalution
+clustering metrics evalution

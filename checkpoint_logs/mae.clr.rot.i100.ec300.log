@@ -1307,3 +1307,16 @@ MLP: MLP(
 [GPU2] Test Accuracy at epoch: 10: 0.632
 [GPU2] epochs: [11/100] train_acc: 0.633 train_loss_sup: 1.329
 [GPU2] epochs: [12/100] train_acc: 0.635 train_loss_sup: 1.315
+[GPU2] epochs: [13/100] train_acc: 0.638 train_loss_sup: 1.311
+[GPU2] epochs: [14/100] train_acc: 0.639 train_loss_sup: 1.305
+[GPU2] epochs: [15/100] train_acc: 0.641 train_loss_sup: 1.297
+[GPU2] epochs: [16/100] train_acc: 0.642 train_loss_sup: 1.294
+[GPU2] epochs: [17/100] train_acc: 0.644 train_loss_sup: 1.287
+[GPU2] epochs: [18/100] train_acc: 0.644 train_loss_sup: 1.285
+[GPU2] epochs: [19/100] train_acc: 0.645 train_loss_sup: 1.279
+[GPU2] epochs: [20/100] train_acc: 0.648 train_loss_sup: 1.271
+[GPU2] Test Accuracy at epoch: 20: 0.64
+[GPU2] epochs: [21/100] train_acc: 0.647 train_loss_sup: 1.274
+[GPU2] epochs: [22/100] train_acc: 0.648 train_loss_sup: 1.268
+[GPU2] epochs: [23/100] train_acc: 0.649 train_loss_sup: 1.268
+[GPU2] epochs: [24/100] train_acc: 0.649 train_loss_sup: 1.268
