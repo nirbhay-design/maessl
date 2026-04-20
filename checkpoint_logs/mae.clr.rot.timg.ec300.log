@@ -1389,3 +1389,4 @@ MLP: MLP(
 [GPU1] epochs: [85/100] train_acc: 0.357 train_loss_sup: 2.851
 [GPU1] epochs: [86/100] train_acc: 0.357 train_loss_sup: 2.849
 [GPU1] epochs: [87/100] train_acc: 0.357 train_loss_sup: 2.851
+[GPU1] epochs: [88/100] train_acc: 0.359 train_loss_sup: 2.845
