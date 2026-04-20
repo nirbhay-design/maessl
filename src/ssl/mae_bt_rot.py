@@ -59,7 +59,7 @@ def train_maebtrot(
         opt_lr_schedular.step()
 
         if device_id == eval_id:
-            if (epochs + 1) % 100 == 0: # save every 100 epoch
+            if (epochs + 1) % 100 == 0 and (epochs + 1) < n_epochs: # save every 100 epoch
                 save_model(model, epochs = epochs + 1)
         
         print(f"[GPU{device_id}] epochs: [{epochs+1}/{n_epochs}] train_loss_con: {cur_loss:.3f}")

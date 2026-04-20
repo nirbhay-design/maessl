@@ -1279,3 +1279,30 @@ MLP: MLP(
 [GPU2] epochs: [91/100] train_acc: 0.604 train_loss_sup: 1.612
 [GPU2] epochs: [92/100] train_acc: 0.605 train_loss_sup: 1.609
 [GPU2] epochs: [93/100] train_acc: 0.605 train_loss_sup: 1.610
+[GPU2] epochs: [94/100] train_acc: 0.605 train_loss_sup: 1.609
+[GPU2] epochs: [95/100] train_acc: 0.604 train_loss_sup: 1.610
+[GPU2] epochs: [96/100] train_acc: 0.605 train_loss_sup: 1.610
+[GPU2] epochs: [97/100] train_acc: 0.605 train_loss_sup: 1.610
+[GPU2] epochs: [98/100] train_acc: 0.607 train_loss_sup: 1.607
+[GPU2] epochs: [99/100] train_acc: 0.606 train_loss_sup: 1.606
+[GPU2] epochs: [100/100] train_acc: 0.604 train_loss_sup: 1.609
+[GPU2] Final Test Accuracy: 0.601
+LR: 1.000 | WD: 0.000100 | Cosine: True | test Acc: 0.602%
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x724b94446920>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+[GPU2] Test Accuracy at epoch: 0: 0.542
+[GPU2] epochs: [1/100] train_acc: 0.470 train_loss_sup: 2.147
+[GPU2] epochs: [2/100] train_acc: 0.571 train_loss_sup: 1.598
+[GPU2] epochs: [3/100] train_acc: 0.591 train_loss_sup: 1.503
+[GPU2] epochs: [4/100] train_acc: 0.602 train_loss_sup: 1.452
+[GPU2] epochs: [5/100] train_acc: 0.610 train_loss_sup: 1.418
+[GPU2] epochs: [6/100] train_acc: 0.619 train_loss_sup: 1.388
+[GPU2] epochs: [7/100] train_acc: 0.621 train_loss_sup: 1.377
+[GPU2] epochs: [8/100] train_acc: 0.626 train_loss_sup: 1.356
+[GPU2] epochs: [9/100] train_acc: 0.628 train_loss_sup: 1.346
+[GPU2] epochs: [10/100] train_acc: 0.632 train_loss_sup: 1.337
+[GPU2] Test Accuracy at epoch: 10: 0.632
+[GPU2] epochs: [11/100] train_acc: 0.633 train_loss_sup: 1.329

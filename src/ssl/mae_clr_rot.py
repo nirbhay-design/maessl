@@ -61,7 +61,7 @@ def train_maeclrrot(
         opt_lr_schedular.step()
 
         if device_id == eval_id:
-            if (epochs + 1) % 100 == 0: # save every 100 epoch
+            if (epochs + 1) % 100 == 0 and (epochs + 1) < n_epochs: # save every 100 epoch
                 save_model(model, epochs = epochs + 1)
 
         
