@@ -230,3 +230,14 @@ Parameter Group 0
 ), 'save_model': functools.partial(<function save_model at 0x7679ba0bf760>, path='saved_models/mae.mask.rot.timg.wt0.5.pth')}
 dict_keys(['train_algo', 'model', 'train_loader', 'scaler', 'optimizer', 'opt_lr_schedular', 'progress', 'n_epochs', 'device_id', 'eval_id', 'return_logs', 'weight', 'rotnet', 'save_model'])
 ### MAE + Mask rotnet Training begins
+[GPU2] epochs: [1/400] train_loss_con: 3.310
+[GPU2] epochs: [2/400] train_loss_con: 1.697
+[GPU2] epochs: [3/400] train_loss_con: 1.380
+[GPU2] epochs: [4/400] train_loss_con: 1.243
+[GPU2] epochs: [5/400] train_loss_con: 1.206
+[GPU2] epochs: [6/400] train_loss_con: 1.144
+[GPU2] epochs: [7/400] train_loss_con: 1.045
+[GPU2] epochs: [8/400] train_loss_con: 0.996
+[GPU2] epochs: [9/400] train_loss_con: 0.966
+[GPU2] epochs: [10/400] train_loss_con: 0.946
+[GPU2] epochs: [11/400] train_loss_con: 0.926
