@@ -83,7 +83,7 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         print(f"NOC: {config['dataset'][args.dataset]['num_classes']}")
     
     rotnet = None # keep rotnet None by default
-    if train_algo in ["mae_rot", "mae_bt_rot", "mae_clr_rot"]:
+    if train_algo in ["mae_rot", "mae_bt_rot", "mae_clr_rot", "mae_mask_rot"]:
         rotnet = proj_dict[train_algo](model.ci, **config["rotnet_params"]).to(rank)
         print(rotnet)
 
@@ -168,12 +168,13 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
         train_dl_mlp_pretrain = dataloaders.get('train_dl_mlp_pretrain', None)
         param_config["train_loader"] = train_dl_mlp_pretrain # this data loader is used for mae (less heavy augmentations)
 
-    if train_algo in ["mae_rot"]:
+    if train_algo in ["mae_rot", "mae_mask_rot"]:
         print("using basic dataloader for MAE")
         param_config.pop("loss_base", -1) # not required for mae 
         train_dl_mlp_pretrain = dataloaders.get('train_dl_mlp_pretrain', None)
         param_config["train_loader"] = train_dl_mlp_pretrain # this data loader is used for mae (less heavy augmentations)
         param_config["rotnet"] = rotnet
+        param_config["save_model"] = partial(save_model, path=config["model_save_path"])
 
     if train_algo in ["mae_clr_rot", "mae_bt_rot"]:
         param_config["rotnet"] = rotnet

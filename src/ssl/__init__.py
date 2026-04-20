@@ -8,7 +8,8 @@ from .mae_bt import *
 from .mae_rotnet import * 
 from .mae_clr import *
 from .mae_bt_rot import *
-from .mae_clr_rot import * 
+from .mae_clr_rot import *
+from .mae_mask_rotnet import * 
 
 loss_dict = {
     "simclr": SimCLR,
@@ -22,7 +23,8 @@ proj_dict = {
     "simclr": BYOL_mlp, 
     "mae_rot": rotnet_cls,
     "mae_bt_rot": rotnet_cls,
-    "mae_clr_rot": rotnet_cls
+    "mae_clr_rot": rotnet_cls,
+    "mae_mask_rot": rotnet_cls 
 }
 
 pretrain_algo = {
@@ -35,5 +37,6 @@ pretrain_algo = {
     "mae_rot": train_maerotnet,
     "mae_clr": train_maeclr,
     "mae_clr_rot": train_maeclrrot,
-    "mae_bt_rot": train_maebtrot
+    "mae_bt_rot": train_maebtrot,
+    "mae_mask_rot": train_mae_maskrotnet
 }

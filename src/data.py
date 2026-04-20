@@ -162,6 +162,10 @@ class CustomImagenet100TrainDataset():
             if self.algo in ["mae_rot"]:
                 rimg, rota = self._rotate_img(img)
                 return (img, rimg, cls_idx, rota)
+            
+            if self.algo in ["mae_mask_rot"]:
+                rimg, rota = self._rotate_img(img)
+                return (rimg, cls_idx, rota)
 
         return (img, cls_idx)
     
@@ -251,6 +255,10 @@ class CustomImagenetTrainDataset():
             if self.algo in ["mae_rot"]:
                 rimg, rota = self._rotate_img(img)
                 return (img, rimg, cls_idx, rota)
+            
+            if self.algo in ["mae_mask_rot"]:
+                rimg, rota = self._rotate_img(img)
+                return (rimg, cls_idx, rota)
             
         return (img, cls_idx)
     

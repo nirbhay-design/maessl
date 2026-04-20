@@ -1402,3 +1402,21 @@ MLP: MLP(
 [GPU1] epochs: [97/100] train_acc: 0.399 train_loss_sup: 2.595
 [GPU1] epochs: [98/100] train_acc: 0.398 train_loss_sup: 2.593
 [GPU1] epochs: [99/100] train_acc: 0.399 train_loss_sup: 2.602
+[GPU1] epochs: [100/100] train_acc: 0.400 train_loss_sup: 2.590
+[GPU1] Final Test Accuracy: 0.397
+LR: 1.000 | WD: 0.000000 | Cosine: True | test Acc: 0.397%
+------------------------------
+Best Test Accuracy: 0.397%
+Optimal Hyperparameters: LR=1.0, WD=1e-06, Cosine=1
+knn evalution
+logistic regression evalution
+clustering metrics evalution
+OpenBLAS warning: precompiled NUM_THREADS exceeded, adding auxiliary array for thread metadata.
+To avoid this warning, please rebuild your copy of OpenBLAS with a larger NUM_THREADS setting
+or set the environment variable OPENBLAS_NUM_THREADS to 64 or lower
+knn_acc: 0.262
+lreg_acc: 0.239
+ari: 0.030
+nmi: 0.244
+ss: 0.015
+dbs: 3.404

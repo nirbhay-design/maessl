@@ -4,29 +4,13 @@ import torch.nn as nn
 import torch.nn.functional as F 
 import torch.distributed as dist 
 
-class rotnet_cls(nn.Module):
-    def __init__(self, in_features, rot_hidden, num_classes = 4):
-        super().__init__()
-        self.proj = nn.Sequential(
-                nn.Linear(in_features, rot_hidden, bias=False),
-                nn.BatchNorm1d(rot_hidden),
-                nn.ReLU(),
-                nn.Linear(rot_hidden, rot_hidden, bias=False),
-                nn.BatchNorm1d(rot_hidden),
-                nn.ReLU(),
-                nn.Linear(rot_hidden, num_classes)
-            )
-
-    def forward(self, x):  
-        return self.proj(x)
-
-def train_maerotnet(
+def train_mae_maskrotnet(
         model, rotnet, train_loader, save_model, # train_dl_mlp
         optimizer, opt_lr_schedular, scaler, weight,
         n_epochs, device_id, eval_id, return_logs=False, progress=None): 
     
     if device_id == eval_id:
-        print(f"### MAE + rotnet Training begins")
+        print(f"### MAE + Mask rotnet Training begins")
 
     device = torch.device(f"cuda:{device_id}")
     # model = model.to(device)
@@ -38,14 +22,12 @@ def train_maerotnet(
             train_loader.sampler.set_epoch(epochs)
         cur_loss = 0
         len_train = len(train_loader)
-        for idx , (data, rot_data, _, rot_label) in enumerate(train_loader):
+        for idx , (data, _, rot_label) in enumerate(train_loader):
             data = data.to(device)
-            rot_data = rot_data.to(device)
             rot_label = rot_label.to(device)
 
-            output = model(data)
-            output_rot = model(rot_data, mask_ratio = 0.0) # get the features for rotnet
-            pred_rot = rotnet(output_rot["features"]) # labels for rotnet (predicted)
+            output = model(data) # masked data (data is rotated)
+            pred_rot = rotnet(output["features"][:, 1:, :].mean(dim = 1)) # labels for rotnet (predicted) for pooled features
             
             loss_con = output["loss"] + weight * F.cross_entropy(pred_rot, rot_label)
 

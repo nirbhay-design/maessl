@@ -1414,3 +1414,9 @@ To avoid this warning, please rebuild your copy of OpenBLAS with a larger NUM_TH
 or set the environment variable OPENBLAS_NUM_THREADS to 64 or lower
 logistic regression evalution
 clustering metrics evalution
+knn_acc: 0.239
+lreg_acc: 0.220
+ari: 0.025
+nmi: 0.220
+ss: 0.017
+dbs: 3.292
