@@ -21,8 +21,8 @@ dataset:
     num_classes: 200
     params: 
       data_dir: datasets/tinyimagenet/tiny-imagenet-200
-      batch_size: 512
-      test_batch_size: 512
+      batch_size: 256
+      test_batch_size: 256
       num_workers: 5
       image_size: 64
       algo: test
