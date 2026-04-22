@@ -1430,3 +1430,11 @@ MLP: MLP(
 [GPU1] epochs: [50/100] train_acc: 0.387 train_loss_sup: 2.512
 [GPU1] Test Accuracy at epoch: 50: 0.392
 [GPU1] epochs: [51/100] train_acc: 0.389 train_loss_sup: 2.512
+Namespace(dataset='img100', saved_path='saved_models/mae.mask.rot.i100.wt0.5.pth', gpu=1, model='vit', verbose=False, epochs=100, eval_every=10, knn=True, lreg=True, linprobe=True, tsne=False, umap=False, cmet=True, nw=10)
+<All keys matched successfully>
+Starting Hyperparameter Sweep on 1...
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)

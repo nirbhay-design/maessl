@@ -1589,3 +1589,11 @@ MLP: MLP(
 [GPU2] epochs: [88/100] train_acc: 0.142 train_loss_sup: 4.316
 [GPU2] epochs: [89/100] train_acc: 0.143 train_loss_sup: 4.315
 [GPU2] epochs: [90/100] train_acc: 0.143 train_loss_sup: 4.313
+Namespace(dataset='timg', saved_path='saved_models/mae.mask.rot.timg.wt0.5.pth', gpu=1, model='vit', verbose=False, epochs=100, eval_every=10, knn=True, lreg=True, linprobe=True, tsne=False, umap=False, cmet=True, nw=10)
+<All keys matched successfully>
+Starting Hyperparameter Sweep on 1...
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
