@@ -481,6 +481,7 @@ def tinyimagenet_dataloader(**kwargs):
     image_size = kwargs['image_size']
     data_dir = kwargs['data_dir']
     algo = kwargs['algo']
+    pf = kwargs.get("prefetch_factor", 4)
 
     all_transforms = get_transforms(image_size, data_name = "tinyimagenet", algo=algo)
 
@@ -515,6 +516,7 @@ def tinyimagenet_dataloader(**kwargs):
         pin_memory=True,
         persistent_workers=True,
         num_workers = num_workers,
+        prefetch_factor = pf,
         sampler = DistributedSampler(train_dataset) if distributed else None 
     )
 
@@ -524,7 +526,8 @@ def tinyimagenet_dataloader(**kwargs):
         shuffle=True,
         pin_memory=True,
         persistent_workers=True,
-        num_workers = num_workers
+        num_workers = num_workers,
+        prefetch_factor = pf
         # sampler = DistributedSampler(train_dataset_mlp) if distributed else None 
     )
 
@@ -535,6 +538,7 @@ def tinyimagenet_dataloader(**kwargs):
         pin_memory=True,
         persistent_workers=True,
         num_workers = num_workers,
+        prefetch_factor = pf,
         sampler = DistributedSampler(train_dataset_mlp_pretrain) if distributed else None 
     )
 
@@ -544,7 +548,8 @@ def tinyimagenet_dataloader(**kwargs):
         shuffle=True,
         pin_memory=True,
         persistent_workers=True,
-        num_workers= num_workers
+        num_workers= num_workers,
+        prefetch_factor = pf
     )
 
     return {"train_dl": train_dl, 
@@ -559,6 +564,7 @@ def imagenet100_dataloader(**kwargs):
     data_dir = kwargs['data_dir']
     labels_json = kwargs["labels_json"]
     algo = kwargs['algo']
+    pf = kwargs.get("prefetch_factor", 4)
 
     all_transforms = get_transforms(image_size, data_name = "imagenet100", algo=algo)
 
@@ -587,6 +593,7 @@ def imagenet100_dataloader(**kwargs):
         pin_memory=True,
         persistent_workers=True,
         num_workers = num_workers,
+        prefetch_factor = pf,
         sampler = DistributedSampler(train_dataset) if distributed else None 
     )
 
@@ -596,7 +603,8 @@ def imagenet100_dataloader(**kwargs):
         shuffle=True,
         pin_memory=True,
         persistent_workers=True,
-        num_workers = num_workers
+        num_workers = num_workers,
+        prefetch_factor = pf
         # sampler = DistributedSampler(train_dataset_mlp) if distributed else None 
     )
 
@@ -607,6 +615,7 @@ def imagenet100_dataloader(**kwargs):
         pin_memory=True,
         persistent_workers=True,
         num_workers = num_workers,
+        prefetch_factor = pf,
         sampler = DistributedSampler(train_dataset_mlp_pretrain) if distributed else None 
     )
 
@@ -616,7 +625,8 @@ def imagenet100_dataloader(**kwargs):
         shuffle=True,
         pin_memory=True,
         persistent_workers=True,
-        num_workers= num_workers
+        num_workers= num_workers,
+        prefetch_factor = pf
     )
 
     return {"train_dl": train_dl, 

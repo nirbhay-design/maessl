@@ -7,6 +7,7 @@ dataset:
       test_batch_size: 512
       num_workers: 3
       image_size: 32
+      prefetch_factor: 4
       algo: test 
   cifar100: 
     num_classes: 100
@@ -16,6 +17,7 @@ dataset:
       test_batch_size: 512
       num_workers: 3
       image_size: 32
+      prefetch_factor: 4
       algo: test
   timg:
     num_classes: 200
@@ -25,6 +27,7 @@ dataset:
       test_batch_size: 256
       num_workers: 5
       image_size: 64
+      prefetch_factor: 4
       algo: test
   img100:
     num_classes: 100
@@ -35,6 +38,7 @@ dataset:
       test_batch_size: *imgnt
       num_workers: 5
       image_size: 224
+      prefetch_factor: 4
       algo: test 
 
 lr: [0.1, 1.0]

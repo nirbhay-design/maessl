@@ -50,6 +50,7 @@ def get_args():
     parser.add_argument("--linprobe", action="store_true", help="evaluate linear probing or not ")
     parser.add_argument("--tsne", action="store_true", help="get test tsne or not")
     parser.add_argument("--nw", type=int, default = 4, help="num workers for dataloading")
+    parser.add_argument("--pf", type=int, default = 4, help="prefetch factor for dataloading")
 
     args = parser.parse_args()
     return args
@@ -213,6 +214,7 @@ if __name__ == "__main__":
     config['model_params']['model_name'] = args.model
     config["return_logs"] = args.verbose
     config["dataset"][args.dataset]["params"]["num_workers"] = args.nw
+    config["dataset"][args.dataset]["params"]["prefetch_factor"] = args.pf
     config["model_save_path"] = os.path.join(config.get("model_save_path", "saved_models"), args.save_path)
 
     if args.bs:

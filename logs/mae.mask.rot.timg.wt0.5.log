@@ -1597,3 +1597,22 @@ Scheduler: None
 MLP: MLP(
   (mlp): Linear(in_features=384, out_features=200, bias=True)
 )
+[GPU1] Test Accuracy at epoch: 0: 0.054
+[GPU1] epochs: [1/100] train_acc: 0.033 train_loss_sup: 5.158
+[GPU1] epochs: [2/100] train_acc: 0.061 train_loss_sup: 4.949
+[GPU1] epochs: [3/100] train_acc: 0.076 train_loss_sup: 4.825
+[GPU1] epochs: [4/100] train_acc: 0.087 train_loss_sup: 4.739
+[GPU1] epochs: [5/100] train_acc: 0.093 train_loss_sup: 4.671
+[GPU1] epochs: [6/100] train_acc: 0.101 train_loss_sup: 4.618
+[GPU1] epochs: [7/100] train_acc: 0.105 train_loss_sup: 4.570
+[GPU1] epochs: [8/100] train_acc: 0.109 train_loss_sup: 4.529
+Namespace(dataset='timg', saved_path='saved_models/mae.mask.rot.timg.wt0.5.pth', gpu=1, model='vit', verbose=False, epochs=100, eval_every=10, knn=True, lreg=True, linprobe=True, tsne=False, umap=False, cmet=True, nw=10, pf=4)
+<All keys matched successfully>
+Starting Hyperparameter Sweep on 1...
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+[GPU1] Test Accuracy at epoch: 0: 0.059
+[GPU1] epochs: [1/100] train_acc: 0.033 train_loss_sup: 5.158

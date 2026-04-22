@@ -9,6 +9,7 @@ dataset:
       test_batch_size: *bs
       num_workers: 1
       image_size: 32
+      prefetch_factor: 4
       algo: *algo 
   cifar100: 
     num_classes: 100
@@ -18,6 +19,7 @@ dataset:
       test_batch_size: *bs 
       num_workers: 1
       image_size: 32
+      prefetch_factor: 4
       algo: *algo
   timg:
     num_classes: 200
@@ -27,6 +29,7 @@ dataset:
       test_batch_size: *tibs
       num_workers: 1
       image_size: 64
+      prefetch_factor: 4
       algo: *algo 
   img100:
     num_classes: 100
@@ -37,6 +40,7 @@ dataset:
       test_batch_size: *imgnt
       num_workers: 1
       image_size: 224
+      prefetch_factor: 4
       algo: *algo 
 return_logs: False
 eval_every: 10

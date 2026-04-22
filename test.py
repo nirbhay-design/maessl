@@ -27,6 +27,7 @@ def get_args():
     parser.add_argument("--umap", action="store_true", help="get test umap or not")
     parser.add_argument("--cmet", action="store_true", help="get clustering metrics or not")
     parser.add_argument("--nw", type=int, default = 4, help="num workers for dataloading")
+    parser.add_argument("--pf", type=int, default = 4, help="prefetch factor for dataloading")
 
     args = parser.parse_args()
     return args
@@ -171,6 +172,7 @@ if __name__ == "__main__":
 
     config = yaml_loader("configs/test.yaml")
     config["dataset"][args.dataset]["params"]["num_workers"] = args.nw # set the number of workers for data loading 
+    config["dataset"][args.dataset]["params"]["prefetch_factor"] = args.pf
 
     if args.model == "vit":
         model_params = config["mae_model_params"]
