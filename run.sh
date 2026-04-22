@@ -55,6 +55,10 @@
 
 # CUDA_VISIBLE_DEVICES=0,1,2 OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_mask_rot.yaml --dataset timg --gpu 2 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 512 --tbs 512 --save_path mae.mask.rot.timg.wt0.5.pth --model vit --nw 6 --wt 0.5 > logs/mae.mask.rot.timg.wt0.5.log &
 
+
+# TF_CPP_MIN_LOG_LEVEL=2 CUDA_VISIBLE_DEVICES=0,1,3,4 OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_bt_rot.yaml --dataset img100 --gpu 0 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 128 --tbs 512 --save_path mae.bt.rot.i100.pth --model vit --nw 4 --wt 0.1 --wt2 0.5 --distributed > logs/mae.bt.rot.i100.dist.log &
+
+
 ###################### ** Test code ** ################################
 
 # nohup python -u test.py --dataset img100 --saved_path saved_models/mae.i100.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet >> logs/mae.i100.log &
@@ -73,9 +77,9 @@
 
 # OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset timg --saved_path saved_models/mae.clr.timg.wt0.5.pth --gpu 1 --model vit --linprobe --lreg --knn --cmet --nw 4 >> logs/mae.clr.timg.wt0.5.log &
 
-OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.mask.rot.i100.wt0.5.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet --nw 6 >> logs/mae.mask.rot.i100.wt0.5.log &
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.mask.rot.i100.wt0.5.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet --nw 6 >> logs/mae.mask.rot.i100.wt0.5.log &
 
-OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset timg --saved_path saved_models/mae.mask.rot.timg.wt0.5.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet --nw 6 >> logs/mae.mask.rot.timg.wt0.5.log &
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset timg --saved_path saved_models/mae.mask.rot.timg.wt0.5.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet --nw 6 >> logs/mae.mask.rot.timg.wt0.5.log &
 
 
 ## testing checkpoint models
