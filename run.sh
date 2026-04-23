@@ -84,6 +84,10 @@
 
 # OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset timg --saved_path saved_models/mae.mask.rot.timg.wt0.5.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet --nw 6 >> logs/mae.mask.rot.timg.wt0.5.log &
 
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.clr.rot.i100.wt0.8.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 8 --pf 2 >> logs/mae.clr.rot.i100.wt0.8.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset timg --saved_path saved_models/mae.clr.rot.timg.wt0.8.pth --gpu 1 --model vit --linprobe --lreg --knn --cmet --nw 8 --pf 2 >> logs/mae.clr.rot.timg.wt0.8.log &
+ 
 
 ## testing checkpoint models
 
