@@ -148,11 +148,11 @@ def model_optimizer(model, opt_name, model2 = None, **opt_params):
         params = list(model.parameters()) + list(model2.parameters())
 
     if opt_name == "SGD":
-        return optim.SGD(params, **opt_params)
+        return optim.SGD(params, **opt_params, fused = True)
     elif opt_name == "ADAM":
-        return optim.Adam(params, **opt_params)
+        return optim.Adam(params, **opt_params, fused = True)
     elif opt_name == "AdamW":
-        return optim.AdamW(params, **opt_params)
+        return optim.AdamW(params, **opt_params, fused = True)
     elif opt_name == "LARS":
         return LARS(params, **opt_params)
     else:
