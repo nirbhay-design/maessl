@@ -1,36 +1,12 @@
 import torch 
 import torchvision 
-import torchvision.transforms as transforms
+import torchvision.io as io
+from torchvision.transforms import v2 as transforms
 import os, random
 import numpy as np
 from PIL import Image, ImageOps, ImageFilter
 import pickle, json 
 from torch.utils.data.distributed import DistributedSampler
-
-class Solarization(object):
-    def __init__(self, p):
-        self.p = p
-
-    def __call__(self, img):
-        if np.random.rand() < self.p:
-            return ImageOps.solarize(img)
-        else:
-            return img
-    def __repr__(self):
-        return f"Solarization(p = {self.p})"
-
-class GaussianBlur(object):
-    def __init__(self, p):
-        self.p = p
-
-    def __call__(self, img):
-        if np.random.rand() < self.p:
-            sigma = np.random.rand() * 1.9 + 0.1
-            return img.filter(ImageFilter.GaussianBlur(sigma))
-        else:
-            return img
-    def __repr__(self):
-        return f"GaussianBlur(p = {self.p})"
 
 def get_transforms(image_size, data_name = "cifar10", algo='supcon'):
     if data_name == 'cifar10':
@@ -60,42 +36,48 @@ def get_transforms(image_size, data_name = "cifar10", algo='supcon'):
 
     # for smaller image datasets, no gaussian blur 
     train_transforms = transforms.Compose([
-        transforms.RandomResizedCrop(image_size),
+        transforms.ToImage(),
+        transforms.RandomResizedCrop(image_size, antialias = True),
         transforms.RandomHorizontalFlip(p=0.5),
         transforms.RandomApply([transforms.ColorJitter(0.8*s, 0.8*s, 0.8*s, 0.2*s)], p=0.8),
         transforms.RandomGrayscale(p = 0.2),
-        GaussianBlur(gaussian_blur_p) if data_name == "imagenet100" else torch.nn.Identity(),
-        Solarization(p = 0.0),
-        transforms.ToTensor(),
+        transforms.RandomApply([transforms.GaussianBlur(kernel_size=23, sigma=(0.1, 2.0))], p=gaussian_blur_p) if data_name == "imagenet100" else transforms.Identity(),
+        transforms.RandomSolarize(threshold=128, p=0.0),
+        transforms.ToDtype(torch.float32, scale=True),
         transforms.Normalize(mean = mean, std=std)
     ])
 
     train_transforms_prime = transforms.Compose([
-        transforms.RandomResizedCrop(image_size),
+        transforms.ToImage(),
+        transforms.RandomResizedCrop(image_size, antialias = True),
         transforms.RandomHorizontalFlip(p=0.5),
         transforms.RandomApply([transforms.ColorJitter(0.8*s, 0.8*s, 0.8*s, 0.2*s)], p=0.8),
         transforms.RandomGrayscale(p = 0.2),
-        GaussianBlur(gaussian_blur_p_prime) if data_name == "imagenet100" else torch.nn.Identity(),
-        Solarization(p = solarize_p),
-        transforms.ToTensor(),
+        transforms.RandomApply([transforms.GaussianBlur(kernel_size=23, sigma=(0.1, 2.0))], p=gaussian_blur_p_prime) if data_name == "imagenet100" else transforms.Identity(),
+        transforms.RandomSolarize(threshold=128, p=solarize_p),
+        transforms.ToDtype(torch.float32, scale=True),
         transforms.Normalize(mean = mean, std=std)
     ])
 
-    train_transforms_mlp = transforms.Compose([transforms.RandomResizedCrop(image_size),
-                                          transforms.RandomHorizontalFlip(p=0.5),
-                                          transforms.ToTensor(),
-                                          transforms.Normalize(mean = mean, std = std)])
+    train_transforms_mlp = transforms.Compose([
+                                transforms.ToImage(),
+                                transforms.RandomResizedCrop(image_size, antialias = True),
+                                transforms.RandomHorizontalFlip(p=0.5),
+                                transforms.ToDtype(torch.float32, scale=True),
+                                transforms.Normalize(mean = mean, std = std)])
     # test_transforms for imagenet100
     if data_name == "imagenet100":
         test_transforms = transforms.Compose([
-            transforms.Resize(256),
+            transforms.ToImage(),
+            transforms.Resize(256, antialias = True),
             transforms.CenterCrop(image_size),
-            transforms.ToTensor(),
+            transforms.ToDtype(torch.float32, scale=True),
             transforms.Normalize(mean = mean, std = std)
         ])
     else:
         test_transforms = transforms.Compose([
-            transforms.ToTensor(),
+            transforms.ToImage(),
+            transforms.ToDtype(torch.float32, scale=True),
             transforms.Normalize(mean = mean, std = std)
         ])
 
@@ -143,7 +125,9 @@ class CustomImagenet100TrainDataset():
     def __getitem__(self, idx):
         cls_idx, image_path = self.img_map[idx]
 
-        img = Image.open(image_path).convert('RGB')
+        # img = Image.open(image_path).convert('RGB')
+        img = io.read_image(image_path, mode=io.ImageReadMode.RGB)
+
         if self.pretrain:
             img1 = self.target_transform(img)
             img2 = self.target_transform_prime(img)
@@ -200,7 +184,8 @@ class CustomImagenet100TestDataset():
     def __getitem__(self, idx):
         cls_idx, image_path = self.img_map[idx]
 
-        img = Image.open(image_path).convert('RGB')
+        # img = Image.open(image_path).convert('RGB')
+        img = io.read_image(image_path, mode=io.ImageReadMode.RGB)
         img = self.transform(img)
         return (img, cls_idx)
 
@@ -237,7 +222,10 @@ class CustomImagenetTrainDataset():
         class_image,image_name = self.img_map[idx]
         cls_idx = self.mapping.get(class_image,-1)
 
-        img = Image.open(os.path.join(self.img_path,class_image,'images',image_name)).convert('RGB')
+        image_path = os.path.join(self.img_path,class_image,'images',image_name)
+        # img = Image.open(image_path).convert('RGB')
+        img = io.read_image(image_path, mode=io.ImageReadMode.RGB)
+
         if self.pretrain:
             img1 = self.target_transform(img)
             img2 = self.target_transform_prime(img)
@@ -291,7 +279,10 @@ class CustomImagenetTestDataset():
         test_img, class_name = self.test_anno[idx]
         cls_idx = self.mapping.get(class_name,-1)
 
-        img = Image.open(os.path.join(self.img_path,test_img)).convert('RGB')
+        image_path = os.path.join(self.img_path,test_img)
+        # img = Image.open(image_path).convert('RGB')
+        img = io.read_image(image_path, mode=io.ImageReadMode.RGB)
+        
         img = self.transformations(img)
         return (img,cls_idx)
 
