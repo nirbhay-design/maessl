@@ -58,9 +58,9 @@
 
 # TF_CPP_MIN_LOG_LEVEL=2 CUDA_VISIBLE_DEVICES=0,1,3,4 OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_bt_rot.yaml --dataset img100 --gpu 0 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 128 --tbs 512 --save_path mae.bt.rot.i100.pth --model vit --nw 4 --wt 0.1 --wt2 0.5 --distributed > logs/mae.bt.rot.i100.dist.log &
 
-OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_clr_rot.yaml --dataset timg --gpu 1 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 256 --tbs 512 --save_path mae.clr.rot.timg.wt0.8wt20.1.pth --model vit --nw 10 --pf 2 --wt 0.8 --wt2 0.1 > logs/mae.clr.rot.timg.wt0.8wt20.1.log &
+# OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_clr_rot.yaml --dataset timg --gpu 1 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 256 --tbs 512 --save_path mae.clr.rot.timg.wt0.8wt20.1.pth --model vit --nw 10 --pf 2 --wt 0.8 --wt2 0.1 > logs/mae.clr.rot.timg.wt0.8wt20.1.log &
 
-OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_clr_rot.yaml --dataset img100 --gpu 1 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 256 --tbs 512 --save_path mae.clr.rot.i100.wt0.8wt20.1.pth --model vit --nw 10 --pf 2 --wt 0.8 --wt2 0.1 > logs/mae.clr.rot.i100.wt0.8wt20.1.log &
+# OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_clr_rot.yaml --dataset img100 --gpu 1 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 256 --tbs 512 --save_path mae.clr.rot.i100.wt0.8wt20.1.pth --model vit --nw 10 --pf 2 --wt 0.8 --wt2 0.1 > logs/mae.clr.rot.i100.wt0.8wt20.1.log &
 
 ###################### ** Test code ** ################################
 
@@ -98,3 +98,11 @@ OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_clr_rot.yam
 # OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.clr.rot.i100.ec200.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet --nw 5 >> checkpoint_logs/mae.clr.rot.i100.ec200.log &
 
 # OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.clr.rot.i100.ec300.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet --nw 5 >> checkpoint_logs/mae.clr.rot.i100.ec300.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset timg --saved_path saved_models/mae.bt.rot.timg.ec200.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 >> checkpoint_logs/mae.bt.rot.timg.ec200.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset timg --saved_path saved_models/mae.bt.rot.timg.ec300.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 >> checkpoint_logs/mae.bt.rot.timg.ec300.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.bt.rot.i100.ec200.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 >> checkpoint_logs/mae.bt.rot.i100.ec200.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.bt.rot.i100.ec300.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 >> checkpoint_logs/mae.bt.rot.i100.ec300.log &
