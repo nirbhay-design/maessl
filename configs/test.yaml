@@ -23,8 +23,8 @@ dataset:
     num_classes: 200
     params: 
       data_dir: datasets/tinyimagenet/tiny-imagenet-200
-      batch_size: 256
-      test_batch_size: 256
+      batch_size: 512
+      test_batch_size: 512
       num_workers: 5
       image_size: 64
       prefetch_factor: 4
@@ -34,7 +34,7 @@ dataset:
     params: 
       data_dir: datasets/imagenet100
       labels_json: Labels.json
-      batch_size: &imgnt 256
+      batch_size: &imgnt 512
       test_batch_size: *imgnt
       num_workers: 5
       image_size: 224

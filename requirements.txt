@@ -6,3 +6,4 @@ pillow
 pyyaml
 scikit-learn
 timm 
+umap-learn
