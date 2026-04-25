@@ -41,7 +41,8 @@ def get_args():
     parser.add_argument("--bs", type=int, default = None, help="batch size per gpu")    
     parser.add_argument("--tbs", type=int, default = None, help="batch size per gpu for testing")    
     parser.add_argument("--wt", type=float, default = None, help="weight for additional loss function")    
-    parser.add_argument("--wt2", type=float, default = None, help="weight for additional loss function")    
+    parser.add_argument("--wt2", type=float, default = None, help="weight for additional loss function") 
+    parser.add_argument("--aug", type=str, default = "v1", help="augmentation strategy")
     # evaluation 
     # parser.add_argument("--mlp_type", type=str, default=None, help="hidden/linear")
     parser.add_argument("--test", action="store_true", help="test or not")
@@ -92,6 +93,7 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
     dataloaders = load_dataset(
         dataset_name = args.dataset,
         distributed = is_distributed,
+        aug = args.aug,
         **config["dataset"][args.dataset]["params"])
     
     train_dl = dataloaders.get("train_dl", None)
@@ -213,6 +215,7 @@ if __name__ == "__main__":
     config['gpu_id'] = args.gpu
     config['model_params']['model_name'] = args.model
     config["return_logs"] = args.verbose
+    config["aug"] = args.aug
     config["dataset"][args.dataset]["params"]["num_workers"] = args.nw
     config["dataset"][args.dataset]["params"]["prefetch_factor"] = args.pf
     config["model_save_path"] = os.path.join(config.get("model_save_path", "saved_models"), args.save_path)
@@ -298,6 +301,7 @@ if __name__ == "__main__":
     dataloaders = load_dataset(
         dataset_name = args.dataset,
         distributed = False,
+        aug = args.aug,
         **config["dataset"][args.dataset]["params"])
     
     train_dl_mlp = dataloaders.get("train_dl_mlp", None)

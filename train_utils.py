@@ -7,7 +7,6 @@ import torchvision
 import torch.optim as optim 
 import yaml, sys, random, numpy as np
 from yaml.loader import SafeLoader
-from src.data import *
 from src.lars import LARS
 import math
 import copy
@@ -160,14 +159,20 @@ def model_optimizer(model, opt_name, model2 = None, **opt_params):
         return None
 
 def load_dataset(dataset_name, **kwargs):
+    aug = kwargs.get("aug", "v1")
+    if aug == "v1":
+        import src.data as data_module
+    else:
+        import src.data_v2 as data_module
+    
     if dataset_name == "cifar10":
-        return Cifar10DataLoader(**kwargs)
+        return data_module.Cifar10DataLoader(**kwargs)
     if dataset_name == 'cifar100':
-        return Cifar100DataLoader(**kwargs)
+        return data_module.Cifar100DataLoader(**kwargs)
     if dataset_name == "timg":
-        return tinyimagenet_dataloader(**kwargs)
+        return data_module.tinyimagenet_dataloader(**kwargs)
     if dataset_name == "img100":
-        return imagenet100_dataloader(**kwargs)
+        return data_module.imagenet100_dataloader(**kwargs)
     else:
         print(f"{dataset_name} is not supported")
         return None

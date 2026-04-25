@@ -62,6 +62,9 @@
 
 # OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_clr_rot.yaml --dataset img100 --gpu 1 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 256 --tbs 512 --save_path mae.clr.rot.i100.wt0.8wt20.1.pth --model vit --nw 10 --pf 2 --wt 0.8 --wt2 0.1 > logs/mae.clr.rot.i100.wt0.8wt20.1.log &
 
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_bt_rot.yaml --dataset img100 --gpu 0 --epochs 400 --lr 5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 512 --tbs 512 --save_path mae.bt.rot.i100.lr5e.4.pth --model vit --nw 8 --pf 4 --wt 0.1 --wt2 0.5 --aug v2 > logs/mae.bt.rot.i100.lr5e.4.log &
+
 ###################### ** Test code ** ################################
 
 # nohup python -u test.py --dataset img100 --saved_path saved_models/mae.i100.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet >> logs/mae.i100.log &

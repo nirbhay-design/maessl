@@ -28,6 +28,7 @@ def get_args():
     parser.add_argument("--cmet", action="store_true", help="get clustering metrics or not")
     parser.add_argument("--nw", type=int, default = 4, help="num workers for dataloading")
     parser.add_argument("--pf", type=int, default = 4, help="prefetch factor for dataloading")
+    parser.add_argument("--aug", type=str, default = "v1", help="augmentation strategy")
 
     args = parser.parse_args()
     return args
@@ -190,6 +191,7 @@ if __name__ == "__main__":
     dataloaders = load_dataset(
         dataset_name = args.dataset,
         distributed = False,
+        aug = args.aug,
         **config["dataset"][args.dataset]["params"])
     
     train_dl_mlp = dataloaders.get("train_dl_mlp", None)
