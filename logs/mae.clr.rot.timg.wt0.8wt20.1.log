@@ -2,14 +2,14 @@ environment:
 YAML: configs/mae_clr_rot.yaml
 ==> SEED: 42
 ==> train_algo: mae_clr_rot
-==> dataset: {'cifar10': {'num_classes': 10, 'params': {'data_dir': 'datasets/cifar10', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'prefetch_factor': 4, 'algo': 'mae_clr_rot'}}, 'cifar100': {'num_classes': 100, 'params': {'data_dir': 'datasets/cifar100', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'prefetch_factor': 4, 'algo': 'mae_clr_rot'}}, 'timg': {'num_classes': 200, 'params': {'data_dir': 'datasets/tinyimagenet/tiny-imagenet-200', 'batch_size': 256, 'test_batch_size': 512, 'num_workers': 10, 'image_size': 64, 'prefetch_factor': 2, 'algo': 'mae_clr_rot'}}, 'img100': {'num_classes': 100, 'params': {'data_dir': 'datasets/imagenet100', 'labels_json': 'Labels.json', 'batch_size': 256, 'test_batch_size': 256, 'num_workers': 6, 'image_size': 224, 'prefetch_factor': 4, 'algo': 'mae_clr_rot'}}}
+==> dataset: {'cifar10': {'num_classes': 10, 'params': {'data_dir': 'datasets/cifar10', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'prefetch_factor': 4, 'algo': 'mae_clr_rot'}}, 'cifar100': {'num_classes': 100, 'params': {'data_dir': 'datasets/cifar100', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'prefetch_factor': 4, 'algo': 'mae_clr_rot'}}, 'timg': {'num_classes': 200, 'params': {'data_dir': 'datasets/tinyimagenet/tiny-imagenet-200', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 10, 'image_size': 64, 'prefetch_factor': 2, 'algo': 'mae_clr_rot'}}, 'img100': {'num_classes': 100, 'params': {'data_dir': 'datasets/imagenet100', 'labels_json': 'Labels.json', 'batch_size': 256, 'test_batch_size': 256, 'num_workers': 6, 'image_size': 224, 'prefetch_factor': 4, 'algo': 'mae_clr_rot'}}}
 ==> return_logs: False
 ==> eval_every: 10
 ==> n_epochs: 400
 ==> n_epochs_mlp: 100
 ==> gpu_id: 0
 ==> opt: AdamW
-==> opt_params: {'lr': 0.00015, 'weight_decay': 0.05, 'betas': (0.9, 0.95)}
+==> opt_params: {'lr': 0.0003, 'weight_decay': 0.05, 'betas': (0.9, 0.95)}
 ==> schedular_params: {'T_max': 380, 'eta_min': 0.001}
 ==> mlp_opt: SGD
 ==> mlp_opt_params: {'lr': 0.01, 'momentum': 0.9}
@@ -114,31 +114,35 @@ rotnet_cls(
 )
 augmentation for mae_clr_rot: 
 Compose(
-      ToImage()
-      RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333333333333333), interpolation=InterpolationMode.BILINEAR, antialias=True)
-      RandomHorizontalFlip(p=0.5)
-      RandomApply(    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1)))
-      RandomGrayscale(p=0.2)
-      Identity()
-      RandomSolarize(p=0.0, threshold=128)
-      ToDtype(scale=True)
-      Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], inplace=False)
+    RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Identity()
+    Solarization(p = 0.0)
+    ToTensor()
+    Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
 )
 Compose(
-      ToImage()
-      RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333333333333333), interpolation=InterpolationMode.BILINEAR, antialias=True)
-      RandomHorizontalFlip(p=0.5)
-      RandomApply(    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1)))
-      RandomGrayscale(p=0.2)
-      Identity()
-      RandomSolarize(p=0.0, threshold=128)
-      ToDtype(scale=True)
-      Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], inplace=False)
+    RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Identity()
+    Solarization(p = 0.0)
+    ToTensor()
+    Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
 )
 using optimizer: AdamW
 # of Training Images: 100000
 # of Testing Images: 10000
-schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x7e67d3eecf70>
+schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x79d4c6757280>
 loss function: simclr
 loss: SimCLR(sim=cosine, tau=0.5)
 param config for: mae_clr_rot
@@ -217,7 +221,7 @@ param config for: mae_clr_rot
       (3): Linear(in_features=384, out_features=128, bias=True)
     )
   )
-), 'train_loader': <torch.utils.data.dataloader.DataLoader object at 0x7e67d54be020>, 'scaler': <torch.cuda.amp.grad_scaler.GradScaler object at 0x7e67d3eef0d0>, 'loss_base': SimCLR(sim=cosine, tau=0.5), 'optimizer': AdamW (
+), 'train_loader': <torch.utils.data.dataloader.DataLoader object at 0x79d4c62cf580>, 'scaler': <torch.cuda.amp.grad_scaler.GradScaler object at 0x79d4c6755540>, 'loss_base': SimCLR(sim=cosine, tau=0.5), 'optimizer': AdamW (
 Parameter Group 0
     amsgrad: False
     betas: (0.9, 0.95)
@@ -227,11 +231,11 @@ Parameter Group 0
     eps: 1e-08
     foreach: None
     fused: True
-    initial_lr: 0.00015
-    lr: 1.4999999999999997e-10
+    initial_lr: 0.0003
+    lr: 2.9999999999999995e-10
     maximize: False
     weight_decay: 0.05
-), 'opt_lr_schedular': <torch.optim.lr_scheduler.SequentialLR object at 0x7e67d3eecf70>, 'progress': <function progress at 0x7e67d40c53f0>, 'n_epochs': 400, 'device_id': 0, 'eval_id': 0, 'return_logs': False, 'weight': {'wt1': 0.8, 'wt2': 0.1}, 'rotnet': rotnet_cls(
+), 'opt_lr_schedular': <torch.optim.lr_scheduler.SequentialLR object at 0x79d4c6757280>, 'progress': <function progress at 0x79d4c69df0a0>, 'n_epochs': 400, 'device_id': 0, 'eval_id': 0, 'return_logs': False, 'weight': {'wt1': 0.8, 'wt2': 0.1}, 'rotnet': rotnet_cls(
   (proj): Sequential(
     (0): Linear(in_features=384, out_features=768, bias=False)
     (1): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
@@ -241,6 +245,6 @@ Parameter Group 0
     (5): ReLU()
     (6): Linear(in_features=768, out_features=4, bias=True)
   )
-), 'save_model': functools.partial(<function save_model at 0x7e67d40c6c20>, path='saved_models/mae.clr.rot.timg.wt0.8wt20.1.pth')}
+), 'save_model': functools.partial(<function save_model at 0x79d4c69df640>, path='saved_models/mae.clr.rot.timg.wt0.8wt20.1.pth')}
 dict_keys(['train_algo', 'model', 'train_loader', 'scaler', 'loss_base', 'optimizer', 'opt_lr_schedular', 'progress', 'n_epochs', 'device_id', 'eval_id', 'return_logs', 'weight', 'rotnet', 'save_model'])
 ### mae + simclr + rotnet Training begins
