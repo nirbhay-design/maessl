@@ -7,7 +7,7 @@ YAML: configs/mae_bt_rot.yaml
 ==> eval_every: 10
 ==> n_epochs: 400
 ==> n_epochs_mlp: 100
-==> gpu_id: 0
+==> gpu_id: 2
 ==> opt: AdamW
 ==> opt_params: {'lr': 0.001, 'weight_decay': 0.05, 'betas': (0.9, 0.95)}
 ==> schedular_params: {'T_max': 380, 'eta_min': 0.001}
@@ -143,7 +143,7 @@ Compose(
 using optimizer: AdamW
 # of Training Images: 130000
 # of Testing Images: 5000
-schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x75f27f0ad810>
+schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x71869a774550>
 loss function: bt
 loss: BT(lambda=0.005)
 param config for: mae_bt_rot
@@ -226,7 +226,7 @@ param config for: mae_bt_rot
       (7): BatchNorm1d(8192, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
     )
   )
-), 'train_loader': <torch.utils.data.dataloader.DataLoader object at 0x75f27ef055a0>, 'scaler': <torch.cuda.amp.grad_scaler.GradScaler object at 0x75f27f0af3d0>, 'loss_base': BT(lambda=0.005), 'optimizer': AdamW (
+), 'train_loader': <torch.utils.data.dataloader.DataLoader object at 0x71869a777490>, 'scaler': <torch.cuda.amp.grad_scaler.GradScaler object at 0x71869a7765f0>, 'loss_base': BT(lambda=0.005), 'optimizer': AdamW (
 Parameter Group 0
     amsgrad: False
     betas: (0.9, 0.95)
@@ -240,7 +240,7 @@ Parameter Group 0
     lr: 1e-09
     maximize: False
     weight_decay: 0.05
-), 'opt_lr_schedular': <torch.optim.lr_scheduler.SequentialLR object at 0x75f27f0ad810>, 'progress': <function progress at 0x75f27e6ca710>, 'n_epochs': 400, 'device_id': 0, 'eval_id': 0, 'return_logs': False, 'weight': {'wt1': 0.1, 'wt2': 0.5}, 'rotnet': rotnet_cls(
+), 'opt_lr_schedular': <torch.optim.lr_scheduler.SequentialLR object at 0x71869a774550>, 'progress': <function progress at 0x71869a098ee0>, 'n_epochs': 400, 'device_id': 2, 'eval_id': 2, 'return_logs': False, 'weight': {'wt1': 0.1, 'wt2': 0.5}, 'rotnet': rotnet_cls(
   (proj): Sequential(
     (0): Linear(in_features=384, out_features=768, bias=False)
     (1): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
@@ -250,6 +250,6 @@ Parameter Group 0
     (5): ReLU()
     (6): Linear(in_features=768, out_features=4, bias=True)
   )
-), 'save_model': functools.partial(<function save_model at 0x75f27e6cb5b0>, path='saved_models/mae.bt.rot.i100.lr5e.4.pth')}
+), 'save_model': functools.partial(<function save_model at 0x71869a098dc0>, path='saved_models/mae.bt.rot.i100.lr5e.4.pth')}
 dict_keys(['train_algo', 'model', 'train_loader', 'scaler', 'loss_base', 'optimizer', 'opt_lr_schedular', 'progress', 'n_epochs', 'device_id', 'eval_id', 'return_logs', 'weight', 'rotnet', 'save_model'])
 ### mae + bt + rotnet Training begins

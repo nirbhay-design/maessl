@@ -9,7 +9,7 @@ import yaml, sys, random, numpy as np
 from yaml.loader import SafeLoader
 from src.lars import LARS
 import math
-import copy
+import copy, os
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt 
 from sklearn.linear_model import LogisticRegression
