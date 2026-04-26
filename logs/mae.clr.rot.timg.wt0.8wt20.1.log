@@ -2102,3 +2102,136 @@ ss: 0.014
 dbs: 3.589
 pretraining time: 16h 30m 36s
 linear probing time: 5h 15m 19s
+Namespace(dataset='timg', saved_path='saved_models/mae.clr.rot.timg.wt0.8wt20.1.pth', gpu=0, model='vit', verbose=False, epochs=100, eval_every=10, knn=True, lreg=True, linprobe=True, tsne=False, umap=False, cmet=True, nw=6, pf=2, aug='v1')
+<All keys matched successfully>
+Starting Hyperparameter Sweep on 0...
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x73ae8e233640>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x73ae8e233100>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x73ae8e2300d0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x73ae8e230280>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x73ae8e2304f0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x73ae8e2306a0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+--------------------------------
+[GPU0] Test Accuracy for probe0 at epoch: 0: 0.005
+[GPU0] Test Accuracy for probe1 at epoch: 0: 0.005
+[GPU0] Test Accuracy for probe2 at epoch: 0: 0.005
+[GPU0] Test Accuracy for probe3 at epoch: 0: 0.006
+[GPU0] Test Accuracy for probe4 at epoch: 0: 0.005
+[GPU0] Test Accuracy for probe5 at epoch: 0: 0.006
+[GPU0] Test Accuracy for probe6 at epoch: 0: 0.005
+[GPU0] Test Accuracy for probe7 at epoch: 0: 0.005
+[GPU0] Test Accuracy for probe8 at epoch: 0: 0.005
+[GPU0] Test Accuracy for probe9 at epoch: 0: 0.006
+[GPU0] Test Accuracy for probe10 at epoch: 0: 0.005
+[GPU0] Test Accuracy for probe11 at epoch: 0: 0.006
+--------------------------------
+--------------------------------
+[GPU0] epochs: [1/100] train_acc: 0.005 train_loss_sup: 5.303
+[GPU0] epochs: [1/100] train_acc: 0.005 train_loss_sup: 5.304
+[GPU0] epochs: [1/100] train_acc: 0.005 train_loss_sup: 5.304
+[GPU0] epochs: [1/100] train_acc: 0.007 train_loss_sup: 5.352
+[GPU0] epochs: [1/100] train_acc: 0.007 train_loss_sup: 5.354
+[GPU0] epochs: [1/100] train_acc: 0.007 train_loss_sup: 5.352
+[GPU0] epochs: [1/100] train_acc: 0.005 train_loss_sup: 5.304
+[GPU0] epochs: [1/100] train_acc: 0.005 train_loss_sup: 5.304
+[GPU0] epochs: [1/100] train_acc: 0.005 train_loss_sup: 5.304
+[GPU0] epochs: [1/100] train_acc: 0.007 train_loss_sup: 5.352
+[GPU0] epochs: [1/100] train_acc: 0.007 train_loss_sup: 5.354
+[GPU0] epochs: [1/100] train_acc: 0.007 train_loss_sup: 5.352
+--------------------------------
+--------------------------------
+[GPU0] epochs: [2/100] train_acc: 0.007 train_loss_sup: 5.295
+[GPU0] epochs: [2/100] train_acc: 0.006 train_loss_sup: 5.296
+[GPU0] epochs: [2/100] train_acc: 0.006 train_loss_sup: 5.295
+[GPU0] epochs: [2/100] train_acc: 0.014 train_loss_sup: 5.271
+[GPU0] epochs: [2/100] train_acc: 0.012 train_loss_sup: 5.286
+[GPU0] epochs: [2/100] train_acc: 0.014 train_loss_sup: 5.271
+[GPU0] epochs: [2/100] train_acc: 0.006 train_loss_sup: 5.296
+[GPU0] epochs: [2/100] train_acc: 0.007 train_loss_sup: 5.296
+[GPU0] epochs: [2/100] train_acc: 0.007 train_loss_sup: 5.295
+[GPU0] epochs: [2/100] train_acc: 0.014 train_loss_sup: 5.271
+[GPU0] epochs: [2/100] train_acc: 0.012 train_loss_sup: 5.286
+[GPU0] epochs: [2/100] train_acc: 0.014 train_loss_sup: 5.271
+--------------------------------
+--------------------------------
+[GPU0] epochs: [3/100] train_acc: 0.008 train_loss_sup: 5.287
+[GPU0] epochs: [3/100] train_acc: 0.007 train_loss_sup: 5.287
+[GPU0] epochs: [3/100] train_acc: 0.008 train_loss_sup: 5.287
+[GPU0] epochs: [3/100] train_acc: 0.026 train_loss_sup: 5.187
+[GPU0] epochs: [3/100] train_acc: 0.020 train_loss_sup: 5.227
+[GPU0] epochs: [3/100] train_acc: 0.026 train_loss_sup: 5.186
+[GPU0] epochs: [3/100] train_acc: 0.007 train_loss_sup: 5.287
+[GPU0] epochs: [3/100] train_acc: 0.007 train_loss_sup: 5.287
+[GPU0] epochs: [3/100] train_acc: 0.008 train_loss_sup: 5.287
+[GPU0] epochs: [3/100] train_acc: 0.026 train_loss_sup: 5.187
+[GPU0] epochs: [3/100] train_acc: 0.020 train_loss_sup: 5.227
+[GPU0] epochs: [3/100] train_acc: 0.026 train_loss_sup: 5.186
+--------------------------------
+--------------------------------
+[GPU0] epochs: [4/100] train_acc: 0.010 train_loss_sup: 5.278
+[GPU0] epochs: [4/100] train_acc: 0.010 train_loss_sup: 5.279
+[GPU0] epochs: [4/100] train_acc: 0.010 train_loss_sup: 5.278
+[GPU0] epochs: [4/100] train_acc: 0.041 train_loss_sup: 5.110
+[GPU0] epochs: [4/100] train_acc: 0.028 train_loss_sup: 5.184
+[GPU0] epochs: [4/100] train_acc: 0.041 train_loss_sup: 5.109
+[GPU0] epochs: [4/100] train_acc: 0.010 train_loss_sup: 5.278
+[GPU0] epochs: [4/100] train_acc: 0.010 train_loss_sup: 5.279
+[GPU0] epochs: [4/100] train_acc: 0.010 train_loss_sup: 5.278
+[GPU0] epochs: [4/100] train_acc: 0.041 train_loss_sup: 5.110
+[GPU0] epochs: [4/100] train_acc: 0.028 train_loss_sup: 5.184
+[GPU0] epochs: [4/100] train_acc: 0.041 train_loss_sup: 5.109
+--------------------------------
