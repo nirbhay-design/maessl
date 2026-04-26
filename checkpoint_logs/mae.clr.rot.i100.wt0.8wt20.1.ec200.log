@@ -61,3 +61,73 @@ Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7b102eb11720>
 MLP: MLP(
   (mlp): Linear(in_features=384, out_features=100, bias=True)
 )
+--------------------------------
+[GPU0] Test Accuracy for probe0 at epoch: 0: 0.166
+[GPU0] Test Accuracy for probe1 at epoch: 0: 0.165
+[GPU0] Test Accuracy for probe2 at epoch: 0: 0.168
+[GPU0] Test Accuracy for probe3 at epoch: 0: 0.343
+[GPU0] Test Accuracy for probe4 at epoch: 0: 0.318
+[GPU0] Test Accuracy for probe5 at epoch: 0: 0.344
+[GPU0] Test Accuracy for probe6 at epoch: 0: 0.167
+[GPU0] Test Accuracy for probe7 at epoch: 0: 0.167
+[GPU0] Test Accuracy for probe8 at epoch: 0: 0.166
+[GPU0] Test Accuracy for probe9 at epoch: 0: 0.343
+[GPU0] Test Accuracy for probe10 at epoch: 0: 0.316
+[GPU0] Test Accuracy for probe11 at epoch: 0: 0.345
+--------------------------------
+--------------------------------
+[GPU0] epochs: [1/100] train_acc: 0.088 train_loss_sup: 4.422
+[GPU0] epochs: [1/100] train_acc: 0.087 train_loss_sup: 4.424
+[GPU0] epochs: [1/100] train_acc: 0.088 train_loss_sup: 4.422
+[GPU0] epochs: [1/100] train_acc: 0.210 train_loss_sup: 3.608
+[GPU0] epochs: [1/100] train_acc: 0.201 train_loss_sup: 3.677
+[GPU0] epochs: [1/100] train_acc: 0.209 train_loss_sup: 3.608
+[GPU0] epochs: [1/100] train_acc: 0.087 train_loss_sup: 4.423
+[GPU0] epochs: [1/100] train_acc: 0.087 train_loss_sup: 4.424
+[GPU0] epochs: [1/100] train_acc: 0.088 train_loss_sup: 4.423
+[GPU0] epochs: [1/100] train_acc: 0.210 train_loss_sup: 3.609
+[GPU0] epochs: [1/100] train_acc: 0.202 train_loss_sup: 3.664
+[GPU0] epochs: [1/100] train_acc: 0.210 train_loss_sup: 3.616
+--------------------------------
+--------------------------------
+[GPU0] epochs: [2/100] train_acc: 0.241 train_loss_sup: 4.008
+[GPU0] epochs: [2/100] train_acc: 0.239 train_loss_sup: 4.019
+[GPU0] epochs: [2/100] train_acc: 0.242 train_loss_sup: 4.008
+[GPU0] epochs: [2/100] train_acc: 0.396 train_loss_sup: 2.480
+[GPU0] epochs: [2/100] train_acc: 0.371 train_loss_sup: 2.654
+[GPU0] epochs: [2/100] train_acc: 0.396 train_loss_sup: 2.478
+[GPU0] epochs: [2/100] train_acc: 0.241 train_loss_sup: 4.009
+[GPU0] epochs: [2/100] train_acc: 0.239 train_loss_sup: 4.019
+[GPU0] epochs: [2/100] train_acc: 0.241 train_loss_sup: 4.009
+[GPU0] epochs: [2/100] train_acc: 0.395 train_loss_sup: 2.480
+[GPU0] epochs: [2/100] train_acc: 0.371 train_loss_sup: 2.654
+[GPU0] epochs: [2/100] train_acc: 0.395 train_loss_sup: 2.479
+--------------------------------
+--------------------------------
+[GPU0] epochs: [3/100] train_acc: 0.318 train_loss_sup: 3.663
+[GPU0] epochs: [3/100] train_acc: 0.314 train_loss_sup: 3.688
+[GPU0] epochs: [3/100] train_acc: 0.319 train_loss_sup: 3.663
+[GPU0] epochs: [3/100] train_acc: 0.454 train_loss_sup: 2.141
+[GPU0] epochs: [3/100] train_acc: 0.419 train_loss_sup: 2.395
+[GPU0] epochs: [3/100] train_acc: 0.454 train_loss_sup: 2.138
+[GPU0] epochs: [3/100] train_acc: 0.318 train_loss_sup: 3.665
+[GPU0] epochs: [3/100] train_acc: 0.314 train_loss_sup: 3.688
+[GPU0] epochs: [3/100] train_acc: 0.318 train_loss_sup: 3.664
+[GPU0] epochs: [3/100] train_acc: 0.454 train_loss_sup: 2.141
+[GPU0] epochs: [3/100] train_acc: 0.419 train_loss_sup: 2.395
+[GPU0] epochs: [3/100] train_acc: 0.454 train_loss_sup: 2.138
+--------------------------------
+--------------------------------
+[GPU0] epochs: [4/100] train_acc: 0.367 train_loss_sup: 3.383
+[GPU0] epochs: [4/100] train_acc: 0.362 train_loss_sup: 3.424
+[GPU0] epochs: [4/100] train_acc: 0.367 train_loss_sup: 3.383
+[GPU0] epochs: [4/100] train_acc: 0.484 train_loss_sup: 1.984
+[GPU0] epochs: [4/100] train_acc: 0.435 train_loss_sup: 2.306
+[GPU0] epochs: [4/100] train_acc: 0.485 train_loss_sup: 1.981
+[GPU0] epochs: [4/100] train_acc: 0.367 train_loss_sup: 3.385
+[GPU0] epochs: [4/100] train_acc: 0.362 train_loss_sup: 3.424
+[GPU0] epochs: [4/100] train_acc: 0.367 train_loss_sup: 3.384
+[GPU0] epochs: [4/100] train_acc: 0.484 train_loss_sup: 1.984
+[GPU0] epochs: [4/100] train_acc: 0.435 train_loss_sup: 2.306
+[GPU0] epochs: [4/100] train_acc: 0.485 train_loss_sup: 1.980
+--------------------------------
