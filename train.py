@@ -8,7 +8,7 @@ from src.mae import *
 from src.ssl import pretrain_algo, proj_dict
 from train_utils import yaml_loader, model_optimizer, progress, format_time, \
                         loss_function, load_dataset, get_tsne_knn_logreg, save_model
-from test import train_linear_probe
+from test_gs import train_linear_probe
 import torch.multiprocessing as mp 
 from torch.nn.parallel import DistributedDataParallel as DDP 
 from torch.distributed import init_process_group, destroy_process_group

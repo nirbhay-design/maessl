@@ -109,3 +109,11 @@
 # OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.bt.rot.i100.ec200.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 >> checkpoint_logs/mae.bt.rot.i100.ec200.log &
 
 # OPENBLAS_NUM_THREADS=1 nohup python -u test.py --dataset img100 --saved_path saved_models/mae.bt.rot.i100.ec300.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 >> checkpoint_logs/mae.bt.rot.i100.ec300.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset img100 --saved_path saved_models/mae.clr.rot.i100.wt0.8wt20.1.ec200.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 >> checkpoint_logs/mae.clr.rot.i100.wt0.8wt20.1.ec200.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset timg --saved_path saved_models/mae.clr.rot.timg.wt0.8wt20.1.ec200.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 >> checkpoint_logs/mae.clr.rot.timg.wt0.8wt20.1.ec200.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset img100 --saved_path saved_models/mae.clr.rot.i100.wt0.8wt20.1.ec300.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 >> checkpoint_logs/mae.clr.rot.i100.wt0.8wt20.1.ec300.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset timg --saved_path saved_models/mae.clr.rot.timg.wt0.8wt20.1.ec300.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 >> checkpoint_logs/mae.clr.rot.timg.wt0.8wt20.1.ec300.log &
