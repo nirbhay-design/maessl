@@ -62,11 +62,11 @@ def get_features_labels(model, loader, device, return_logs = False):
         loader_len = len(loader)
         for idx,(x,y) in enumerate(loader):
             x = x.to(device)
-            y = y.to(device)
+            # y = y.to(device)
 
             feats = model(x)
 
-            all_features.append(feats)
+            all_features.append(feats.detach().cpu())
             all_labels.append(y)
 
             if return_logs:
