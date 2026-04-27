@@ -152,7 +152,7 @@ def train_linear_probe(
     return_logs=False
 ):
     # Standard sweep grids for linear probing
-    learning_rates = [0.1, 1.0]
+    learning_rates = [0.1, 0.7, 1.0, 1.5, 2.0]
     weight_decays = [1e-6, 1e-4, 0.0]
     loss = nn.CrossEntropyLoss()
     

@@ -2102,3 +2102,156 @@ ss: 0.043
 dbs: 3.200
 pretraining time: 16h 39m 20s
 linear probing time: 9h 35m 53s
+Namespace(dataset='img100', saved_path='saved_models/mae.clr.rot.i100.wt0.8wt20.1.pth', gpu=0, model='vit', verbose=False, epochs=100, eval_every=10, knn=True, lreg=True, linprobe=True, tsne=False, umap=False, cmet=True, nw=4, pf=2, aug='v1')
+<All keys matched successfully>
+Starting Hyperparameter Sweep on 0...
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x727ca275f8e0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x727ca275d780>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x727ca26e57b0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x727ca26e42b0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x727ca26e4970>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x727ca26e5540>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x727ca26e5300>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x727ca26e4fd0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x727ca26e4700>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x727ca26e4610>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x727ca26e4220>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x727ca26e6770>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x727ca26e6650>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x727ca26e6350>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x727ca26e6200>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=100, bias=True)
+)
