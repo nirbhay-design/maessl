@@ -133,8 +133,8 @@ def train_mlp(
 
     if device_id == eval_id:
         print("--------------------------------")
+        final_test_acc = evaluate(model, linear_probes, test_loader, device, return_logs)
         for i in range(nlp):
-            final_test_acc = evaluate(model, linear_probes, test_loader, device, return_logs)
             tval[i]["testacc"].append(float(final_test_acc[i]))
             print(f"[GPU{device_id}] Final Test Accuracy: {final_test_acc[i]}")
         print("--------------------------------")
