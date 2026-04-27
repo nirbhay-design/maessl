@@ -447,3 +447,6 @@ Model saved at: saved_models/mae.bt.rot.timg.lr5e.4.ec100.pth
 [GPU0] epochs: [191/400] train_loss_con: 184.983
 [GPU0] epochs: [192/400] train_loss_con: 184.168
 [GPU0] epochs: [193/400] train_loss_con: 185.049
+[GPU0] epochs: [194/400] train_loss_con: 184.032
+[GPU0] epochs: [195/400] train_loss_con: 183.979
+[GPU0] epochs: [196/400] train_loss_con: 184.220

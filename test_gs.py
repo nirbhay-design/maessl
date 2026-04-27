@@ -226,6 +226,7 @@ if __name__ == "__main__":
         encoder = BaseEncoder(model_name=args.model, pretrained=False)
     device = torch.device(f"cuda:{args.gpu}")
     print(encoder.load_state_dict(torch.load(args.saved_path, map_location=device)))
+    encoder = encoder.to(device)
 
     dataloaders = load_dataset(
         dataset_name = args.dataset,
