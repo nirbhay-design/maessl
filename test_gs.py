@@ -152,9 +152,13 @@ def train_linear_probe(
     return_logs=False
 ):
     # Standard sweep grids for linear probing
-    learning_rates = [0.1, 0.7, 1.0, 1.5, 2.0]
+    # learning_rates = [0.1, 0.7, 1.0, 1.5, 2.0]
+    learning_rates = [1.0, 1.5, 2.0, 5.0, 10.0]
     weight_decays = [1e-6, 1e-4, 0.0]
     loss = nn.CrossEntropyLoss()
+
+    print(f"sweeping through lr: {learning_rates}")
+    print(f"sweeping through wd: {weight_decays}")
     
     best_acc = 0.0
     best_hparams = {}
@@ -179,6 +183,7 @@ def train_linear_probe(
             })
             print(f"Scheduler: {scheduler}")
             print(f"MLP: {mlp}")
+            print(f"Optimizer: {optimizer}")
 
     linear_probes, tval = train_mlp(
         pretrain_model, linear_probes, train_loader, test_loader, 
