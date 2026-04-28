@@ -4745,35 +4745,13 @@ LR: 2.000 | WD: 0.000000 | Cosine: True | test Acc: 0.691%
 ------------------------------
 Best Test Accuracy: 0.693%
 Optimal Hyperparameters: LR=2.0, WD=0.0, Cosine=False
-Traceback (most recent call last):
-  File "/home/test/nirbhays/maessl/test_gs.py", line 258, in <module>
-    output = get_tsne_knn_logreg(**test_config)
-  File "/home/test/nirbhays/maessl/train_utils.py", line 88, in get_tsne_knn_logreg
-    train_output = get_features_labels(model, train_loader, device, return_logs)
-  File "/home/test/nirbhays/maessl/train_utils.py", line 67, in get_features_labels
-    feats = model(x)
-  File "/home/test/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-  File "/home/test/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
-    return forward_call(*args, **kwargs)
-  File "/home/test/nirbhays/maessl/src/mae.py", line 157, in forward
-    x = blk(x)
-  File "/home/test/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-  File "/home/test/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
-    return forward_call(*args, **kwargs)
-  File "/home/test/nirbhays/envs/mlenv/lib/python3.10/site-packages/timm/models/vision_transformer.py", line 213, in forward
-    x = x + self.drop_path2(self.ls2(self.mlp(self.norm2(x))))
-  File "/home/test/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-  File "/home/test/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
-    return forward_call(*args, **kwargs)
-  File "/home/test/nirbhays/envs/mlenv/lib/python3.10/site-packages/timm/layers/mlp.py", line 49, in forward
-    x = self.act(x)
-  File "/home/test/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
-    return self._call_impl(*args, **kwargs)
-  File "/home/test/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
-    return forward_call(*args, **kwargs)
-  File "/home/test/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/nn/modules/activation.py", line 738, in forward
-    return F.gelu(input, approximate=self.approximate)
-torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 592.00 MiB. GPU 1 has a total capacity of 23.56 GiB of which 570.88 MiB is free. Process 3511466 has 17.26 GiB memory in use. Including non-PyTorch memory, this process has 5.70 GiB memory in use. Of the allocated memory 4.86 GiB is allocated by PyTorch, and 601.69 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+knn evalution
+logistic regression evalution
+clustering metrics evalution
+knn_acc: 0.565
+lreg_acc: 0.626
+ari: 0.126
+nmi: 0.369
+ss: 0.038
+dbs: 3.030
+linear probing time: 0h 9m 45s
