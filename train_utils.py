@@ -178,6 +178,11 @@ def load_dataset(dataset_name, **kwargs):
         return None
 
 def make_tsne_plot(X, y, name):
+    if len(np.unique(y)) > 10:
+        mask = np.isin(y, range(10)) 
+        X = X[mask]
+        y = y[mask]
+
     # tsne = umap.UMAP()
     tsne = TSNE(n_components=2, random_state=0)
     X_embedded = tsne.fit_transform(X)
