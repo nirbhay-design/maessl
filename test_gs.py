@@ -30,6 +30,7 @@ def get_args():
     parser.add_argument("--nw", type=int, default = 4, help="num workers for dataloading")
     parser.add_argument("--pf", type=int, default = 4, help="prefetch factor for dataloading")
     parser.add_argument("--aug", type=str, default = "v1", help="augmentation strategy")
+    parser.add_argument("--lrs", type=list, default = [1.0, 1.5, 2.0, 5.0, 10.0], help="learning rates for grid search")
 
     args = parser.parse_args()
     return args
@@ -149,11 +150,11 @@ def train_linear_probe(
     device=0, 
     epochs=100,
     eval_every=10,
-    return_logs=False
+    return_logs=False,
+    learning_rates = [1.0, 1.5, 2.0, 5.0, 10.0]
 ):
     # Standard sweep grids for linear probing
     # learning_rates = [0.1, 0.7, 1.0, 1.5, 2.0]
-    learning_rates = [1.0, 1.5, 2.0, 5.0, 10.0]
     weight_decays = [1e-6, 1e-4, 0.0]
     loss = nn.CrossEntropyLoss()
 
@@ -251,7 +252,8 @@ if __name__ == "__main__":
             device=args.gpu,
             epochs=args.epochs,
             eval_every=args.eval_every,
-            return_logs=args.verbose
+            return_logs=args.verbose,
+            learning_rates=args.lrs
         )
     
     tsne_name = ".".join(args.saved_path.split("/")[-1].split('.')[:-1]) + '.png'
