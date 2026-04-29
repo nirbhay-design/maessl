@@ -30,7 +30,7 @@ def get_args():
     parser.add_argument("--nw", type=int, default = 4, help="num workers for dataloading")
     parser.add_argument("--pf", type=int, default = 4, help="prefetch factor for dataloading")
     parser.add_argument("--aug", type=str, default = "v1", help="augmentation strategy")
-    parser.add_argument("--lrs", type=list, default = [1.0, 1.5, 2.0, 5.0, 10.0], help="learning rates for grid search")
+    parser.add_argument("--lrs", type=float, nargs='+', default = [1.0, 1.5, 2.0, 5.0, 10.0], help="learning rates for grid search")
 
     args = parser.parse_args()
     return args

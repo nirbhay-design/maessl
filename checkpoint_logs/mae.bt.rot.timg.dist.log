@@ -4130,3 +4130,533 @@ nmi: 0.311
 ss: 0.011
 dbs: 3.502
 linear probing time: 3h 23m 36s
+Namespace(dataset='timg', saved_path='saved_models/mae.bt.rot.timg.pth', gpu=5, model='vit', verbose=False, epochs=100, eval_every=10, knn=True, lreg=True, linprobe=True, tsne=False, umap=False, cmet=True, nw=4, pf=2, aug='v1', lrs=[5.0, 10.0, 15.0, 20.0, 30.0])
+<All keys matched successfully>
+sweeping through lr: [5.0, 10.0, 15.0, 20.0, 30.0]
+sweeping through wd: [1e-06, 0.0001, 0.0]
+Starting Hyperparameter Sweep on 5...
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 5.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 5.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 5.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 10.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 10.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 10.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 15.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 15.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 15.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 20.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 20.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 20.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 30.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 30.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 30.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7f75e9c8cbb0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 5.0
+    lr: 5.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7f75e9c8ca30>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 5.0
+    lr: 5.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7f75e9c8c910>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 5.0
+    lr: 5.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7f75e9c8c7f0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 10.0
+    lr: 10.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7f75e9c8c6d0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 10.0
+    lr: 10.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7f75e9c8c5b0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 10.0
+    lr: 10.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7f75e9c5ce20>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 15.0
+    lr: 15.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7f75e9c5cd00>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 15.0
+    lr: 15.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7f75e9c5cc40>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 15.0
+    lr: 15.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7f75e9c5caf0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 20.0
+    lr: 20.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7f75e9c5c8e0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 20.0
+    lr: 20.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7f75e9c5c4f0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 20.0
+    lr: 20.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7f75eb4407c0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 30.0
+    lr: 30.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7f75eb4406a0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 30.0
+    lr: 30.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x7f75eb440520>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 30.0
+    lr: 30.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
