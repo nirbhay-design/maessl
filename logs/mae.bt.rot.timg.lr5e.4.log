@@ -6077,3 +6077,68 @@ nmi: 0.242
 ss: 0.020
 dbs: 3.093
 linear probing time: 3h 50m 42s
+Namespace(dataset='timg', saved_path='saved_models/mae.bt.rot.timg.lr5e.4.pth', gpu=0, model='vit', verbose=False, epochs=100, eval_every=10, knn=True, lreg=True, linprobe=True, tsne=False, umap=False, cmet=True, nw=4, pf=2, aug='v1', lrs=[5.0, 10.0, 15.0, 20.0, 30.0])
+<All keys matched successfully>
+sweeping through lr: [5.0, 10.0, 15.0, 20.0, 30.0]
+sweeping through wd: [1e-06, 0.0001, 0.0]
+Starting Hyperparameter Sweep on 0...
+===> using linear mlp
+linear probe with LR: 5.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 10.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 15.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 15.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 15.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 20.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 20.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 20.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 30.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 30.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 30.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 5.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0, Cosine: True
+===> using linear mlp
+linear probe with LR: 10.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0, Cosine: True
+===> using linear mlp
+linear probe with LR: 15.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 15.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 15.0, WD: 0.0, Cosine: True
+===> using linear mlp
+linear probe with LR: 20.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 20.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 20.0, WD: 0.0, Cosine: True
+===> using linear mlp
+linear probe with LR: 30.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 30.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 30.0, WD: 0.0, Cosine: True
