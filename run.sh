@@ -141,3 +141,19 @@
 # TF_CPP_MIN_LOG_LEVEL=2 OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset img100 --saved_path saved_models/mae.bt.rot.i100.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 --lrs 5.0 10.0 15.0 20.0 30.0 >> checkpoint_logs/mae.bt.rot.i100.dist.log &
 
 # TF_CPP_MIN_LOG_LEVEL=2 OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset timg --saved_path saved_models/mae.bt.rot.timg.pth --gpu 5 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 --lrs 5.0 10.0 15.0 20.0 30.0 >> checkpoint_logs/mae.bt.rot.timg.dist.log &
+
+OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset img100 --saved_path saved_models/mae.bt.rot.i100.lr5e.4.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 --lrs 5.0 10.0 15.0 20.0 30.0 >> logs/mae.bt.rot.i100.lr5e.4.log &
+
+OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset img100 --saved_path saved_models/mae.bt.rot.i100.lr5e.4.ec100.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 --lrs 5.0 10.0 15.0 20.0 30.0 >> checkpoint_logs/mae.bt.rot.i100.lr5e.4.ec100.log &
+
+OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset img100 --saved_path saved_models/mae.bt.rot.i100.lr5e.4.ec200.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 --lrs 5.0 10.0 15.0 20.0 30.0 >> checkpoint_logs/mae.bt.rot.i100.lr5e.4.ec200.log &
+
+OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset img100 --saved_path saved_models/mae.bt.rot.i100.lr5e.4.ec300.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 --lrs 5.0 10.0 15.0 20.0 30.0 >> checkpoint_logs/mae.bt.rot.i100.lr5e.4.ec300.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset timg --saved_path saved_models/mae.bt.rot.timg.lr5e.4.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 --lrs 5.0 10.0 15.0 20.0 30.0 >> logs/mae.bt.rot.timg.lr5e.4.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset timg --saved_path saved_models/mae.bt.rot.timg.lr5e.4.ec100.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 --lrs 5.0 10.0 15.0 20.0 30.0 >> checkpoint_logs/mae.bt.rot.timg.lr5e.4.ec100.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset timg --saved_path saved_models/mae.bt.rot.timg.lr5e.4.ec200.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 --lrs 5.0 10.0 15.0 20.0 30.0 >> checkpoint_logs/mae.bt.rot.timg.lr5e.4.ec200.log &
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset timg --saved_path saved_models/mae.bt.rot.timg.lr5e.4.ec300.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 --lrs 5.0 10.0 15.0 20.0 30.0 >> checkpoint_logs/mae.bt.rot.timg.lr5e.4.ec300.log &

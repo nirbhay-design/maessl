@@ -182,9 +182,10 @@ def train_linear_probe(
                 "scheduler": scheduler,
                 "hparams": {"lr": lr, "wd": wd, "cosine": bool(cosine)}
             })
-            print(f"Scheduler: {scheduler}")
-            print(f"MLP: {mlp}")
-            print(f"Optimizer: {optimizer}")
+            print(f"linear probe with LR: {lr}, WD: {wd}, Cosine: {bool(cosine)}")
+            # print(f"Scheduler: {scheduler}")
+            # print(f"MLP: {mlp}")
+            # print(f"Optimizer: {optimizer}")
 
     linear_probes, tval = train_mlp(
         pretrain_model, linear_probes, train_loader, test_loader, 
