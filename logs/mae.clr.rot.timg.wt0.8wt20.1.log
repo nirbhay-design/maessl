@@ -7495,4 +7495,597 @@ ari: 0.062
 nmi: 0.320
 ss: 0.015
 dbs: 3.568
-linear probing time: 0h 2m 54s
+linear probing time: 0h 2m 54sNamespace(dataset='timg', saved_path='saved_models/mae.clr.rot.timg.wt0.8wt20.1.pth', gpu=1, model='vit', verbose=False, epochs=100, eval_every=10, knn=True, lreg=True, linprobe=True, tsne=False, umap=False, cmet=True, nw=4, pf=2, aug='v1', lrs=[5.0, 10.0, 15.0, 20.0, 30.0])
+<All keys matched successfully>
+sweeping through lr: [5.0, 10.0, 15.0, 20.0, 30.0]
+sweeping through wd: [1e-06, 0.0001, 0.0]
+Starting Hyperparameter Sweep on 1...
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 5.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 5.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 5.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 10.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 10.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 10.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 15.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 15.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 15.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 20.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 20.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 20.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 30.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 30.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: None
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 30.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x70cce0e65810>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 5.0
+    lr: 5.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x70cce0e67ca0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 5.0
+    lr: 5.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x70cce0e66d40>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 5.0
+    lr: 5.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x70cce0e65b10>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 10.0
+    lr: 10.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x70cce0e67160>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 10.0
+    lr: 10.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x70cce0e66a10>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 10.0
+    lr: 10.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x70cce0e64250>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 15.0
+    lr: 15.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x70cce0e65480>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 15.0
+    lr: 15.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x70cce0e67730>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 15.0
+    lr: 15.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x70cce0e64ac0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 20.0
+    lr: 20.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x70cce0e67940>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 20.0
+    lr: 20.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x70cce0e65ab0>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 20.0
+    lr: 20.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x70cce0e65600>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 30.0
+    lr: 30.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 1e-06
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x70cce0e65060>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 30.0
+    lr: 30.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)
+===> using linear mlp
+Scheduler: <torch.optim.lr_scheduler.CosineAnnealingLR object at 0x70cce0e66e60>
+MLP: MLP(
+  (mlp): Linear(in_features=384, out_features=200, bias=True)
+)
+Optimizer: SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    initial_lr: 30.0
+    lr: 30.0
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0
+)
+--------------------------------
+[GPU1] Test Accuracy for probe0 at epoch: 0: 0.029
+[GPU1] Test Accuracy for probe1 at epoch: 0: 0.025
+[GPU1] Test Accuracy for probe2 at epoch: 0: 0.011
+[GPU1] Test Accuracy for probe3 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe4 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe5 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe6 at epoch: 0: 0.009
+[GPU1] Test Accuracy for probe7 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe8 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe9 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe10 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe11 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe12 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe13 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe14 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe15 at epoch: 0: 0.02
+[GPU1] Test Accuracy for probe16 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe17 at epoch: 0: 0.012
+[GPU1] Test Accuracy for probe18 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe19 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe20 at epoch: 0: 0.006
+[GPU1] Test Accuracy for probe21 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe22 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe23 at epoch: 0: 0.012
+[GPU1] Test Accuracy for probe24 at epoch: 0: 0.009
+[GPU1] Test Accuracy for probe25 at epoch: 0: 0.008
+[GPU1] Test Accuracy for probe26 at epoch: 0: 0.009
+[GPU1] Test Accuracy for probe27 at epoch: 0: 0.005
+[GPU1] Test Accuracy for probe28 at epoch: 0: 0.008
+[GPU1] Test Accuracy for probe29 at epoch: 0: 0.005
+--------------------------------
+--------------------------------
+[GPU1] epochs: [1/100] train_acc: 0.012 train_loss_sup: 6.129
+[GPU1] epochs: [1/100] train_acc: 0.010 train_loss_sup: 5.902
+[GPU1] epochs: [1/100] train_acc: 0.011 train_loss_sup: 5.827
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 200.574
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 161.342
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 190.079
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 521.852
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 331.359
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 545.364
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 914.542
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 476.672
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 913.254
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 1639.581
+[GPU1] epochs: [1/100] train_acc: 0.005 train_loss_sup: 675.244
+[GPU1] epochs: [1/100] train_acc: 0.005 train_loss_sup: 1682.411
+[GPU1] epochs: [1/100] train_acc: 0.011 train_loss_sup: 6.070
+[GPU1] epochs: [1/100] train_acc: 0.009 train_loss_sup: 5.897
+[GPU1] epochs: [1/100] train_acc: 0.011 train_loss_sup: 6.117
+[GPU1] epochs: [1/100] train_acc: 0.007 train_loss_sup: 189.031
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 153.608
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 201.507
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 527.259
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 330.565
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 538.136
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 891.789
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 479.679
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 907.169
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 1613.611
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 672.717
+[GPU1] epochs: [1/100] train_acc: 0.006 train_loss_sup: 1695.017
+--------------------------------
