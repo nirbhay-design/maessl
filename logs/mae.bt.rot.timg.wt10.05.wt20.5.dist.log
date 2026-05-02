@@ -413,3 +413,16 @@ Parameter Group 0
 ), 'save_model': functools.partial(<function save_model at 0x77b3309a0c10>, path='saved_models/mae.bt.rot.timg.wt10.05.wt20.5.dist.pth')}
 dict_keys(['train_algo', 'model', 'train_loader', 'scaler', 'loss_base', 'optimizer', 'opt_lr_schedular', 'progress', 'n_epochs', 'device_id', 'eval_id', 'return_logs', 'weight', 'rotnet', 'save_model'])
 ### mae + bt + rotnet Training begins
+W0502 14:13:20.697000 1038292 torch/multiprocessing/spawn.py:174] Terminating process 1038334 via signal SIGTERM
+Traceback (most recent call last):
+  File "/data1/home/nirbhays/maessl/train.py", line 280, in <module>
+    mp.spawn(main_single, args=(world_size, config, args, True), nprocs=world_size)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 364, in spawn
+    return start_processes(fn, args, nprocs, join, daemon, start_method="spawn")
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 320, in start_processes
+    while not context.join():
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 201, in join
+    raise ProcessExitedException(
+torch.multiprocessing.spawn.ProcessExitedException: process 0 terminated with signal SIGKILL
+/data1/home/nirbhays/.local/share/uv/python/cpython-3.10-linux-x86_64-gnu/lib/python3.10/multiprocessing/resource_tracker.py:224: UserWarning: resource_tracker: There appear to be 40 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

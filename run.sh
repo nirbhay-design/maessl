@@ -157,3 +157,7 @@ OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset img100 --saved_path 
 # OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset timg --saved_path saved_models/mae.bt.rot.timg.lr5e.4.ec200.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 --lrs 5.0 10.0 15.0 20.0 30.0 >> checkpoint_logs/mae.bt.rot.timg.lr5e.4.ec200.log &
 
 # OPENBLAS_NUM_THREADS=1 nohup python -u test_gs.py --dataset timg --saved_path saved_models/mae.bt.rot.timg.lr5e.4.ec300.pth --gpu 0 --model vit --linprobe --lreg --knn --cmet --nw 4 --pf 2 --lrs 5.0 10.0 15.0 20.0 30.0 >> checkpoint_logs/mae.bt.rot.timg.lr5e.4.ec300.log &
+
+
+
+# OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_bt_rot.yaml --dataset timg --gpu 0 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 256 --tbs 512 --save_path mae.bt.rot.timg.wt10.05.wt20.5.dist.pth --model vit --nw 4 --pf 3 --wt 0.05 --wt2 0.5 --distributed > logs/mae.bt.rot.timg.wt10.05.wt20.5.dist.log &
