@@ -43,6 +43,7 @@ def get_args():
     parser.add_argument("--wt", type=float, default = None, help="weight for additional loss function")    
     parser.add_argument("--wt2", type=float, default = None, help="weight for additional loss function") 
     parser.add_argument("--aug", type=str, default = "v1", help="augmentation strategy")
+    parser.add_argument("--damp_rot", action="store_true", help="dampen rotnet or not")
     # evaluation 
     # parser.add_argument("--mlp_type", type=str, default=None, help="hidden/linear")
     parser.add_argument("--test", action="store_true", help="test or not")
@@ -182,6 +183,9 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
     if train_algo in ["mae_clr_rot", "mae_bt_rot"]:
         param_config["rotnet"] = rotnet
         param_config["save_model"] = partial(save_model, path=config["model_save_path"])
+        if args.damp_rot:
+            print("dampening rotnet loss")
+            param_config["train_algo"] = train_algo + "damp"
 
     print(f"param config for: {train_algo}")
     print(param_config)
@@ -219,6 +223,7 @@ if __name__ == "__main__":
     config["dataset"][args.dataset]["params"]["num_workers"] = args.nw
     config["dataset"][args.dataset]["params"]["prefetch_factor"] = args.pf
     config["model_save_path"] = os.path.join(config.get("model_save_path", "saved_models"), args.save_path)
+    config["damp_rot"] = args.damp_rot
 
     if args.bs:
         config["dataset"][args.dataset]["params"]["batch_size"] = args.bs

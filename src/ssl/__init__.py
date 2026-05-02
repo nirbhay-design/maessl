@@ -38,5 +38,6 @@ pretrain_algo = {
     "mae_clr": train_maeclr,
     "mae_clr_rot": train_maeclrrot,
     "mae_bt_rot": train_maebtrot,
-    "mae_mask_rot": train_mae_maskrotnet
+    "mae_mask_rot": train_mae_maskrotnet,
+    "mae_clr_rotdamp": train_maeclrrotdamp
 }
