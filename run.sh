@@ -174,3 +174,27 @@
 
 
 # OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_bt_rot.yaml --dataset timg --gpu 0 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 256 --tbs 512 --save_path mae.bt.rot.timg.wt10.05.wt20.5.dist.pth --model vit --nw 4 --pf 3 --wt 0.05 --wt2 0.5 --distributed > logs/mae.bt.rot.timg.wt10.05.wt20.5.dist.log &
+
+
+
+### TSNE plots for timg and img100
+
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.timg.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.i100.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.rot.timg.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.rot.i100.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.clr.timg.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.clr.i100.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.bt.timg.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.bt.i100.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.clr.rot.timg.wt0.8wt20.1.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.clr.rot.i100.wt0.8wt20.1.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose

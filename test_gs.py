@@ -257,7 +257,7 @@ if __name__ == "__main__":
             learning_rates=args.lrs
         )
     
-    tsne_name = ".".join(args.saved_path.split("/")[-1].split('.')[:-1]) + '.png'
+    tsne_name = ".".join(args.saved_path.split("/")[-1].split('.')[:-1]) + '.pdf'
     test_config = {"model": encoder, "train_loader": train_dl_mlp, "test_loader": test_dl, 
                     "device": device, "return_logs": args.verbose, "umap": args.umap, "cmet": args.cmet,
                     "tsne": args.tsne, "knn": args.knn, "log_reg": args.lreg, "tsne_name": tsne_name}
