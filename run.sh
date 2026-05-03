@@ -179,22 +179,26 @@
 
 ### TSNE plots for timg and img100
 
-# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.timg.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.bt.rot.timg.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.i100.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.bt.rot.i100.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.rot.timg.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.timg.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.rot.i100.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.i100.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.clr.timg.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.rot.timg.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.clr.i100.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.rot.i100.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.bt.timg.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.clr.timg.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.bt.i100.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.clr.i100.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.clr.rot.timg.wt0.8wt20.1.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.bt.timg.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.clr.rot.i100.wt0.8wt20.1.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.bt.i100.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+
+OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.clr.rot.timg.wt0.8wt20.1.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+
+OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.clr.rot.i100.wt0.8wt20.1.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose

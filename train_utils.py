@@ -176,30 +176,34 @@ def load_dataset(dataset_name, **kwargs):
     else:
         print(f"{dataset_name} is not supported")
         return None
+    
+def get_tsne_title(name):
+    split = name.split(".")[1:-1]
+    return " ".join(split).upper()
 
 def make_tsne_plot(X, y, name):
     print(f"TSNE name: {name}")
+    tsne_title = get_tsne_title(name)
     if len(np.unique(y)) > 10:
-
         mask = np.isin(y, range(10)) 
         X = X[mask]
         y = y[mask]
-
+    
+    print(f"TSNE Title: {tsne_title}")
     # tsne = umap.UMAP()
     tsne = TSNE(n_components=2, random_state=0)
     X_embedded = tsne.fit_transform(X)
 
     plt.figure(figsize=(8, 6))
-    plt.scatter(X_embedded[:, 0], X_embedded[:, 1], c=y, s = 16, alpha = 0.8, cmap='turbo', edgecolors="white", linewidths=0.3)  # Color by labels
+    plt.scatter(X_embedded[:, 0], X_embedded[:, 1], c=y, s = 16, alpha = 0.8, cmap='turbo', edgecolors="white", linewidths=0.3, rasterized=True)  # Color by labels
     plt.box(False)
     plt.xticks([]) 
     plt.yticks([])
-    plt.title("t-SNE")
-    plt.xlabel("t-SNE Component 1")
-    plt.ylabel("t-SNE Component 2")
+    plt.title(tsne_title)
+    # plt.xlabel("t-SNE Component 1")
+    # plt.ylabel("t-SNE Component 2")
     plt.colorbar(label="Labels")
-
-    plt.savefig(f"plots/{name}")
+    plt.savefig(f"plots/{name}", dpi=300, bbox_inches='tight', pad_inches=0.05)
     plt.close()
 
 def make_umap_plot(X, y, name):
@@ -215,5 +219,5 @@ def make_umap_plot(X, y, name):
     plt.xlabel("t-SNE Component 1")
     plt.ylabel("t-SNE Component 2")
     plt.colorbar(label="Labels")
-    plt.savefig(f"plots/{name}")
+    plt.savefig(f"plots/{name}", dpi=300, bbox_inches='tight', pad_inches=0.05)
     plt.close()
