@@ -179,7 +179,7 @@ def load_dataset(dataset_name, **kwargs):
     
 def get_tsne_title(name):
     split = name.split(".")[1:-1]
-    return " ".join(split).upper()
+    return ".".join(split)
 
 def make_tsne_plot(X, y, name):
     print(f"TSNE name: {name}")
