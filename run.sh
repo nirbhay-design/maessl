@@ -179,26 +179,58 @@
 
 ### TSNE plots for timg and img100
 
-OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.bt.rot.timg.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.bt.rot.timg.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.bt.rot.i100.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.bt.rot.i100.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.timg.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.timg.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.i100.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.i100.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.rot.timg.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.rot.timg.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.rot.i100.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.rot.i100.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.clr.timg.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.clr.timg.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.clr.i100.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.clr.i100.wt0.5.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.bt.timg.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.bt.timg.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.bt.i100.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.bt.i100.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.clr.rot.timg.wt0.8wt20.1.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset timg --saved_path saved_models/mae.clr.rot.timg.wt0.8wt20.1.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
 
-OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.clr.rot.i100.wt0.8wt20.1.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+# OPENBLAS_NUM_THREADS=1 python -u test_gs.py --dataset img100 --saved_path saved_models/mae.clr.rot.i100.wt0.8wt20.1.pth --gpu 0 --model vit --tsne --nw 4 --pf 2 --verbose
+
+
+### attention maps visualization 
+
+# images=(
+#     # "datasets/imagenet100/train.X2/n01443537/n01443537_129.JPEG" 
+#     # "datasets/imagenet100/train.X3/n01601694/n01601694_21.JPEG" 
+#     # "datasets/imagenet100/train.X4/n01855672/n01855672_47.JPEG"
+#     # "datasets/imagenet100/train.X4/n01770393/n01770393_137.JPEG"
+#     # "datasets/imagenet100/train.X4/n01491361/n01491361_57.JPEG"
+#     # "datasets/imagenet100/train.X4/n01806143/n01806143_130.JPEG"
+#     "datasets/imagenet100/train.X4/n01755581/n01755581_95.JPEG"
+# )
+
+# models=(
+#     "saved_models/mae.clr.rot.i100.wt0.8wt20.1.pth" 
+#     "saved_models/mae.bt.rot.i100.pth" 
+#     "saved_models/mae.i100.pth")
+
+# for img in "${images[@]}"; do
+#     echo "Processing image: $img"
+    
+#     # Loop through each model for the current image
+#     for mod in "${models[@]}"; do
+#         echo "  Running model: $mod"
+#         python attention_vis.py --saved_path "$mod" --gpu 0 --image "$img"
+#     done
+    
+#     echo "Finished processing $img across all models."
+#     echo "--------------------------------------------------"
+# done
+
