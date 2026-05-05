@@ -207,12 +207,12 @@
 ### attention maps visualization 
 
 # images=(
-#     # "datasets/imagenet100/train.X2/n01443537/n01443537_129.JPEG" 
-#     # "datasets/imagenet100/train.X3/n01601694/n01601694_21.JPEG" 
-#     # "datasets/imagenet100/train.X4/n01855672/n01855672_47.JPEG"
-#     # "datasets/imagenet100/train.X4/n01770393/n01770393_137.JPEG"
-#     # "datasets/imagenet100/train.X4/n01491361/n01491361_57.JPEG"
-#     # "datasets/imagenet100/train.X4/n01806143/n01806143_130.JPEG"
+#     "datasets/imagenet100/train.X2/n01443537/n01443537_129.JPEG" 
+#     "datasets/imagenet100/train.X3/n01601694/n01601694_21.JPEG" 
+#     "datasets/imagenet100/train.X4/n01855672/n01855672_47.JPEG"
+#     "datasets/imagenet100/train.X4/n01770393/n01770393_137.JPEG"
+#     "datasets/imagenet100/train.X4/n01491361/n01491361_57.JPEG"
+#     "datasets/imagenet100/train.X4/n01806143/n01806143_130.JPEG"
 #     "datasets/imagenet100/train.X4/n01755581/n01755581_95.JPEG"
 # )
 
@@ -227,7 +227,7 @@
 #     # Loop through each model for the current image
 #     for mod in "${models[@]}"; do
 #         echo "  Running model: $mod"
-#         python attention_vis.py --saved_path "$mod" --gpu 0 --image "$img"
+#         python attention_vis.py --saved_path "$mod" --gpu 0 --image "$img" --threshold 0.6
 #     done
     
 #     echo "Finished processing $img across all models."

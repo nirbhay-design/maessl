@@ -1,47 +1,42 @@
+import os
+import argparse
+import numpy as np
+import matplotlib.pyplot as plt
+from PIL import Image
+
 import torch
 import torch.nn as nn
-import matplotlib.pyplot as plt
-import numpy as np
-from PIL import Image
 import torchvision.transforms as transforms
+import torchvision.utils as vutils
+
 from src.mae import MAEEncoder
 from train_utils import yaml_loader
 from functools import partial
-import argparse, os
 
 def get_args():
     parser = argparse.ArgumentParser(description="Training script for linear probing")
-
-    # basic experiment settings
     parser.add_argument("--saved_path", type=str, default="model.pth", required=True, help="path for pretrained model")
     parser.add_argument("--image", type=str, default="test_image.jpg", required=True, help="image to visualize attention maps")
-    parser.add_argument("--gpu", type=int, default = 0, help="gpu_id")
+    parser.add_argument("--gpu", type=int, default=0, help="gpu_id")
+    parser.add_argument("--output_dir", type=str, default="attention_maps", help="directory to save outputs")
+    parser.add_argument("--threshold", type=float, default=0.6, help="Keep xx% of the mass for the DINO masks.")
     args = parser.parse_args()
     return args
 
 attention_weights = []
 
-# We create a closure so the hook knows the specific dimensions of the timm attention block
 def get_qkv_hook(attn_module):
     def hook(module, input, output):
-        # input[0] shape: [Batch, Tokens, Dim]
-        # output shape: [Batch, Tokens, 3 * Dim]
         B, N, _ = input[0].shape
-        
-        # 1. Reshape the output exactly how timm does it
         qkv = output.reshape(B, N, 3, attn_module.num_heads, attn_module.head_dim).permute(2, 0, 3, 1, 4)
         q, k, _ = qkv.unbind(0)
         
-        # 2. Account for newer timm versions that normalize q and k
         if hasattr(attn_module, 'q_norm'):
             q = attn_module.q_norm(q)
             k = attn_module.k_norm(k)
         
-        # 3. Recreate the attention math manually
         q = q * attn_module.scale
         attn = (q @ k.transpose(-2, -1)).softmax(dim=-1)
-        
-        # 4. Save the final probabilities
         attention_weights.append(attn.detach().cpu())
         
     return hook
@@ -50,28 +45,36 @@ if __name__ == "__main__":
     args = get_args()
     device = torch.device(f"cuda:{args.gpu}" if torch.cuda.is_available() else "cpu")
 
-    # --- 2. Setup Model and Attach Hook ---
+    # Setup Directory
+    model_name = ".".join(os.path.basename(args.saved_path).split(".")[:-1])
+    img_name = os.path.basename(args.image).split(".")[0]
+    save_dir = os.path.join(args.output_dir, f"{img_name}_{model_name}")
+    print(f"saving to: {save_dir}")
+    os.makedirs(save_dir, exist_ok=True)
+
+    # 1. Setup Model
     config = yaml_loader("configs/test.yaml")
     model_params = config["mae_model_params"]
-    model = MAEEncoder(img_size=model_params["img_size"], patch_size=model_params["patch_size"], in_chans=model_params["in_chans"],
+    patch_size = model_params["patch_size"]
+    
+    model = MAEEncoder(img_size=model_params["img_size"], patch_size=patch_size, in_chans=model_params["in_chans"],
                 embed_dim=model_params["embed_dim"], depth=model_params["depth"], num_heads=model_params["num_heads"],
                 mlp_ratio=model_params["mlp_ratio"], norm_layer=partial(nn.LayerNorm, eps=1e-6))
+    
     print(model.load_state_dict(torch.load(args.saved_path, map_location=device)))
     model = model.to(device)
     model.eval()
 
-    # print(model)
-
+    # Attach hook
     target_attn = model.blocks[-1].attn
     hook_handle = target_attn.qkv.register_forward_hook(get_qkv_hook(target_attn))
 
-    # to normalize image 
+    # 2. Process Image
     mean = [0.485, 0.456, 0.406]
     std = [0.229, 0.224, 0.225]
 
-    print(f"using image: {args.image}")
-    img_path = args.image
-    img_pil = Image.open(img_path).convert('RGB')
+    print(f"Using image: {args.image}")
+    img_pil = Image.open(args.image).convert('RGB')
     transform = transforms.Compose([
         transforms.Resize(256),
         transforms.CenterCrop(224),
@@ -80,61 +83,87 @@ if __name__ == "__main__":
     ])
     img_tensor = transform(img_pil).unsqueeze(0) # [1, 3, 224, 224]
 
-    attention_weights.clear() # Clear any previous weights
+    # 3. Forward Pass
+    attention_weights.clear()
     with torch.no_grad():
-        _ = model(img_tensor.to(device)) # default mask ratio is 0.0
+        _ = model(img_tensor.to(device)) 
 
-    # Get the weights from our hook list
-    attn = attention_weights[0] # Shape: [1, num_heads, num_patches+1, num_patches+1]
-    # print(attn.shape)
-    cls_attention = attn[0, :, 0, 1:] # Shape: [num_heads, num_patches]
-    cls_attention_head = torch.mean(cls_attention, dim=0) # Shape: [num_patches]
-    # head_idx = 4
-    # cls_attention_head = cls_attention[head_idx] # Shape: [num_patches]
-
-    grid_size = int(np.sqrt(cls_attention_head.shape[0]))
-    attention_grid = cls_attention_head.reshape(grid_size, grid_size).numpy()
-
-    attention_grid = (attention_grid - attention_grid.min()) / (attention_grid.max() - attention_grid.min())
-
-    threshold = 0.3
-    attention_grid[attention_grid < threshold] = 0.0
-
-    attention_img = Image.fromarray(attention_grid)
-    attention_resized_img = attention_img.resize((224, 224), resample=Image.Resampling.BICUBIC)
-    attention_resized = np.array(attention_resized_img)
-
-    # Prepare original image for plotting (undo normalization)
-    mean = np.array([0.485, 0.456, 0.406])
-    std = np.array([0.229, 0.224, 0.225])
-    img_show = img_tensor[0].permute(1, 2, 0).numpy()
-    img_show = std * img_show + mean
-    img_show = np.clip(img_show, 0, 1)
-
-    model_name = ".".join(args.saved_path.split("/")[-1].split(".")[:-1])
-    save_path = os.path.join("attention_maps", args.image.split("/")[-1].split(".")[0] + "." + model_name + '.png')
-    # Plotting
-    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
-
-    ax1.imshow(img_show)
-    # ax1.set_title("Original Image")
-    ax1.axis('off')
-
-    cmap = "inferno"
-
-    ax2.imshow(attention_resized, cmap=cmap)
-    # ax2.set_title("Attention Map")
-    ax2.axis('off')
-
-    # Overlay
-    ax3.imshow(img_show)
-    ax3.imshow(attention_resized, cmap=cmap, alpha=0.5) # Alpha controls transparency
-    # ax3.set_title("Overlay")
-    ax3.axis('off')
-
-    plt.tight_layout()
-    plt.savefig(save_path, bbox_inches='tight')
-    plt.show()
-
-    # Don't forget to remove the hook when you are done!
     hook_handle.remove()
+
+    # 4. Extract Attention Maps
+    attn = attention_weights[0] # Shape: [1, num_heads, num_patches+1, num_patches+1]
+    cls_attention = attn[0, :, 0, 1:] # Shape: [num_heads, num_patches]
+    
+    nh = cls_attention.shape[0]
+    w_featmap = h_featmap = int(np.sqrt(cls_attention.shape[1]))
+
+    # 5. DINO Mass Thresholding Logic
+    if args.threshold is not None:
+        val, idx = torch.sort(cls_attention)
+        val /= torch.sum(val, dim=1, keepdim=True)
+        cumval = torch.cumsum(val, dim=1)
+        th_attn = cumval > (1 - args.threshold)
+        idx2 = torch.argsort(idx)
+        for head in range(nh):
+            th_attn[head] = th_attn[head][idx2[head]]
+        th_attn = th_attn.reshape(nh, w_featmap, h_featmap).float()
+        
+        # Interpolate threshold masks
+        th_attn = nn.functional.interpolate(th_attn.unsqueeze(0), scale_factor=patch_size, mode="nearest")[0].cpu().numpy()
+
+    # Interpolate standard heatmaps
+    attentions = cls_attention.reshape(nh, w_featmap, h_featmap)
+    attentions = nn.functional.interpolate(attentions.unsqueeze(0), scale_factor=patch_size, mode="nearest")[0].cpu().numpy()
+
+    # 6. Prepare Original Image for Output
+    mean_np = np.array([0.485, 0.456, 0.406])
+    std_np = np.array([0.229, 0.224, 0.225])
+    img_show = img_tensor[0].permute(1, 2, 0).numpy()
+    img_show = std_np * img_show + mean_np
+    img_show = np.clip(img_show, 0, 1)
+    
+    # Save original image
+    # vutils.save_image(vutils.make_grid(img_tensor, normalize=True, scale_each=True), os.path.join(save_dir, "img.png"))
+    
+    # Convert img_show to uint8 for DINO's polygon plotting
+    img_show_uint8 = (img_show * 255).astype(np.uint8)
+
+    # 7. Generate Outputs (Per Head)
+    for j in range(nh):
+        # Save standard Heatmap
+        # fname_heatmap = os.path.join(save_dir, f"attn-head{j}.png")
+        # plt.imsave(fname=fname_heatmap, arr=attentions[j], cmap='inferno')
+        # print(f"{fname_heatmap} saved.")
+        head_to_plot = j  # You can change this to visualize different heads (e.g., 0 through 15)
+    
+        fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+
+        # Plot 1: Original Image
+        axes[0].imshow(img_show)
+        # axes[0].set_title("Original Image", fontsize=14)
+        axes[0].axis('off')
+
+        # Plot 2: Attention Heatmap (for the selected head)
+        axes[1].imshow(attentions[head_to_plot], cmap='inferno')
+        # axes[1].set_title(f"Attention Map (Head {head_to_plot})", fontsize=14)
+        axes[1].axis('off')
+
+        # Plot 3: Overlay (Original + Heatmap)
+        axes[2].imshow(img_show)
+        axes[2].imshow(attentions[head_to_plot], cmap='inferno', alpha=0.5) # Alpha controls transparency
+        # axes[2].set_title(f"Overlay (Head {head_to_plot})", fontsize=14)
+        axes[2].axis('off')
+
+        plt.tight_layout()
+        
+        # Save and display the combined plot
+        combined_save_path = os.path.join(save_dir, f"combined_plot_head{head_to_plot}.png")
+        plt.savefig(combined_save_path, bbox_inches='tight', dpi=150)
+        print(f"Combined side-by-side plot saved to: {combined_save_path}")
+        
+        plt.show()
+
+    print(f"All outputs successfully saved in: {save_dir}")
+
+
+    
