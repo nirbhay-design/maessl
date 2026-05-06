@@ -226,6 +226,7 @@ if __name__ == "__main__":
     if base_model_name == "vit":
         model_params = config["mae_model_params"]
         model_params = get_vit_config_test(args.model, model_params, args.dataset)
+        print(f"MAE Encoder with params: {model_params}")
         encoder = MAEEncoder(img_size=model_params["img_size"], patch_size=model_params["patch_size"], in_chans=model_params["in_chans"],
                  embed_dim=model_params["embed_dim"], depth=model_params["depth"], num_heads=model_params["num_heads"],
                  mlp_ratio=model_params["mlp_ratio"], norm_layer=partial(nn.LayerNorm, eps=1e-6))
