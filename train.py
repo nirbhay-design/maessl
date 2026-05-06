@@ -6,7 +6,7 @@ import numpy as np
 from src.network import Network, EnergyScoreNet, BaseEncoder
 from src.mae import * 
 from src.ssl import pretrain_algo, proj_dict
-from train_utils import yaml_loader, model_optimizer, progress, format_time, \
+from train_utils import yaml_loader, model_optimizer, progress, format_time, get_vit_config, \
                         loss_function, load_dataset, get_tsne_knn_logreg, save_model
 from test_gs import train_linear_probe
 import torch.multiprocessing as mp 
@@ -77,7 +77,7 @@ def main_single(rank=0, world_size=1, config={}, args=None, is_distributed=False
     device = config['gpu_id']
     train_algo = config['train_algo']
 
-    if args.model == "vit":
+    if config['model_params']['model_name'] == "vit":
         model = MaskedAutoencoderViT(**config["model_params"], norm_layer=partial(nn.LayerNorm, eps=1e-6)).to(rank)
     else:
         model = Network(**config['model_params']).to(rank)
@@ -217,7 +217,7 @@ if __name__ == "__main__":
 
     config["config"] = args.config
     config['gpu_id'] = args.gpu
-    config['model_params']['model_name'] = args.model
+    config['model_params']['model_name'] = args.model.split("_")[0]
     config["return_logs"] = args.verbose
     config["aug"] = args.aug
     config["dataset"][args.dataset]["params"]["num_workers"] = args.nw
@@ -250,14 +250,17 @@ if __name__ == "__main__":
         config["n_epochs_mlp"] = args.epochs_lin
     if args.distributed:
         config["distributed"] = args.distributed
-    if args.model == "vit":
-        if args.dataset == "timg":
-            config["model_params"]["img_size"] = 64
-            config["model_params"]["patch_size"] = 4
+    if config['model_params']['model_name'] == "vit":
+        config = get_vit_config(args.model, config, args.dataset)
+            # config["model_params"]["img_size"] = 64
+            # config["model_params"]["patch_size"] = 4
     if args.wt:
         config["weight"] = args.wt
     if args.wt2:
         config["weight"] = {"wt1": args.wt, "wt2": args.wt2}
+
+    base_model_name = config['model_params']['model_name']
+    print(f"base_model: {base_model_name}")
     
     # setting seeds 
 
@@ -293,7 +296,7 @@ if __name__ == "__main__":
     lpt1 = time.perf_counter()
 
     print("starting linear probing")
-    if args.model == "vit":
+    if base_model_name == "vit":
         model_params = config["model_params"]
         encoder = MAEEncoder(img_size=model_params["img_size"], patch_size=model_params["patch_size"], in_chans=model_params["in_chans"],
                  embed_dim=model_params["embed_dim"], depth=model_params["depth"], num_heads=model_params["num_heads"],

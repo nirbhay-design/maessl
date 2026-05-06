@@ -22,6 +22,46 @@ from sklearn.metrics import accuracy_score, silhouette_score,\
 import umap 
 import torch.distributed as dist 
 
+def get_vit_config(model_name, config, dataset):
+    # name_format = "vit_b_16"
+    model_specs = model_name.split("_")
+    if len(model_specs) == 1:
+        model, size, patch_size = "vit", "s", 16
+        if dataset == "timg":
+            patch_size = 4
+    else:
+        model, size, patch_size = model_specs
+    config["model_params"]["patch_size"] = int(patch_size)
+    if dataset == "timg":
+        config["model_params"]["img_size"] = 64
+    if size == "t":
+        config["model_params"]["embed_dim"] = 192
+        config["model_params"]["depth"] = 12
+        config["model_params"]["num_heads"] = 3
+        config["model_params"]["decoder_embed_dim"] = 128
+        config["model_params"]["decoder_num_heads"] = 4
+
+    return config 
+
+def get_vit_config_test(model_name, config, dataset):
+    # name_format = "vit_b_16"
+    model_specs = model_name.split("_")
+    if len(model_specs) == 1:
+        model, size, patch_size = "vit", "s", 16
+        if dataset == "timg":
+            patch_size = 4
+    else:
+        model, size, patch_size = model_specs
+    config["patch_size"] = int(patch_size)
+    if dataset == "timg":
+        config["img_size"] = 64
+    if size == "t":
+        config["embed_dim"] = 192
+        config["depth"] = 12
+        config["num_heads"] = 3
+
+    return config 
+
 def yaml_loader(yaml_file):
     with open(yaml_file,'r') as f:
         config_data = yaml.load(f,Loader=SafeLoader)

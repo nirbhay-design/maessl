@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from src.network import MLP, BaseEncoder
 from src.mae import MAEEncoder
-from train_utils import load_dataset, progress, yaml_loader, get_tsne_knn_logreg, format_time
+from train_utils import load_dataset, progress, yaml_loader, get_tsne_knn_logreg, format_time, get_vit_config_test
 import itertools
 import argparse 
 from functools import partial
@@ -221,11 +221,11 @@ if __name__ == "__main__":
     config["dataset"][args.dataset]["params"]["num_workers"] = args.nw # set the number of workers for data loading 
     config["dataset"][args.dataset]["params"]["prefetch_factor"] = args.pf
 
-    if args.model == "vit":
+    base_model_name = args.model.split("_")[0]
+
+    if base_model_name == "vit":
         model_params = config["mae_model_params"]
-        if args.dataset == "timg":
-            model_params["img_size"] = 64
-            model_params["patch_size"] = 4
+        model_params = get_vit_config_test(args.model, model_params, args.dataset)
         encoder = MAEEncoder(img_size=model_params["img_size"], patch_size=model_params["patch_size"], in_chans=model_params["in_chans"],
                  embed_dim=model_params["embed_dim"], depth=model_params["depth"], num_heads=model_params["num_heads"],
                  mlp_ratio=model_params["mlp_ratio"], norm_layer=partial(nn.LayerNorm, eps=1e-6))
