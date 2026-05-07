@@ -1,0 +1,266 @@
+base_model: vit
+environment: 
+YAML: configs/mae_clr_rot.yaml
+==> SEED: 42
+==> train_algo: mae_clr_rot
+==> dataset: {'cifar10': {'num_classes': 10, 'params': {'data_dir': 'datasets/cifar10', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'prefetch_factor': 4, 'algo': 'mae_clr_rot'}}, 'cifar100': {'num_classes': 100, 'params': {'data_dir': 'datasets/cifar100', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'prefetch_factor': 4, 'algo': 'mae_clr_rot'}}, 'timg': {'num_classes': 200, 'params': {'data_dir': 'datasets/tinyimagenet/tiny-imagenet-200', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 8, 'image_size': 64, 'prefetch_factor': 2, 'algo': 'mae_clr_rot'}}, 'img100': {'num_classes': 100, 'params': {'data_dir': 'datasets/imagenet100', 'labels_json': 'Labels.json', 'batch_size': 256, 'test_batch_size': 256, 'num_workers': 6, 'image_size': 224, 'prefetch_factor': 4, 'algo': 'mae_clr_rot'}}}
+==> return_logs: False
+==> eval_every: 10
+==> n_epochs: 400
+==> n_epochs_mlp: 100
+==> gpu_id: 0
+==> opt: AdamW
+==> opt_params: {'lr': 0.0003, 'weight_decay': 0.05, 'betas': (0.9, 0.95)}
+==> schedular_params: {'T_max': 380, 'eta_min': 0.001}
+==> mlp_opt: SGD
+==> mlp_opt_params: {'lr': 0.01, 'momentum': 0.9}
+==> model_params: {'img_size': 64, 'in_chans': 3, 'patch_size': 16, 'embed_dim': 384, 'depth': 12, 'num_heads': 6, 'decoder_embed_dim': 256, 'decoder_depth': 4, 'decoder_num_heads': 8, 'mlp_ratio': 4, 'norm_pix_loss': False, 'algo_type': 'mae_clr_rot', 'model_name': 'vit'}
+==> rotnet_params: {'rot_hidden': 768, 'num_classes': 4}
+==> mlp_type: hidden
+==> loss: mae_clr_rot
+==> loss_params: {'sim': 'cosine', 'tau': 0.5}
+==> distributed: False
+==> model_save_path: saved_models/mae.clr.rot.timg.wt0.8wt20.5.damp.pth
+==> warmup_epochs: 20
+==> weight: {'wt1': 0.8, 'wt2': 0.5}
+==> config: configs/mae_clr_rot.yaml
+==> aug: v1
+==> damp_rot: True
+--------------------------------------------------
+MaskedAutoencoderViT(
+  (base_encoder): MAEEncoder(
+    (patch_embed): PatchEmbed(
+      (proj): Conv2d(3, 384, kernel_size=(16, 16), stride=(16, 16))
+      (norm): Identity()
+    )
+    (blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): Identity()
+        (drop_path1): Identity()
+        (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=384, out_features=1536, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=1536, out_features=384, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): Identity()
+        (drop_path2): Identity()
+      )
+    )
+    (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+  )
+  (decoder): MAEDecoder(
+    (decoder_embed): Linear(in_features=384, out_features=256, bias=True)
+    (decoder_blocks): ModuleList(
+      (0-3): 4 x Block(
+        (norm1): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=256, out_features=768, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): Identity()
+        (drop_path1): Identity()
+        (norm2): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=256, out_features=1024, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=1024, out_features=256, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): Identity()
+        (drop_path2): Identity()
+      )
+    )
+    (decoder_norm): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+    (decoder_pred): Linear(in_features=256, out_features=768, bias=True)
+  )
+  (proj): BYOL_mlp(
+    (mlp): Sequential(
+      (0): Linear(in_features=384, out_features=384, bias=False)
+      (1): BatchNorm1d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU()
+      (3): Linear(in_features=384, out_features=128, bias=True)
+    )
+  )
+)
+NOC: 200
+rotnet_cls(
+  (proj): Sequential(
+    (0): Linear(in_features=384, out_features=768, bias=False)
+    (1): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=768, out_features=768, bias=False)
+    (4): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=768, out_features=4, bias=True)
+  )
+)
+augmentation for mae_clr_rot: 
+Compose(
+    RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Identity()
+    Solarization(p = 0.0)
+    ToTensor()
+    Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+)
+Compose(
+    RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Identity()
+    Solarization(p = 0.0)
+    ToTensor()
+    Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+)
+using optimizer: AdamW
+# of Training Images: 100000
+# of Testing Images: 10000
+schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x73256e29bd60>
+loss function: simclr
+loss: SimCLR(sim=cosine, tau=0.5)
+dampening rotnet loss
+param config for: mae_clr_rot
+{'train_algo': 'mae_clr_rotdamp', 'model': MaskedAutoencoderViT(
+  (base_encoder): MAEEncoder(
+    (patch_embed): PatchEmbed(
+      (proj): Conv2d(3, 384, kernel_size=(16, 16), stride=(16, 16))
+      (norm): Identity()
+    )
+    (blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): Identity()
+        (drop_path1): Identity()
+        (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=384, out_features=1536, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=1536, out_features=384, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): Identity()
+        (drop_path2): Identity()
+      )
+    )
+    (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+  )
+  (decoder): MAEDecoder(
+    (decoder_embed): Linear(in_features=384, out_features=256, bias=True)
+    (decoder_blocks): ModuleList(
+      (0-3): 4 x Block(
+        (norm1): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=256, out_features=768, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): Identity()
+        (drop_path1): Identity()
+        (norm2): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=256, out_features=1024, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=1024, out_features=256, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): Identity()
+        (drop_path2): Identity()
+      )
+    )
+    (decoder_norm): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+    (decoder_pred): Linear(in_features=256, out_features=768, bias=True)
+  )
+  (proj): BYOL_mlp(
+    (mlp): Sequential(
+      (0): Linear(in_features=384, out_features=384, bias=False)
+      (1): BatchNorm1d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU()
+      (3): Linear(in_features=384, out_features=128, bias=True)
+    )
+  )
+), 'train_loader': <torch.utils.data.dataloader.DataLoader object at 0x73256e5a7670>, 'scaler': <torch.cuda.amp.grad_scaler.GradScaler object at 0x73256e29b430>, 'loss_base': SimCLR(sim=cosine, tau=0.5), 'optimizer': AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.95)
+    capturable: False
+    decoupled_weight_decay: True
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: True
+    initial_lr: 0.0003
+    lr: 2.9999999999999995e-10
+    maximize: False
+    weight_decay: 0.05
+), 'opt_lr_schedular': <torch.optim.lr_scheduler.SequentialLR object at 0x73256e29bd60>, 'progress': <function progress at 0x73256e894c10>, 'n_epochs': 400, 'device_id': 0, 'eval_id': 0, 'return_logs': False, 'weight': {'wt1': 0.8, 'wt2': 0.5}, 'rotnet': rotnet_cls(
+  (proj): Sequential(
+    (0): Linear(in_features=384, out_features=768, bias=False)
+    (1): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=768, out_features=768, bias=False)
+    (4): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=768, out_features=4, bias=True)
+  )
+), 'save_model': functools.partial(<function save_model at 0x73256e896c20>, path='saved_models/mae.clr.rot.timg.wt0.8wt20.5.damp.pth')}
+dict_keys(['train_algo', 'model', 'train_loader', 'scaler', 'loss_base', 'optimizer', 'opt_lr_schedular', 'progress', 'n_epochs', 'device_id', 'eval_id', 'return_logs', 'weight', 'rotnet', 'save_model'])
+### mae + simclr + rotnet damp Training begins
+[GPU0] epochs: [1/400] train_loss_con: 8.052
+[GPU0] epochs: [2/400] train_loss_con: 7.186
+[GPU0] epochs: [3/400] train_loss_con: 6.702
+[GPU0] epochs: [4/400] train_loss_con: 6.538
+[GPU0] epochs: [5/400] train_loss_con: 6.485
+[GPU0] epochs: [6/400] train_loss_con: 6.435
+[GPU0] epochs: [7/400] train_loss_con: 6.394
+[GPU0] epochs: [8/400] train_loss_con: 6.354
+[GPU0] epochs: [9/400] train_loss_con: 6.309
+[GPU0] epochs: [10/400] train_loss_con: 6.265
+[GPU0] epochs: [11/400] train_loss_con: 6.224
+[GPU0] epochs: [12/400] train_loss_con: 6.196
