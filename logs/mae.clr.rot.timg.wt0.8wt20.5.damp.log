@@ -8,13 +8,13 @@ YAML: configs/mae_clr_rot.yaml
 ==> eval_every: 10
 ==> n_epochs: 400
 ==> n_epochs_mlp: 100
-==> gpu_id: 0
+==> gpu_id: 1
 ==> opt: AdamW
 ==> opt_params: {'lr': 0.0003, 'weight_decay': 0.05, 'betas': (0.9, 0.95)}
 ==> schedular_params: {'T_max': 380, 'eta_min': 0.001}
 ==> mlp_opt: SGD
 ==> mlp_opt_params: {'lr': 0.01, 'momentum': 0.9}
-==> model_params: {'img_size': 64, 'in_chans': 3, 'patch_size': 16, 'embed_dim': 384, 'depth': 12, 'num_heads': 6, 'decoder_embed_dim': 256, 'decoder_depth': 4, 'decoder_num_heads': 8, 'mlp_ratio': 4, 'norm_pix_loss': False, 'algo_type': 'mae_clr_rot', 'model_name': 'vit'}
+==> model_params: {'img_size': 64, 'in_chans': 3, 'patch_size': 4, 'embed_dim': 384, 'depth': 12, 'num_heads': 6, 'decoder_embed_dim': 256, 'decoder_depth': 4, 'decoder_num_heads': 8, 'mlp_ratio': 4, 'norm_pix_loss': False, 'algo_type': 'mae_clr_rot', 'model_name': 'vit'}
 ==> rotnet_params: {'rot_hidden': 768, 'num_classes': 4}
 ==> mlp_type: hidden
 ==> loss: mae_clr_rot
@@ -30,7 +30,7 @@ YAML: configs/mae_clr_rot.yaml
 MaskedAutoencoderViT(
   (base_encoder): MAEEncoder(
     (patch_embed): PatchEmbed(
-      (proj): Conv2d(3, 384, kernel_size=(16, 16), stride=(16, 16))
+      (proj): Conv2d(3, 384, kernel_size=(4, 4), stride=(4, 4))
       (norm): Identity()
     )
     (blocks): ModuleList(
@@ -92,7 +92,7 @@ MaskedAutoencoderViT(
       )
     )
     (decoder_norm): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
-    (decoder_pred): Linear(in_features=256, out_features=768, bias=True)
+    (decoder_pred): Linear(in_features=256, out_features=48, bias=True)
   )
   (proj): BYOL_mlp(
     (mlp): Sequential(
@@ -145,7 +145,7 @@ Compose(
 using optimizer: AdamW
 # of Training Images: 100000
 # of Testing Images: 10000
-schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x73256e29bd60>
+schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x77360502ebf0>
 loss function: simclr
 loss: SimCLR(sim=cosine, tau=0.5)
 dampening rotnet loss
@@ -153,7 +153,7 @@ param config for: mae_clr_rot
 {'train_algo': 'mae_clr_rotdamp', 'model': MaskedAutoencoderViT(
   (base_encoder): MAEEncoder(
     (patch_embed): PatchEmbed(
-      (proj): Conv2d(3, 384, kernel_size=(16, 16), stride=(16, 16))
+      (proj): Conv2d(3, 384, kernel_size=(4, 4), stride=(4, 4))
       (norm): Identity()
     )
     (blocks): ModuleList(
@@ -215,7 +215,7 @@ param config for: mae_clr_rot
       )
     )
     (decoder_norm): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
-    (decoder_pred): Linear(in_features=256, out_features=768, bias=True)
+    (decoder_pred): Linear(in_features=256, out_features=48, bias=True)
   )
   (proj): BYOL_mlp(
     (mlp): Sequential(
@@ -225,7 +225,7 @@ param config for: mae_clr_rot
       (3): Linear(in_features=384, out_features=128, bias=True)
     )
   )
-), 'train_loader': <torch.utils.data.dataloader.DataLoader object at 0x73256e5a7670>, 'scaler': <torch.cuda.amp.grad_scaler.GradScaler object at 0x73256e29b430>, 'loss_base': SimCLR(sim=cosine, tau=0.5), 'optimizer': AdamW (
+), 'train_loader': <torch.utils.data.dataloader.DataLoader object at 0x7736043a9720>, 'scaler': <torch.cuda.amp.grad_scaler.GradScaler object at 0x77360502e830>, 'loss_base': SimCLR(sim=cosine, tau=0.5), 'optimizer': AdamW (
 Parameter Group 0
     amsgrad: False
     betas: (0.9, 0.95)
@@ -239,7 +239,7 @@ Parameter Group 0
     lr: 2.9999999999999995e-10
     maximize: False
     weight_decay: 0.05
-), 'opt_lr_schedular': <torch.optim.lr_scheduler.SequentialLR object at 0x73256e29bd60>, 'progress': <function progress at 0x73256e894c10>, 'n_epochs': 400, 'device_id': 0, 'eval_id': 0, 'return_logs': False, 'weight': {'wt1': 0.8, 'wt2': 0.5}, 'rotnet': rotnet_cls(
+), 'opt_lr_schedular': <torch.optim.lr_scheduler.SequentialLR object at 0x77360502ebf0>, 'progress': <function progress at 0x773604adeb90>, 'n_epochs': 400, 'device_id': 1, 'eval_id': 1, 'return_logs': False, 'weight': {'wt1': 0.8, 'wt2': 0.5}, 'rotnet': rotnet_cls(
   (proj): Sequential(
     (0): Linear(in_features=384, out_features=768, bias=False)
     (1): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
@@ -249,318 +249,6 @@ Parameter Group 0
     (5): ReLU()
     (6): Linear(in_features=768, out_features=4, bias=True)
   )
-), 'save_model': functools.partial(<function save_model at 0x73256e896c20>, path='saved_models/mae.clr.rot.timg.wt0.8wt20.5.damp.pth')}
+), 'save_model': functools.partial(<function save_model at 0x773604addcf0>, path='saved_models/mae.clr.rot.timg.wt0.8wt20.5.damp.pth')}
 dict_keys(['train_algo', 'model', 'train_loader', 'scaler', 'loss_base', 'optimizer', 'opt_lr_schedular', 'progress', 'n_epochs', 'device_id', 'eval_id', 'return_logs', 'weight', 'rotnet', 'save_model'])
 ### mae + simclr + rotnet damp Training begins
-[GPU0] epochs: [1/400] train_loss_con: 8.052
-[GPU0] epochs: [2/400] train_loss_con: 7.186
-[GPU0] epochs: [3/400] train_loss_con: 6.702
-[GPU0] epochs: [4/400] train_loss_con: 6.538
-[GPU0] epochs: [5/400] train_loss_con: 6.485
-[GPU0] epochs: [6/400] train_loss_con: 6.435
-[GPU0] epochs: [7/400] train_loss_con: 6.394
-[GPU0] epochs: [8/400] train_loss_con: 6.354
-[GPU0] epochs: [9/400] train_loss_con: 6.309
-[GPU0] epochs: [10/400] train_loss_con: 6.265
-[GPU0] epochs: [11/400] train_loss_con: 6.224
-[GPU0] epochs: [12/400] train_loss_con: 6.196
-[GPU0] epochs: [13/400] train_loss_con: 6.176
-[GPU0] epochs: [14/400] train_loss_con: 6.156
-[GPU0] epochs: [15/400] train_loss_con: 6.140
-[GPU0] epochs: [16/400] train_loss_con: 6.128
-[GPU0] epochs: [17/400] train_loss_con: 6.115
-[GPU0] epochs: [18/400] train_loss_con: 6.105
-[GPU0] epochs: [19/400] train_loss_con: 6.090
-[GPU0] epochs: [20/400] train_loss_con: 6.078
-[GPU0] epochs: [21/400] train_loss_con: 6.066
-[GPU0] epochs: [22/400] train_loss_con: 6.051
-[GPU0] epochs: [23/400] train_loss_con: 6.037
-[GPU0] epochs: [24/400] train_loss_con: 6.025
-[GPU0] epochs: [25/400] train_loss_con: 6.014
-[GPU0] epochs: [26/400] train_loss_con: 6.006
-[GPU0] epochs: [27/400] train_loss_con: 5.991
-[GPU0] epochs: [28/400] train_loss_con: 5.984
-[GPU0] epochs: [29/400] train_loss_con: 5.974
-[GPU0] epochs: [30/400] train_loss_con: 5.965
-[GPU0] epochs: [31/400] train_loss_con: 5.953
-[GPU0] epochs: [32/400] train_loss_con: 5.945
-[GPU0] epochs: [33/400] train_loss_con: 5.935
-[GPU0] epochs: [34/400] train_loss_con: 5.929
-[GPU0] epochs: [35/400] train_loss_con: 5.924
-[GPU0] epochs: [36/400] train_loss_con: 5.916
-[GPU0] epochs: [37/400] train_loss_con: 5.911
-[GPU0] epochs: [38/400] train_loss_con: 5.902
-[GPU0] epochs: [39/400] train_loss_con: 5.896
-[GPU0] epochs: [40/400] train_loss_con: 5.886
-[GPU0] epochs: [41/400] train_loss_con: 5.879
-[GPU0] epochs: [42/400] train_loss_con: 5.877
-[GPU0] epochs: [43/400] train_loss_con: 5.869
-[GPU0] epochs: [44/400] train_loss_con: 5.862
-[GPU0] epochs: [45/400] train_loss_con: 5.855
-[GPU0] epochs: [46/400] train_loss_con: 5.850
-[GPU0] epochs: [47/400] train_loss_con: 5.846
-[GPU0] epochs: [48/400] train_loss_con: 5.842
-[GPU0] epochs: [49/400] train_loss_con: 5.834
-[GPU0] epochs: [50/400] train_loss_con: 5.830
-[GPU0] epochs: [51/400] train_loss_con: 5.825
-[GPU0] epochs: [52/400] train_loss_con: 5.820
-[GPU0] epochs: [53/400] train_loss_con: 5.816
-[GPU0] epochs: [54/400] train_loss_con: 5.815
-[GPU0] epochs: [55/400] train_loss_con: 5.805
-[GPU0] epochs: [56/400] train_loss_con: 5.803
-[GPU0] epochs: [57/400] train_loss_con: 5.798
-[GPU0] epochs: [58/400] train_loss_con: 5.788
-[GPU0] epochs: [59/400] train_loss_con: 5.789
-[GPU0] epochs: [60/400] train_loss_con: 5.786
-[GPU0] epochs: [61/400] train_loss_con: 5.780
-[GPU0] epochs: [62/400] train_loss_con: 5.771
-[GPU0] epochs: [63/400] train_loss_con: 5.769
-[GPU0] epochs: [64/400] train_loss_con: 5.767
-[GPU0] epochs: [65/400] train_loss_con: 5.762
-[GPU0] epochs: [66/400] train_loss_con: 5.761
-[GPU0] epochs: [67/400] train_loss_con: 5.756
-[GPU0] epochs: [68/400] train_loss_con: 5.749
-[GPU0] epochs: [69/400] train_loss_con: 5.747
-[GPU0] epochs: [70/400] train_loss_con: 5.743
-[GPU0] epochs: [71/400] train_loss_con: 5.739
-[GPU0] epochs: [72/400] train_loss_con: 5.739
-[GPU0] epochs: [73/400] train_loss_con: 5.731
-[GPU0] epochs: [74/400] train_loss_con: 5.727
-[GPU0] epochs: [75/400] train_loss_con: 5.725
-[GPU0] epochs: [76/400] train_loss_con: 5.722
-[GPU0] epochs: [77/400] train_loss_con: 5.719
-[GPU0] epochs: [78/400] train_loss_con: 5.714
-[GPU0] epochs: [79/400] train_loss_con: 5.714
-[GPU0] epochs: [80/400] train_loss_con: 5.708
-[GPU0] epochs: [81/400] train_loss_con: 5.701
-[GPU0] epochs: [82/400] train_loss_con: 5.702
-[GPU0] epochs: [83/400] train_loss_con: 5.700
-[GPU0] epochs: [84/400] train_loss_con: 5.694
-[GPU0] epochs: [85/400] train_loss_con: 5.692
-[GPU0] epochs: [86/400] train_loss_con: 5.688
-[GPU0] epochs: [87/400] train_loss_con: 5.684
-[GPU0] epochs: [88/400] train_loss_con: 5.684
-[GPU0] epochs: [89/400] train_loss_con: 5.676
-[GPU0] epochs: [90/400] train_loss_con: 5.675
-[GPU0] epochs: [91/400] train_loss_con: 5.672
-[GPU0] epochs: [92/400] train_loss_con: 5.673
-[GPU0] epochs: [93/400] train_loss_con: 5.668
-[GPU0] epochs: [94/400] train_loss_con: 5.664
-[GPU0] epochs: [95/400] train_loss_con: 5.664
-[GPU0] epochs: [96/400] train_loss_con: 5.658
-[GPU0] epochs: [97/400] train_loss_con: 5.653
-[GPU0] epochs: [98/400] train_loss_con: 5.650
-[GPU0] epochs: [99/400] train_loss_con: 5.648
-Model saved at: saved_models/mae.clr.rot.timg.wt0.8wt20.5.damp.ec100.pth
-[GPU0] epochs: [100/400] train_loss_con: 5.645
-[GPU0] epochs: [101/400] train_loss_con: 5.644
-[GPU0] epochs: [102/400] train_loss_con: 5.639
-[GPU0] epochs: [103/400] train_loss_con: 5.640
-[GPU0] epochs: [104/400] train_loss_con: 5.632
-[GPU0] epochs: [105/400] train_loss_con: 5.631
-[GPU0] epochs: [106/400] train_loss_con: 5.631
-[GPU0] epochs: [107/400] train_loss_con: 5.627
-[GPU0] epochs: [108/400] train_loss_con: 5.626
-[GPU0] epochs: [109/400] train_loss_con: 5.622
-[GPU0] epochs: [110/400] train_loss_con: 5.619
-[GPU0] epochs: [111/400] train_loss_con: 5.619
-[GPU0] epochs: [112/400] train_loss_con: 5.615
-[GPU0] epochs: [113/400] train_loss_con: 5.610
-[GPU0] epochs: [114/400] train_loss_con: 5.607
-[GPU0] epochs: [115/400] train_loss_con: 5.605
-[GPU0] epochs: [116/400] train_loss_con: 5.603
-[GPU0] epochs: [117/400] train_loss_con: 5.601
-[GPU0] epochs: [118/400] train_loss_con: 5.598
-[GPU0] epochs: [119/400] train_loss_con: 5.594
-[GPU0] epochs: [120/400] train_loss_con: 5.591
-[GPU0] epochs: [121/400] train_loss_con: 5.589
-[GPU0] epochs: [122/400] train_loss_con: 5.589
-[GPU0] epochs: [123/400] train_loss_con: 5.583
-[GPU0] epochs: [124/400] train_loss_con: 5.581
-[GPU0] epochs: [125/400] train_loss_con: 5.580
-[GPU0] epochs: [126/400] train_loss_con: 5.574
-[GPU0] epochs: [127/400] train_loss_con: 5.575
-[GPU0] epochs: [128/400] train_loss_con: 5.571
-[GPU0] epochs: [129/400] train_loss_con: 5.570
-[GPU0] epochs: [130/400] train_loss_con: 5.566
-[GPU0] epochs: [131/400] train_loss_con: 5.564
-[GPU0] epochs: [132/400] train_loss_con: 5.557
-[GPU0] epochs: [133/400] train_loss_con: 5.560
-[GPU0] epochs: [134/400] train_loss_con: 5.557
-[GPU0] epochs: [135/400] train_loss_con: 5.556
-[GPU0] epochs: [136/400] train_loss_con: 5.550
-[GPU0] epochs: [137/400] train_loss_con: 5.551
-[GPU0] epochs: [138/400] train_loss_con: 5.547
-[GPU0] epochs: [139/400] train_loss_con: 5.544
-[GPU0] epochs: [140/400] train_loss_con: 5.544
-[GPU0] epochs: [141/400] train_loss_con: 5.539
-[GPU0] epochs: [142/400] train_loss_con: 5.540
-[GPU0] epochs: [143/400] train_loss_con: 5.535
-[GPU0] epochs: [144/400] train_loss_con: 5.530
-[GPU0] epochs: [145/400] train_loss_con: 5.530
-[GPU0] epochs: [146/400] train_loss_con: 5.525
-[GPU0] epochs: [147/400] train_loss_con: 5.522
-[GPU0] epochs: [148/400] train_loss_con: 5.522
-[GPU0] epochs: [149/400] train_loss_con: 5.520
-[GPU0] epochs: [150/400] train_loss_con: 5.518
-[GPU0] epochs: [151/400] train_loss_con: 5.516
-[GPU0] epochs: [152/400] train_loss_con: 5.515
-[GPU0] epochs: [153/400] train_loss_con: 5.509
-[GPU0] epochs: [154/400] train_loss_con: 5.508
-[GPU0] epochs: [155/400] train_loss_con: 5.504
-[GPU0] epochs: [156/400] train_loss_con: 5.501
-[GPU0] epochs: [157/400] train_loss_con: 5.502
-[GPU0] epochs: [158/400] train_loss_con: 5.500
-[GPU0] epochs: [159/400] train_loss_con: 5.497
-[GPU0] epochs: [160/400] train_loss_con: 5.494
-[GPU0] epochs: [161/400] train_loss_con: 5.495
-[GPU0] epochs: [162/400] train_loss_con: 5.490
-[GPU0] epochs: [163/400] train_loss_con: 5.487
-[GPU0] epochs: [164/400] train_loss_con: 5.488
-[GPU0] epochs: [165/400] train_loss_con: 5.484
-[GPU0] epochs: [166/400] train_loss_con: 5.484
-[GPU0] epochs: [167/400] train_loss_con: 5.479
-[GPU0] epochs: [168/400] train_loss_con: 5.476
-[GPU0] epochs: [169/400] train_loss_con: 5.474
-[GPU0] epochs: [170/400] train_loss_con: 5.472
-[GPU0] epochs: [171/400] train_loss_con: 5.471
-[GPU0] epochs: [172/400] train_loss_con: 5.468
-[GPU0] epochs: [173/400] train_loss_con: 5.467
-[GPU0] epochs: [174/400] train_loss_con: 5.461
-[GPU0] epochs: [175/400] train_loss_con: 5.462
-[GPU0] epochs: [176/400] train_loss_con: 5.459
-[GPU0] epochs: [177/400] train_loss_con: 5.458
-[GPU0] epochs: [178/400] train_loss_con: 5.455
-[GPU0] epochs: [179/400] train_loss_con: 5.449
-[GPU0] epochs: [180/400] train_loss_con: 5.451
-[GPU0] epochs: [181/400] train_loss_con: 5.448
-[GPU0] epochs: [182/400] train_loss_con: 5.449
-[GPU0] epochs: [183/400] train_loss_con: 5.443
-[GPU0] epochs: [184/400] train_loss_con: 5.445
-[GPU0] epochs: [185/400] train_loss_con: 5.440
-[GPU0] epochs: [186/400] train_loss_con: 5.440
-[GPU0] epochs: [187/400] train_loss_con: 5.436
-[GPU0] epochs: [188/400] train_loss_con: 5.432
-[GPU0] epochs: [189/400] train_loss_con: 5.433
-[GPU0] epochs: [190/400] train_loss_con: 5.432
-[GPU0] epochs: [191/400] train_loss_con: 5.426
-[GPU0] epochs: [192/400] train_loss_con: 5.429
-[GPU0] epochs: [193/400] train_loss_con: 5.423
-[GPU0] epochs: [194/400] train_loss_con: 5.420
-[GPU0] epochs: [195/400] train_loss_con: 5.424
-[GPU0] epochs: [196/400] train_loss_con: 5.416
-[GPU0] epochs: [197/400] train_loss_con: 5.414
-[GPU0] epochs: [198/400] train_loss_con: 5.414
-[GPU0] epochs: [199/400] train_loss_con: 5.412
-Model saved at: saved_models/mae.clr.rot.timg.wt0.8wt20.5.damp.ec200.pth
-[GPU0] epochs: [200/400] train_loss_con: 5.410
-[GPU0] epochs: [201/400] train_loss_con: 5.410
-[GPU0] epochs: [202/400] train_loss_con: 5.409
-[GPU0] epochs: [203/400] train_loss_con: 5.403
-[GPU0] epochs: [204/400] train_loss_con: 5.406
-[GPU0] epochs: [205/400] train_loss_con: 5.399
-[GPU0] epochs: [206/400] train_loss_con: 5.397
-[GPU0] epochs: [207/400] train_loss_con: 5.398
-[GPU0] epochs: [208/400] train_loss_con: 5.401
-[GPU0] epochs: [209/400] train_loss_con: 5.396
-[GPU0] epochs: [210/400] train_loss_con: 5.390
-[GPU0] epochs: [211/400] train_loss_con: 5.392
-[GPU0] epochs: [212/400] train_loss_con: 5.388
-[GPU0] epochs: [213/400] train_loss_con: 5.384
-[GPU0] epochs: [214/400] train_loss_con: 5.385
-[GPU0] epochs: [215/400] train_loss_con: 5.382
-[GPU0] epochs: [216/400] train_loss_con: 5.383
-[GPU0] epochs: [217/400] train_loss_con: 5.377
-[GPU0] epochs: [218/400] train_loss_con: 5.378
-[GPU0] epochs: [219/400] train_loss_con: 5.373
-[GPU0] epochs: [220/400] train_loss_con: 5.374
-[GPU0] epochs: [221/400] train_loss_con: 5.371
-[GPU0] epochs: [222/400] train_loss_con: 5.367
-[GPU0] epochs: [223/400] train_loss_con: 5.369
-[GPU0] epochs: [224/400] train_loss_con: 5.369
-[GPU0] epochs: [225/400] train_loss_con: 5.365
-[GPU0] epochs: [226/400] train_loss_con: 5.363
-[GPU0] epochs: [227/400] train_loss_con: 5.360
-[GPU0] epochs: [228/400] train_loss_con: 5.357
-[GPU0] epochs: [229/400] train_loss_con: 5.358
-[GPU0] epochs: [230/400] train_loss_con: 5.354
-[GPU0] epochs: [231/400] train_loss_con: 5.355
-[GPU0] epochs: [232/400] train_loss_con: 5.355
-[GPU0] epochs: [233/400] train_loss_con: 5.352
-[GPU0] epochs: [234/400] train_loss_con: 5.351
-[GPU0] epochs: [235/400] train_loss_con: 5.348
-[GPU0] epochs: [236/400] train_loss_con: 5.348
-[GPU0] epochs: [237/400] train_loss_con: 5.344
-[GPU0] epochs: [238/400] train_loss_con: 5.346
-[GPU0] epochs: [239/400] train_loss_con: 5.343
-[GPU0] epochs: [240/400] train_loss_con: 5.344
-[GPU0] epochs: [241/400] train_loss_con: 5.338
-[GPU0] epochs: [242/400] train_loss_con: 5.335
-[GPU0] epochs: [243/400] train_loss_con: 5.334
-[GPU0] epochs: [244/400] train_loss_con: 5.333
-[GPU0] epochs: [245/400] train_loss_con: 5.333
-[GPU0] epochs: [246/400] train_loss_con: 5.332
-[GPU0] epochs: [247/400] train_loss_con: 5.331
-[GPU0] epochs: [248/400] train_loss_con: 5.329
-[GPU0] epochs: [249/400] train_loss_con: 5.325
-[GPU0] epochs: [250/400] train_loss_con: 5.323
-[GPU0] epochs: [251/400] train_loss_con: 5.321
-[GPU0] epochs: [252/400] train_loss_con: 5.322
-[GPU0] epochs: [253/400] train_loss_con: 5.320
-[GPU0] epochs: [254/400] train_loss_con: 5.317
-[GPU0] epochs: [255/400] train_loss_con: 5.318
-[GPU0] epochs: [256/400] train_loss_con: 5.314
-[GPU0] epochs: [257/400] train_loss_con: 5.314
-[GPU0] epochs: [258/400] train_loss_con: 5.311
-[GPU0] epochs: [259/400] train_loss_con: 5.310
-[GPU0] epochs: [260/400] train_loss_con: 5.309
-[GPU0] epochs: [261/400] train_loss_con: 5.308
-[GPU0] epochs: [262/400] train_loss_con: 5.308
-[GPU0] epochs: [263/400] train_loss_con: 5.304
-[GPU0] epochs: [264/400] train_loss_con: 5.306
-[GPU0] epochs: [265/400] train_loss_con: 5.305
-[GPU0] epochs: [266/400] train_loss_con: 5.302
-[GPU0] epochs: [267/400] train_loss_con: 5.301
-[GPU0] epochs: [268/400] train_loss_con: 5.299
-[GPU0] epochs: [269/400] train_loss_con: 5.297
-[GPU0] epochs: [270/400] train_loss_con: 5.296
-[GPU0] epochs: [271/400] train_loss_con: 5.293
-[GPU0] epochs: [272/400] train_loss_con: 5.294
-[GPU0] epochs: [273/400] train_loss_con: 5.293
-[GPU0] epochs: [274/400] train_loss_con: 5.286
-[GPU0] epochs: [275/400] train_loss_con: 5.289
-[GPU0] epochs: [276/400] train_loss_con: 5.289
-[GPU0] epochs: [277/400] train_loss_con: 5.288
-[GPU0] epochs: [278/400] train_loss_con: 5.285
-[GPU0] epochs: [279/400] train_loss_con: 5.288
-[GPU0] epochs: [280/400] train_loss_con: 5.285
-[GPU0] epochs: [281/400] train_loss_con: 5.284
-[GPU0] epochs: [282/400] train_loss_con: 5.285
-[GPU0] epochs: [283/400] train_loss_con: 5.279
-[GPU0] epochs: [284/400] train_loss_con: 5.277
-[GPU0] epochs: [285/400] train_loss_con: 5.277
-[GPU0] epochs: [286/400] train_loss_con: 5.275
-[GPU0] epochs: [287/400] train_loss_con: 5.275
-[GPU0] epochs: [288/400] train_loss_con: 5.278
-[GPU0] epochs: [289/400] train_loss_con: 5.273
-[GPU0] epochs: [290/400] train_loss_con: 5.273
-[GPU0] epochs: [291/400] train_loss_con: 5.271
-[GPU0] epochs: [292/400] train_loss_con: 5.269
-[GPU0] epochs: [293/400] train_loss_con: 5.268
-[GPU0] epochs: [294/400] train_loss_con: 5.269
-[GPU0] epochs: [295/400] train_loss_con: 5.266
-[GPU0] epochs: [296/400] train_loss_con: 5.264
-[GPU0] epochs: [297/400] train_loss_con: 5.266
-[GPU0] epochs: [298/400] train_loss_con: 5.264
-[GPU0] epochs: [299/400] train_loss_con: 5.261
-Model saved at: saved_models/mae.clr.rot.timg.wt0.8wt20.5.damp.ec300.pth
-[GPU0] epochs: [300/400] train_loss_con: 5.262
-[GPU0] epochs: [301/400] train_loss_con: 5.263
-[GPU0] epochs: [302/400] train_loss_con: 5.262
-[GPU0] epochs: [303/400] train_loss_con: 5.259
-[GPU0] epochs: [304/400] train_loss_con: 5.260
-[GPU0] epochs: [305/400] train_loss_con: 5.257
-[GPU0] epochs: [306/400] train_loss_con: 5.256
-[GPU0] epochs: [307/400] train_loss_con: 5.253
-[GPU0] epochs: [308/400] train_loss_con: 5.250
-[GPU0] epochs: [309/400] train_loss_con: 5.253
