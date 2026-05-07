@@ -68,6 +68,8 @@
 # OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_bt_rot.yaml --dataset timg --gpu 0 --epochs 400 --lr 5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 512 --tbs 512 --save_path mae.bt.rot.timg.lr5e.4.pth --model vit --nw 8 --pf 2 --wt 0.1 --wt2 0.5 --aug v2 > logs/mae.bt.rot.timg.lr5e.4.log &
 
 
+# CUDA_VISIBLE_DEVICES=0,1,2,5 OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_bt_rot.yaml --dataset img100 --gpu 0 --epochs 800 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 128 --tbs 512 --save_path mae.bt.rot.i100.wt20.8.dist.e800.pth --model vit --nw 4 --pf 2 --wt 0.1 --wt2 0.8 --distributed > logs/mae.bt.rot.i100.wt20.8.dist.e800.log &
+
 # rotnet with dampening 
 
 # OPENBLAS_NUM_THREADS=1 nohup python -u train.py --config configs/mae_clr_rot.yaml --dataset img100 --gpu 1 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 512 --tbs 512 --save_path mae.clr.rot.i100.wt0.8wt20.1.damp.pth --model vit --nw 6 --pf 2 --wt 0.8 --wt2 0.1 --damp_rot > logs/mae.clr.rot.i100.wt0.8wt20.1.damp.log &
