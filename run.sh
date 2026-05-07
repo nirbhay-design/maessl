@@ -219,7 +219,8 @@ images=(
     # "datasets/imagenet100/train.X4/n01806143/n01806143_130.JPEG"
     # "datasets/imagenet100/train.X4/n01755581/n01755581_95.JPEG"
     # "datasets/imagenet100/train.X2/n01608432/n01608432_56.JPEG"
-    "datasets/imagenet100/train.X1/n01820546/n01820546_27.JPEG"
+    # "datasets/imagenet100/train.X1/n01820546/n01820546_27.JPEG"
+    "datasets/imagenet100/train.X3/n02006656/n02006656_192.JPEG"
 )
 
 models=(
