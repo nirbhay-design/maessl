@@ -1,0 +1,754 @@
+base_model: vit
+environment: 
+YAML: configs/mae_bt_rot.yaml
+==> SEED: 42
+==> train_algo: mae_bt_rot
+==> dataset: {'cifar10': {'num_classes': 10, 'params': {'data_dir': 'datasets/cifar10', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'prefetch_factor': 4, 'algo': 'mae_bt_rot'}}, 'cifar100': {'num_classes': 100, 'params': {'data_dir': 'datasets/cifar100', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'prefetch_factor': 4, 'algo': 'mae_bt_rot'}}, 'timg': {'num_classes': 200, 'params': {'data_dir': 'datasets/tinyimagenet/tiny-imagenet-200', 'batch_size': 256, 'test_batch_size': 512, 'num_workers': 5, 'image_size': 64, 'prefetch_factor': 2, 'algo': 'mae_bt_rot'}}, 'img100': {'num_classes': 100, 'params': {'data_dir': 'datasets/imagenet100', 'labels_json': 'Labels.json', 'batch_size': 256, 'test_batch_size': 256, 'num_workers': 6, 'image_size': 224, 'prefetch_factor': 4, 'algo': 'mae_bt_rot'}}}
+==> return_logs: False
+==> eval_every: 10
+==> n_epochs: 800
+==> n_epochs_mlp: 100
+==> gpu_id: 0
+==> opt: AdamW
+==> opt_params: {'lr': 0.0003, 'weight_decay': 0.05, 'betas': (0.9, 0.95)}
+==> schedular_params: {'T_max': 780, 'eta_min': 0.001}
+==> mlp_opt: SGD
+==> mlp_opt_params: {'lr': 0.01, 'momentum': 0.9}
+==> model_params: {'img_size': 64, 'in_chans': 3, 'patch_size': 4, 'embed_dim': 384, 'depth': 12, 'num_heads': 6, 'decoder_embed_dim': 256, 'decoder_depth': 4, 'decoder_num_heads': 8, 'mlp_ratio': 4, 'norm_pix_loss': False, 'algo_type': 'mae_bt_rot', 'model_name': 'vit'}
+==> rotnet_params: {'rot_hidden': 768, 'num_classes': 4}
+==> mlp_type: hidden
+==> loss: mae_bt_rot
+==> loss_params: {'lambd': 0.005}
+==> distributed: True
+==> model_save_path: saved_models/mae.bt.rot.timg.wt20.8.dist.e800.pth
+==> warmup_epochs: 20
+==> weight: {'wt1': 0.1, 'wt2': 0.8}
+==> config: configs/mae_bt_rot.yaml
+==> aug: v1
+==> damp_rot: False
+--------------------------------------------------
+Launching DDP across 2 GPUs
+MaskedAutoencoderViT(
+  (base_encoder): MAEEncoder(
+    (patch_embed): PatchEmbed(
+      (proj): Conv2d(3, 384, kernel_size=(4, 4), stride=(4, 4))
+      (norm): Identity()
+    )
+    (blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): Identity()
+        (drop_path1): Identity()
+        (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=384, out_features=1536, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=1536, out_features=384, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): Identity()
+        (drop_path2): Identity()
+      )
+    )
+    (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+  )
+  (decoder): MAEDecoder(
+    (decoder_embed): Linear(in_features=384, out_features=256, bias=True)
+    (decoder_blocks): ModuleList(
+      (0-3): 4 x Block(
+        (norm1): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=256, out_features=768, bias=True)
+          (q_norm): Identity()
+          (k_norm): Identity()
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (ls1): Identity()
+        (drop_path1): Identity()
+        (norm2): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=256, out_features=1024, bias=True)
+          (act): GELU(approximate='none')
+          (drop1): Dropout(p=0.0, inplace=False)
+          (norm): Identity()
+          (fc2): Linear(in_features=1024, out_features=256, bias=True)
+          (drop2): Dropout(p=0.0, inplace=False)
+        )
+        (ls2): Identity()
+        (drop_path2): Identity()
+      )
+    )
+    (decoder_norm): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+    (decoder_pred): Linear(in_features=256, out_features=48, bias=True)
+  )
+  (proj): bt_proj(
+    (proj): Sequential(
+      (0): Linear(in_features=384, out_features=8192, bias=False)
+      (1): BatchNorm1d(8192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU()
+      (3): Linear(in_features=8192, out_features=8192, bias=False)
+      (4): BatchNorm1d(8192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (5): ReLU()
+      (6): Linear(in_features=8192, out_features=8192, bias=True)
+      (7): BatchNorm1d(8192, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+    )
+  )
+)
+NOC: 200
+rotnet_cls(
+  (proj): Sequential(
+    (0): Linear(in_features=384, out_features=768, bias=False)
+    (1): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=768, out_features=768, bias=False)
+    (4): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=768, out_features=4, bias=True)
+  )
+)
+augmentation for mae_bt_rot: 
+Compose(
+    RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Identity()
+    Solarization(p = 0.0)
+    ToTensor()
+    Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+)
+Compose(
+    RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Identity()
+    Solarization(p = 0.1)
+    ToTensor()
+    Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+)
+using optimizer: AdamW
+# of Training Images: 100000
+# of Testing Images: 10000
+schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x74caeaf92ce0>
+loss function: bt
+loss: BT(lambda=0.005)
+param config for: mae_bt_rot
+rotnet_cls(
+  (proj): Sequential(
+    (0): Linear(in_features=384, out_features=768, bias=False)
+    (1): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=768, out_features=768, bias=False)
+    (4): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=768, out_features=4, bias=True)
+  )
+)
+augmentation for mae_bt_rot: 
+Compose(
+    RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Identity()
+    Solarization(p = 0.0)
+    ToTensor()
+    Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+)
+Compose(
+    RandomResizedCrop(size=(64, 64), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    Identity()
+    Solarization(p = 0.1)
+    ToTensor()
+    Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+)
+using optimizer: AdamW
+loss function: bt
+loss: BT(lambda=0.005)
+param config for: mae_bt_rot
+{'train_algo': 'mae_bt_rot', 'model': DistributedDataParallel(
+  (module): MaskedAutoencoderViT(
+    (base_encoder): MAEEncoder(
+      (patch_embed): PatchEmbed(
+        (proj): Conv2d(3, 384, kernel_size=(4, 4), stride=(4, 4))
+        (norm): Identity()
+      )
+      (blocks): ModuleList(
+        (0-11): 12 x Block(
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+          (attn): Attention(
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (q_norm): Identity()
+            (k_norm): Identity()
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (ls1): Identity()
+          (drop_path1): Identity()
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (ls2): Identity()
+          (drop_path2): Identity()
+        )
+      )
+      (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+    )
+    (decoder): MAEDecoder(
+      (decoder_embed): Linear(in_features=384, out_features=256, bias=True)
+      (decoder_blocks): ModuleList(
+        (0-3): 4 x Block(
+          (norm1): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+          (attn): Attention(
+            (qkv): Linear(in_features=256, out_features=768, bias=True)
+            (q_norm): Identity()
+            (k_norm): Identity()
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (ls1): Identity()
+          (drop_path1): Identity()
+          (norm2): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (ls2): Identity()
+          (drop_path2): Identity()
+        )
+      )
+      (decoder_norm): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+      (decoder_pred): Linear(in_features=256, out_features=48, bias=True)
+    )
+    (proj): bt_proj(
+      (proj): Sequential(
+        (0): Linear(in_features=384, out_features=8192, bias=False)
+        (1): SyncBatchNorm(8192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU()
+        (3): Linear(in_features=8192, out_features=8192, bias=False)
+        (4): SyncBatchNorm(8192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU()
+        (6): Linear(in_features=8192, out_features=8192, bias=True)
+        (7): SyncBatchNorm(8192, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+  )
+), 'train_loader': <torch.utils.data.dataloader.DataLoader object at 0x760099a37c40>, 'scaler': <torch.cuda.amp.grad_scaler.GradScaler object at 0x760099979d80>, 'loss_base': BT(lambda=0.005), 'optimizer': AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.95)
+    capturable: False
+    decoupled_weight_decay: True
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: True
+    initial_lr: 0.0003
+    lr: 2.9999999999999995e-10
+    maximize: False
+    weight_decay: 0.05
+), 'opt_lr_schedular': <torch.optim.lr_scheduler.SequentialLR object at 0x76009997b3a0>, 'progress': <function progress at 0x7600999130a0>, 'n_epochs': 800, 'device_id': 1, 'eval_id': 0, 'return_logs': False, 'weight': {'wt1': 0.1, 'wt2': 0.8}, 'rotnet': DistributedDataParallel(
+  (module): rotnet_cls(
+    (proj): Sequential(
+      (0): Linear(in_features=384, out_features=768, bias=False)
+      (1): SyncBatchNorm(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU()
+      (3): Linear(in_features=768, out_features=768, bias=False)
+      (4): SyncBatchNorm(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (5): ReLU()
+      (6): Linear(in_features=768, out_features=4, bias=True)
+    )
+  )
+), 'save_model': functools.partial(<function save_model at 0x7600999136d0>, path='saved_models/mae.bt.rot.timg.wt20.8.dist.e800.pth')}
+dict_keys(['train_algo', 'model', 'train_loader', 'scaler', 'loss_base', 'optimizer', 'opt_lr_schedular', 'progress', 'n_epochs', 'device_id', 'eval_id', 'return_logs', 'weight', 'rotnet', 'save_model'])
+{'train_algo': 'mae_bt_rot', 'model': DistributedDataParallel(
+  (module): MaskedAutoencoderViT(
+    (base_encoder): MAEEncoder(
+      (patch_embed): PatchEmbed(
+        (proj): Conv2d(3, 384, kernel_size=(4, 4), stride=(4, 4))
+        (norm): Identity()
+      )
+      (blocks): ModuleList(
+        (0-11): 12 x Block(
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+          (attn): Attention(
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (q_norm): Identity()
+            (k_norm): Identity()
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (ls1): Identity()
+          (drop_path1): Identity()
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (ls2): Identity()
+          (drop_path2): Identity()
+        )
+      )
+      (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+    )
+    (decoder): MAEDecoder(
+      (decoder_embed): Linear(in_features=384, out_features=256, bias=True)
+      (decoder_blocks): ModuleList(
+        (0-3): 4 x Block(
+          (norm1): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+          (attn): Attention(
+            (qkv): Linear(in_features=256, out_features=768, bias=True)
+            (q_norm): Identity()
+            (k_norm): Identity()
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (ls1): Identity()
+          (drop_path1): Identity()
+          (norm2): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (ls2): Identity()
+          (drop_path2): Identity()
+        )
+      )
+      (decoder_norm): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+      (decoder_pred): Linear(in_features=256, out_features=48, bias=True)
+    )
+    (proj): bt_proj(
+      (proj): Sequential(
+        (0): Linear(in_features=384, out_features=8192, bias=False)
+        (1): SyncBatchNorm(8192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU()
+        (3): Linear(in_features=8192, out_features=8192, bias=False)
+        (4): SyncBatchNorm(8192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU()
+        (6): Linear(in_features=8192, out_features=8192, bias=True)
+        (7): SyncBatchNorm(8192, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+  )
+), 'train_loader': <torch.utils.data.dataloader.DataLoader object at 0x74caeaf92500>, 'scaler': <torch.cuda.amp.grad_scaler.GradScaler object at 0x74caeaf93640>, 'loss_base': BT(lambda=0.005), 'optimizer': AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.95)
+    capturable: False
+    decoupled_weight_decay: True
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: True
+    initial_lr: 0.0003
+    lr: 2.9999999999999995e-10
+    maximize: False
+    weight_decay: 0.05
+), 'opt_lr_schedular': <torch.optim.lr_scheduler.SequentialLR object at 0x74caeaf92ce0>, 'progress': <function progress at 0x74caeb6ef0a0>, 'n_epochs': 800, 'device_id': 0, 'eval_id': 0, 'return_logs': False, 'weight': {'wt1': 0.1, 'wt2': 0.8}, 'rotnet': DistributedDataParallel(
+  (module): rotnet_cls(
+    (proj): Sequential(
+      (0): Linear(in_features=384, out_features=768, bias=False)
+      (1): SyncBatchNorm(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU()
+      (3): Linear(in_features=768, out_features=768, bias=False)
+      (4): SyncBatchNorm(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (5): ReLU()
+      (6): Linear(in_features=768, out_features=4, bias=True)
+    )
+  )
+), 'save_model': functools.partial(<function save_model at 0x74caeb6ef6d0>, path='saved_models/mae.bt.rot.timg.wt20.8.dist.e800.pth')}
+dict_keys(['train_algo', 'model', 'train_loader', 'scaler', 'loss_base', 'optimizer', 'opt_lr_schedular', 'progress', 'n_epochs', 'device_id', 'eval_id', 'return_logs', 'weight', 'rotnet', 'save_model'])
+### mae + bt + rotnet Training begins
+[GPU0] epochs: [1/800] train_loss_con: 1021.072
+[GPU0] epochs: [2/800] train_loss_con: 597.355
+[GPU0] epochs: [3/800] train_loss_con: 489.349
+[GPU0] epochs: [4/800] train_loss_con: 456.008
+[GPU0] epochs: [5/800] train_loss_con: 431.973
+[GPU0] epochs: [6/800] train_loss_con: 411.803
+[GPU0] epochs: [7/800] train_loss_con: 394.778
+[GPU0] epochs: [8/800] train_loss_con: 380.104
+[GPU0] epochs: [9/800] train_loss_con: 369.228
+[GPU0] epochs: [10/800] train_loss_con: 359.759
+[GPU0] epochs: [11/800] train_loss_con: 351.347
+[GPU0] epochs: [12/800] train_loss_con: 344.488
+[GPU0] epochs: [13/800] train_loss_con: 337.680
+[GPU0] epochs: [14/800] train_loss_con: 333.296
+[GPU0] epochs: [15/800] train_loss_con: 328.280
+[GPU0] epochs: [16/800] train_loss_con: 322.965
+[GPU0] epochs: [17/800] train_loss_con: 319.182
+[GPU0] epochs: [18/800] train_loss_con: 314.376
+[GPU0] epochs: [19/800] train_loss_con: 310.204
+[GPU0] epochs: [20/800] train_loss_con: 307.252
+[GPU0] epochs: [21/800] train_loss_con: 303.676
+[GPU0] epochs: [22/800] train_loss_con: 299.395
+[GPU0] epochs: [23/800] train_loss_con: 295.746
+[GPU0] epochs: [24/800] train_loss_con: 290.791
+[GPU0] epochs: [25/800] train_loss_con: 287.557
+[GPU0] epochs: [26/800] train_loss_con: 284.607
+[GPU0] epochs: [27/800] train_loss_con: 282.155
+[GPU0] epochs: [28/800] train_loss_con: 279.189
+[GPU0] epochs: [29/800] train_loss_con: 276.289
+[GPU0] epochs: [30/800] train_loss_con: 274.809
+[GPU0] epochs: [31/800] train_loss_con: 270.917
+[GPU0] epochs: [32/800] train_loss_con: 270.337
+[GPU0] epochs: [33/800] train_loss_con: 267.332
+[GPU0] epochs: [34/800] train_loss_con: 265.872
+[GPU0] epochs: [35/800] train_loss_con: 263.500
+[GPU0] epochs: [36/800] train_loss_con: 262.020
+[GPU0] epochs: [37/800] train_loss_con: 259.670
+[GPU0] epochs: [38/800] train_loss_con: 258.547
+[GPU0] epochs: [39/800] train_loss_con: 256.657
+[GPU0] epochs: [40/800] train_loss_con: 254.781
+[GPU0] epochs: [41/800] train_loss_con: 254.343
+[GPU0] epochs: [42/800] train_loss_con: 252.693
+[GPU0] epochs: [43/800] train_loss_con: 250.717
+[GPU0] epochs: [44/800] train_loss_con: 249.481
+[GPU0] epochs: [45/800] train_loss_con: 248.356
+[GPU0] epochs: [46/800] train_loss_con: 247.908
+[GPU0] epochs: [47/800] train_loss_con: 247.026
+[GPU0] epochs: [48/800] train_loss_con: 245.114
+[GPU0] epochs: [49/800] train_loss_con: 242.904
+[GPU0] epochs: [50/800] train_loss_con: 243.981
+[GPU0] epochs: [51/800] train_loss_con: 242.333
+[GPU0] epochs: [52/800] train_loss_con: 241.666
+[GPU0] epochs: [53/800] train_loss_con: 240.271
+[GPU0] epochs: [54/800] train_loss_con: 239.226
+[GPU0] epochs: [55/800] train_loss_con: 237.610
+[GPU0] epochs: [56/800] train_loss_con: 236.855
+[GPU0] epochs: [57/800] train_loss_con: 236.501
+[GPU0] epochs: [58/800] train_loss_con: 236.094
+[GPU0] epochs: [59/800] train_loss_con: 234.818
+[GPU0] epochs: [60/800] train_loss_con: 233.293
+[GPU0] epochs: [61/800] train_loss_con: 233.105
+[GPU0] epochs: [62/800] train_loss_con: 231.769
+[GPU0] epochs: [63/800] train_loss_con: 231.702
+[GPU0] epochs: [64/800] train_loss_con: 230.723
+[GPU0] epochs: [65/800] train_loss_con: 230.073
+[GPU0] epochs: [66/800] train_loss_con: 229.690
+[GPU0] epochs: [67/800] train_loss_con: 228.486
+[GPU0] epochs: [68/800] train_loss_con: 227.844
+[GPU0] epochs: [69/800] train_loss_con: 227.209
+[GPU0] epochs: [70/800] train_loss_con: 225.496
+[GPU0] epochs: [71/800] train_loss_con: 225.875
+[GPU0] epochs: [72/800] train_loss_con: 226.299
+[GPU0] epochs: [73/800] train_loss_con: 223.995
+[GPU0] epochs: [74/800] train_loss_con: 223.890
+[GPU0] epochs: [75/800] train_loss_con: 223.578
+[GPU0] epochs: [76/800] train_loss_con: 223.078
+[GPU0] epochs: [77/800] train_loss_con: 222.459
+[GPU0] epochs: [78/800] train_loss_con: 220.533
+[GPU0] epochs: [79/800] train_loss_con: 221.560
+[GPU0] epochs: [80/800] train_loss_con: 220.236
+[GPU0] epochs: [81/800] train_loss_con: 218.744
+[GPU0] epochs: [82/800] train_loss_con: 219.353
+[GPU0] epochs: [83/800] train_loss_con: 218.521
+[GPU0] epochs: [84/800] train_loss_con: 217.631
+[GPU0] epochs: [85/800] train_loss_con: 217.347
+[GPU0] epochs: [86/800] train_loss_con: 216.813
+[GPU0] epochs: [87/800] train_loss_con: 216.482
+[GPU0] epochs: [88/800] train_loss_con: 216.079
+[GPU0] epochs: [89/800] train_loss_con: 215.801
+[GPU0] epochs: [90/800] train_loss_con: 215.019
+[GPU0] epochs: [91/800] train_loss_con: 214.403
+[GPU0] epochs: [92/800] train_loss_con: 214.406
+[GPU0] epochs: [93/800] train_loss_con: 213.452
+[GPU0] epochs: [94/800] train_loss_con: 213.370
+[GPU0] epochs: [95/800] train_loss_con: 212.059
+[GPU0] epochs: [96/800] train_loss_con: 212.753
+[GPU0] epochs: [97/800] train_loss_con: 211.449
+[GPU0] epochs: [98/800] train_loss_con: 210.973
+[GPU0] epochs: [99/800] train_loss_con: 210.885
+Model saved at: saved_models/mae.bt.rot.timg.wt20.8.dist.e800.ec100.pth
+[GPU0] epochs: [100/800] train_loss_con: 210.222
+[GPU0] epochs: [101/800] train_loss_con: 209.726
+[GPU0] epochs: [102/800] train_loss_con: 209.237
+[GPU0] epochs: [103/800] train_loss_con: 209.290
+[GPU0] epochs: [104/800] train_loss_con: 208.228
+[GPU0] epochs: [105/800] train_loss_con: 207.681
+[GPU0] epochs: [106/800] train_loss_con: 207.568
+[GPU0] epochs: [107/800] train_loss_con: 207.721
+[GPU0] epochs: [108/800] train_loss_con: 206.976
+[GPU0] epochs: [109/800] train_loss_con: 207.123
+[GPU0] epochs: [110/800] train_loss_con: 206.457
+[GPU0] epochs: [111/800] train_loss_con: 206.363
+[GPU0] epochs: [112/800] train_loss_con: 205.310
+[GPU0] epochs: [113/800] train_loss_con: 205.486
+[GPU0] epochs: [114/800] train_loss_con: 203.892
+[GPU0] epochs: [115/800] train_loss_con: 204.135
+[GPU0] epochs: [116/800] train_loss_con: 203.835
+[GPU0] epochs: [117/800] train_loss_con: 203.317
+[GPU0] epochs: [118/800] train_loss_con: 203.237
+[GPU0] epochs: [119/800] train_loss_con: 203.276
+[GPU0] epochs: [120/800] train_loss_con: 202.492
+[GPU0] epochs: [121/800] train_loss_con: 202.112
+[GPU0] epochs: [122/800] train_loss_con: 202.137
+[GPU0] epochs: [123/800] train_loss_con: 200.220
+[GPU0] epochs: [124/800] train_loss_con: 200.740
+[GPU0] epochs: [125/800] train_loss_con: 200.683
+[GPU0] epochs: [126/800] train_loss_con: 200.845
+[GPU0] epochs: [127/800] train_loss_con: 199.966
+[GPU0] epochs: [128/800] train_loss_con: 199.735
+[GPU0] epochs: [129/800] train_loss_con: 199.473
+[GPU0] epochs: [130/800] train_loss_con: 198.681
+[GPU0] epochs: [131/800] train_loss_con: 198.781
+[GPU0] epochs: [132/800] train_loss_con: 198.236
+[GPU0] epochs: [133/800] train_loss_con: 197.928
+[GPU0] epochs: [134/800] train_loss_con: 197.087
+[GPU0] epochs: [135/800] train_loss_con: 197.504
+[GPU0] epochs: [136/800] train_loss_con: 197.379
+[GPU0] epochs: [137/800] train_loss_con: 196.852
+[GPU0] epochs: [138/800] train_loss_con: 196.555
+[GPU0] epochs: [139/800] train_loss_con: 196.255
+[GPU0] epochs: [140/800] train_loss_con: 195.990
+[GPU0] epochs: [141/800] train_loss_con: 195.870
+[GPU0] epochs: [142/800] train_loss_con: 195.743
+[GPU0] epochs: [143/800] train_loss_con: 195.190
+[GPU0] epochs: [144/800] train_loss_con: 194.088
+[GPU0] epochs: [145/800] train_loss_con: 195.026
+[GPU0] epochs: [146/800] train_loss_con: 193.814
+[GPU0] epochs: [147/800] train_loss_con: 193.827
+[GPU0] epochs: [148/800] train_loss_con: 193.165
+[GPU0] epochs: [149/800] train_loss_con: 192.868
+[GPU0] epochs: [150/800] train_loss_con: 192.904
+[GPU0] epochs: [151/800] train_loss_con: 192.587
+[GPU0] epochs: [152/800] train_loss_con: 192.731
+[GPU0] epochs: [153/800] train_loss_con: 192.170
+[GPU0] epochs: [154/800] train_loss_con: 191.741
+[GPU0] epochs: [155/800] train_loss_con: 192.095
+[GPU0] epochs: [156/800] train_loss_con: 191.558
+[GPU0] epochs: [157/800] train_loss_con: 191.173
+[GPU0] epochs: [158/800] train_loss_con: 190.469
+[GPU0] epochs: [159/800] train_loss_con: 190.655
+[GPU0] epochs: [160/800] train_loss_con: 190.371
+[GPU0] epochs: [161/800] train_loss_con: 189.776
+[GPU0] epochs: [162/800] train_loss_con: 189.988
+[GPU0] epochs: [163/800] train_loss_con: 188.982
+[GPU0] epochs: [164/800] train_loss_con: 189.302
+[GPU0] epochs: [165/800] train_loss_con: 188.942
+[GPU0] epochs: [166/800] train_loss_con: 188.823
+[GPU0] epochs: [167/800] train_loss_con: 188.922
+[GPU1] epochs: [1/800] train_loss_con: 1021.072
+[GPU1] epochs: [2/800] train_loss_con: 597.354
+[GPU1] epochs: [3/800] train_loss_con: 489.342
+[GPU1] epochs: [4/800] train_loss_con: 456.003
+[GPU1] epochs: [5/800] train_loss_con: 431.970
+[GPU1] epochs: [6/800] train_loss_con: 411.801
+[GPU1] epochs: [7/800] train_loss_con: 394.779
+[GPU1] epochs: [8/800] train_loss_con: 380.103
+[GPU1] epochs: [9/800] train_loss_con: 369.225
+[GPU1] epochs: [10/800] train_loss_con: 359.760
+[GPU1] epochs: [11/800] train_loss_con: 351.346
+[GPU1] epochs: [12/800] train_loss_con: 344.489
+[GPU1] epochs: [13/800] train_loss_con: 337.684
+[GPU1] epochs: [14/800] train_loss_con: 333.292
+[GPU1] epochs: [15/800] train_loss_con: 328.279
+[GPU1] epochs: [16/800] train_loss_con: 322.964
+[GPU1] epochs: [17/800] train_loss_con: 319.181
+[GPU1] epochs: [18/800] train_loss_con: 314.372
+[GPU1] epochs: [19/800] train_loss_con: 310.196
+[GPU1] epochs: [20/800] train_loss_con: 307.248
+[GPU1] epochs: [21/800] train_loss_con: 303.675
+[GPU1] epochs: [22/800] train_loss_con: 299.393
+[GPU1] epochs: [23/800] train_loss_con: 295.744
+[GPU1] epochs: [24/800] train_loss_con: 290.787
+[GPU1] epochs: [25/800] train_loss_con: 287.559
+[GPU1] epochs: [26/800] train_loss_con: 284.608
+[GPU1] epochs: [27/800] train_loss_con: 282.153
+[GPU1] epochs: [28/800] train_loss_con: 279.192
+[GPU1] epochs: [29/800] train_loss_con: 276.292
+[GPU1] epochs: [30/800] train_loss_con: 274.808
+[GPU1] epochs: [31/800] train_loss_con: 270.915
+[GPU1] epochs: [32/800] train_loss_con: 270.334
+[GPU1] epochs: [33/800] train_loss_con: 267.337
+[GPU1] epochs: [34/800] train_loss_con: 265.874
+[GPU1] epochs: [35/800] train_loss_con: 263.500
+[GPU1] epochs: [36/800] train_loss_con: 262.023
+[GPU1] epochs: [37/800] train_loss_con: 259.671
+[GPU1] epochs: [38/800] train_loss_con: 258.543
+[GPU1] epochs: [39/800] train_loss_con: 256.657
+[GPU1] epochs: [40/800] train_loss_con: 254.783
+[GPU1] epochs: [41/800] train_loss_con: 254.340
+[GPU1] epochs: [42/800] train_loss_con: 252.693
+[GPU1] epochs: [43/800] train_loss_con: 250.714
+[GPU1] epochs: [44/800] train_loss_con: 249.481
+[GPU1] epochs: [45/800] train_loss_con: 248.358
+[GPU1] epochs: [46/800] train_loss_con: 247.907
+[GPU1] epochs: [47/800] train_loss_con: 247.025
+[GPU1] epochs: [48/800] train_loss_con: 245.115
+[GPU1] epochs: [49/800] train_loss_con: 242.904
+[GPU1] epochs: [50/800] train_loss_con: 243.977
+[GPU1] epochs: [51/800] train_loss_con: 242.335
+[GPU1] epochs: [52/800] train_loss_con: 241.665
+[GPU1] epochs: [53/800] train_loss_con: 240.271
+[GPU1] epochs: [54/800] train_loss_con: 239.228
+[GPU1] epochs: [55/800] train_loss_con: 237.615
+[GPU1] epochs: [56/800] train_loss_con: 236.859
+[GPU1] epochs: [57/800] train_loss_con: 236.504
+[GPU1] epochs: [58/800] train_loss_con: 236.095
+[GPU1] epochs: [59/800] train_loss_con: 234.820
+[GPU1] epochs: [60/800] train_loss_con: 233.292
+[GPU1] epochs: [61/800] train_loss_con: 233.109
+[GPU1] epochs: [62/800] train_loss_con: 231.774
+[GPU1] epochs: [63/800] train_loss_con: 231.702
+[GPU1] epochs: [64/800] train_loss_con: 230.722
+[GPU1] epochs: [65/800] train_loss_con: 230.078
+[GPU1] epochs: [66/800] train_loss_con: 229.691
+[GPU1] epochs: [67/800] train_loss_con: 228.483
+[GPU1] epochs: [68/800] train_loss_con: 227.837
+[GPU1] epochs: [69/800] train_loss_con: 227.211
+[GPU1] epochs: [70/800] train_loss_con: 225.493
+[GPU1] epochs: [71/800] train_loss_con: 225.870
+[GPU1] epochs: [72/800] train_loss_con: 226.294
+[GPU1] epochs: [73/800] train_loss_con: 223.995
+[GPU1] epochs: [74/800] train_loss_con: 223.891
+[GPU1] epochs: [75/800] train_loss_con: 223.575
+[GPU1] epochs: [76/800] train_loss_con: 223.084
+[GPU1] epochs: [77/800] train_loss_con: 222.458
+[GPU1] epochs: [78/800] train_loss_con: 220.533
+[GPU1] epochs: [79/800] train_loss_con: 221.559
+[GPU1] epochs: [80/800] train_loss_con: 220.235
+[GPU1] epochs: [81/800] train_loss_con: 218.738
+[GPU1] epochs: [82/800] train_loss_con: 219.352
+[GPU1] epochs: [83/800] train_loss_con: 218.523
+[GPU1] epochs: [84/800] train_loss_con: 217.634
+[GPU1] epochs: [85/800] train_loss_con: 217.349
+[GPU1] epochs: [86/800] train_loss_con: 216.812
+[GPU1] epochs: [87/800] train_loss_con: 216.481
+[GPU1] epochs: [88/800] train_loss_con: 216.081
+[GPU1] epochs: [89/800] train_loss_con: 215.806
+[GPU1] epochs: [90/800] train_loss_con: 215.023
+[GPU1] epochs: [91/800] train_loss_con: 214.398
+[GPU1] epochs: [92/800] train_loss_con: 214.400
+[GPU1] epochs: [93/800] train_loss_con: 213.454
+[GPU1] epochs: [94/800] train_loss_con: 213.372
+[GPU1] epochs: [95/800] train_loss_con: 212.062
+[GPU1] epochs: [96/800] train_loss_con: 212.754
+[GPU1] epochs: [97/800] train_loss_con: 211.450
+[GPU1] epochs: [98/800] train_loss_con: 210.979
+[GPU1] epochs: [99/800] train_loss_con: 210.882
+[GPU1] epochs: [100/800] train_loss_con: 210.221
+[GPU1] epochs: [101/800] train_loss_con: 209.725
+[GPU1] epochs: [102/800] train_loss_con: 209.233
+[GPU1] epochs: [103/800] train_loss_con: 209.292
+[GPU1] epochs: [104/800] train_loss_con: 208.228
+[GPU1] epochs: [105/800] train_loss_con: 207.682
+[GPU1] epochs: [106/800] train_loss_con: 207.568
+[GPU1] epochs: [107/800] train_loss_con: 207.719
+[GPU1] epochs: [108/800] train_loss_con: 206.976
+[GPU1] epochs: [109/800] train_loss_con: 207.122
+[GPU1] epochs: [110/800] train_loss_con: 206.461
+[GPU1] epochs: [111/800] train_loss_con: 206.359
+[GPU1] epochs: [112/800] train_loss_con: 205.309
+[GPU1] epochs: [113/800] train_loss_con: 205.485
+[GPU1] epochs: [114/800] train_loss_con: 203.891
+[GPU1] epochs: [115/800] train_loss_con: 204.135
+[GPU1] epochs: [116/800] train_loss_con: 203.834
+[GPU1] epochs: [117/800] train_loss_con: 203.324
+[GPU1] epochs: [118/800] train_loss_con: 203.237
+[GPU1] epochs: [119/800] train_loss_con: 203.283
+[GPU1] epochs: [120/800] train_loss_con: 202.492
+[GPU1] epochs: [121/800] train_loss_con: 202.111
+[GPU1] epochs: [122/800] train_loss_con: 202.139
+[GPU1] epochs: [123/800] train_loss_con: 200.219
+[GPU1] epochs: [124/800] train_loss_con: 200.740
+[GPU1] epochs: [125/800] train_loss_con: 200.685
+[GPU1] epochs: [126/800] train_loss_con: 200.844
+[GPU1] epochs: [127/800] train_loss_con: 199.971
+[GPU1] epochs: [128/800] train_loss_con: 199.734
+[GPU1] epochs: [129/800] train_loss_con: 199.467
+[GPU1] epochs: [130/800] train_loss_con: 198.687
+[GPU1] epochs: [131/800] train_loss_con: 198.783
+[GPU1] epochs: [132/800] train_loss_con: 198.234
+[GPU1] epochs: [133/800] train_loss_con: 197.928
+[GPU1] epochs: [134/800] train_loss_con: 197.083
+[GPU1] epochs: [135/800] train_loss_con: 197.503
+[GPU1] epochs: [136/800] train_loss_con: 197.384
+[GPU1] epochs: [137/800] train_loss_con: 196.852
+[GPU1] epochs: [138/800] train_loss_con: 196.551
+[GPU1] epochs: [139/800] train_loss_con: 196.259
+[GPU1] epochs: [140/800] train_loss_con: 195.992
+[GPU1] epochs: [141/800] train_loss_con: 195.869
+[GPU1] epochs: [142/800] train_loss_con: 195.739
+[GPU1] epochs: [143/800] train_loss_con: 195.191
+[GPU1] epochs: [144/800] train_loss_con: 194.088
+[GPU1] epochs: [145/800] train_loss_con: 195.029
+[GPU1] epochs: [146/800] train_loss_con: 193.813
+[GPU1] epochs: [147/800] train_loss_con: 193.829
+[GPU1] epochs: [148/800] train_loss_con: 193.165
+[GPU1] epochs: [149/800] train_loss_con: 192.867
+[GPU1] epochs: [150/800] train_loss_con: 192.906
+[GPU1] epochs: [151/800] train_loss_con: 192.587
+[GPU1] epochs: [152/800] train_loss_con: 192.729
+[GPU1] epochs: [153/800] train_loss_con: 192.176
+[GPU1] epochs: [154/800] train_loss_con: 191.738
+[GPU1] epochs: [155/800] train_loss_con: 192.097
+[GPU1] epochs: [156/800] train_loss_con: 191.566
+[GPU1] epochs: [157/800] train_loss_con: 191.176
+[GPU1] epochs: [158/800] train_loss_con: 190.468
+[GPU1] epochs: [159/800] train_loss_con: 190.654
+[GPU1] epochs: [160/800] train_loss_con: 190.369
+[GPU1] epochs: [161/800] train_loss_con: 189.777
+[GPU1] epochs: [162/800] train_loss_con: 189.986
+[GPU1] epochs: [163/800] train_loss_con: 188.981
+[GPU1] epochs: [164/800] train_loss_con: 189.306
+[GPU1] epochs: [165/800] train_loss_con: 188.943
+[GPU1] epochs: [166/800] train_loss_con: 188.821
+[GPU1] epochs: [167/800] train_loss_con: 188.918
+[GPU1] epochs: [168/800] train_loss_con: 188.335
+[GPU1] epochs: [169/800] train_loss_con: 187.678

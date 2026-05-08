@@ -510,3 +510,4 @@ Model saved at: saved_models/mae.clr.rot.timg.wt0.8wt20.5.damp.ec200.pth
 [GPU1] epochs: [254/400] train_loss_con: 4.551
 [GPU1] epochs: [255/400] train_loss_con: 4.553
 [GPU1] epochs: [256/400] train_loss_con: 4.548
+[GPU1] epochs: [257/400] train_loss_con: 4.549
