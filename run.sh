@@ -84,6 +84,8 @@
 
 # OPENBLAS_NUM_THREADS=1 CUDA_VISIBLE_DEVICES=0,1 nohup python -u train.py --config configs/mae_bt_rot.yaml --dataset img100 --gpu 0 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 256 --tbs 512 --save_path mae.bt.rot.i100.vit.t.8.dist.pth --model vit_t_8 --nw 4 --pf 2 --wt 0.1 --wt2 0.8 --distributed > logs/mae.bt.rot.i100.vit.t.8.dist.log &
 
+# OPENBLAS_NUM_THREADS=1 CUDA_VISIBLE_DEVICES=4,5,6,7 nohup python -u train.py --config configs/mae_bt_rot.yaml --dataset img100 --gpu 0 --epochs 400 --lr 1.5e-4 --opt AdamW --wd 0.05 --warmup_epochs 20 --bs 128 --tbs 512 --save_path mae.bt.rot.i100.vit.t.16.dist.v2.pth --model vit_t_16 --nw 4 --pf 2 --wt 0.1 --wt2 0.8 --distributed > logs/mae.bt.rot.i100.vit.t.16.dist.v2.log &
+
 ###################### ** Test code ** ################################
 
 # nohup python -u test.py --dataset img100 --saved_path saved_models/mae.i100.pth --gpu 2 --model vit --linprobe --lreg --knn --cmet >> logs/mae.i100.log &
