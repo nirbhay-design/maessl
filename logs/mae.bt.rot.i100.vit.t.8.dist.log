@@ -4918,3 +4918,131 @@ ss: 0.046
 dbs: 3.008
 pretraining time: 42h 4m 28s
 linear probing time: 3h 34m 12s
+Traceback (most recent call last):
+  File "/data1/home/nirbhays/maessl/test_gs.py", line 6, in <module>
+    from train_utils import load_dataset, progress, yaml_loader, get_tsne_knn_logreg, format_time, get_vit_config_test
+  File "/data1/home/nirbhays/maessl/train_utils.py", line 22, in <module>
+    import umap
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/umap/__init__.py", line 2, in <module>
+    from .umap_ import UMAP
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/umap/umap_.py", line 48, in <module>
+    from pynndescent import NNDescent
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/pynndescent/__init__.py", line 5, in <module>
+    from .pynndescent_ import NNDescent, PyNNDescentTransformer
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/pynndescent/pynndescent_.py", line 22, in <module>
+    import pynndescent.sparse as sparse
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/pynndescent/sparse.py", line 10, in <module>
+    from pynndescent.distances import (
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/pynndescent/distances.py", line 1117, in <module>
+    def proxy_symmetric_kl(x, y):
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/decorators.py", line 234, in wrapper
+    disp.compile(sig)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/dispatcher.py", line 908, in compile
+    cres = self._compiler.compile(args, return_type)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/dispatcher.py", line 80, in compile
+    status, retval = self._compile_cached(args, return_type)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/dispatcher.py", line 94, in _compile_cached
+    retval = self._compile_core(args, return_type)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/dispatcher.py", line 107, in _compile_core
+    cres = compiler.compile_extra(self.targetdescr.typing_context,
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/compiler.py", line 739, in compile_extra
+    return pipeline.compile_extra(func)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/compiler.py", line 439, in compile_extra
+    return self._compile_bytecode()
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/compiler.py", line 505, in _compile_bytecode
+    return self._compile_core()
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/compiler.py", line 473, in _compile_core
+    pm.run(self.state)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/compiler_machinery.py", line 356, in run
+    self._runPass(idx, pass_inst, state)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/compiler_lock.py", line 35, in _acquire_compile_lock
+    return func(*args, **kwargs)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/compiler_machinery.py", line 311, in _runPass
+    mutated |= check(pss.run_pass, internal_state)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/compiler_machinery.py", line 272, in check
+    mangled = func(compiler_state)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/typed_passes.py", line 472, in run_pass
+    lower.lower()
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/lowering.py", line 193, in lower
+    self.lower_normal_function(self.fndesc)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/lowering.py", line 232, in lower_normal_function
+    entry_block_tail = self.lower_function_body()
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/lowering.py", line 262, in lower_function_body
+    self.lower_block(block)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/lowering.py", line 276, in lower_block
+    self.lower_inst(inst)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/lowering.py", line 561, in lower_inst
+    self.delvar(inst.value)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/lowering.py", line 1596, in delvar
+    self.decref(fetype, llval)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/numba/core/lowering.py", line 1641, in decref
+    with debuginfo.suspend_emission(self.builder):
+  File "/data1/home/nirbhays/.local/share/uv/python/cpython-3.10-linux-x86_64-gnu/lib/python3.10/contextlib.py", line 130, in __enter__
+    def __enter__(self):
+KeyboardInterrupt
+Namespace(dataset='img100', saved_path='saved_models/mae.bt.rot.i100.vit.t.8.dist.pth', gpu=2, model='vit_t_8', verbose=False, epochs=100, eval_every=10, knn=True, lreg=True, linprobe=True, tsne=False, umap=False, cmet=True, nw=4, pf=2, aug='v1', lrs=[5.0, 10.0, 15.0, 20.0, 30.0])
+MAE Encoder with params: {'img_size': 224, 'in_chans': 3, 'patch_size': 8, 'embed_dim': 192, 'depth': 12, 'num_heads': 3, 'mlp_ratio': 4}
+<All keys matched successfully>
+sweeping through lr: [5.0, 10.0, 15.0, 20.0, 30.0]
+sweeping through wd: [1e-06, 0.0001, 0.0]
+Starting Hyperparameter Sweep on 2...
+===> using linear mlp
+linear probe with LR: 5.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 10.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 15.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 15.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 15.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 20.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 20.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 20.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 30.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 30.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 30.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 5.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0, Cosine: True
+===> using linear mlp
+linear probe with LR: 10.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0, Cosine: True
+===> using linear mlp
+linear probe with LR: 15.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 15.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 15.0, WD: 0.0, Cosine: True
+===> using linear mlp
+linear probe with LR: 20.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 20.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 20.0, WD: 0.0, Cosine: True
+===> using linear mlp
+linear probe with LR: 30.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 30.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 30.0, WD: 0.0, Cosine: True
