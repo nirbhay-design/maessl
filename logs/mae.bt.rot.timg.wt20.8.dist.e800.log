@@ -5719,3 +5719,133 @@ ss: 0.015
 dbs: 3.540
 pretraining time: 37h 33m 46s
 linear probing time: 1h 45m 15s
+Namespace(dataset='timg', saved_path='saved_models/mae.bt.rot.timg.wt20.8.dist.e800.pth', gpu=1, model='vit', verbose=False, epochs=100, eval_every=10, knn=True, lreg=True, linprobe=True, tsne=False, umap=False, cmet=True, nw=4, pf=2, aug='v1', lrs=[5.0, 10.0, 15.0, 20.0, 30.0])
+MAE Encoder with params: {'img_size': 64, 'in_chans': 3, 'patch_size': 4, 'embed_dim': 384, 'depth': 12, 'num_heads': 6, 'mlp_ratio': 4}
+<All keys matched successfully>
+sweeping through lr: [5.0, 10.0, 15.0, 20.0, 30.0]
+sweeping through wd: [1e-06, 0.0001, 0.0]
+Starting Hyperparameter Sweep on 1...
+===> using linear mlp
+linear probe with LR: 5.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 10.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 15.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 15.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 15.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 20.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 20.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 20.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 30.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 30.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 30.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 5.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0, Cosine: True
+===> using linear mlp
+linear probe with LR: 10.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0, Cosine: True
+===> using linear mlp
+linear probe with LR: 15.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 15.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 15.0, WD: 0.0, Cosine: True
+===> using linear mlp
+linear probe with LR: 20.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 20.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 20.0, WD: 0.0, Cosine: True
+===> using linear mlp
+linear probe with LR: 30.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 30.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 30.0, WD: 0.0, Cosine: True
+--------------------------------
+[GPU1] Test Accuracy for probe0 at epoch: 0: 0.334
+[GPU1] Test Accuracy for probe1 at epoch: 0: 0.3
+[GPU1] Test Accuracy for probe2 at epoch: 0: 0.335
+[GPU1] Test Accuracy for probe3 at epoch: 0: 0.356
+[GPU1] Test Accuracy for probe4 at epoch: 0: 0.274
+[GPU1] Test Accuracy for probe5 at epoch: 0: 0.357
+[GPU1] Test Accuracy for probe6 at epoch: 0: 0.365
+[GPU1] Test Accuracy for probe7 at epoch: 0: 0.243
+[GPU1] Test Accuracy for probe8 at epoch: 0: 0.367
+[GPU1] Test Accuracy for probe9 at epoch: 0: 0.354
+[GPU1] Test Accuracy for probe10 at epoch: 0: 0.188
+[GPU1] Test Accuracy for probe11 at epoch: 0: 0.355
+[GPU1] Test Accuracy for probe12 at epoch: 0: 0.312
+[GPU1] Test Accuracy for probe13 at epoch: 0: 0.041
+[GPU1] Test Accuracy for probe14 at epoch: 0: 0.357
+[GPU1] Test Accuracy for probe15 at epoch: 0: 0.334
+[GPU1] Test Accuracy for probe16 at epoch: 0: 0.3
+[GPU1] Test Accuracy for probe17 at epoch: 0: 0.335
+[GPU1] Test Accuracy for probe18 at epoch: 0: 0.355
+[GPU1] Test Accuracy for probe19 at epoch: 0: 0.275
+[GPU1] Test Accuracy for probe20 at epoch: 0: 0.357
+[GPU1] Test Accuracy for probe21 at epoch: 0: 0.364
+[GPU1] Test Accuracy for probe22 at epoch: 0: 0.243
+[GPU1] Test Accuracy for probe23 at epoch: 0: 0.366
+[GPU1] Test Accuracy for probe24 at epoch: 0: 0.354
+[GPU1] Test Accuracy for probe25 at epoch: 0: 0.188
+[GPU1] Test Accuracy for probe26 at epoch: 0: 0.355
+[GPU1] Test Accuracy for probe27 at epoch: 0: 0.337
+[GPU1] Test Accuracy for probe28 at epoch: 0: 0.119
+[GPU1] Test Accuracy for probe29 at epoch: 0: 0.334
+--------------------------------
+--------------------------------
+[GPU1] epochs: [1/100] train_acc: 0.199 train_loss_sup: 4.333
+[GPU1] epochs: [1/100] train_acc: 0.179 train_loss_sup: 4.507
+[GPU1] epochs: [1/100] train_acc: 0.200 train_loss_sup: 4.331
+[GPU1] epochs: [1/100] train_acc: 0.231 train_loss_sup: 3.938
+[GPU1] epochs: [1/100] train_acc: 0.194 train_loss_sup: 4.302
+[GPU1] epochs: [1/100] train_acc: 0.231 train_loss_sup: 3.934
+[GPU1] epochs: [1/100] train_acc: 0.244 train_loss_sup: 3.778
+[GPU1] epochs: [1/100] train_acc: 0.189 train_loss_sup: 4.288
+[GPU1] epochs: [1/100] train_acc: 0.244 train_loss_sup: 3.773
+[GPU1] epochs: [1/100] train_acc: 0.247 train_loss_sup: 3.733
+[GPU1] epochs: [1/100] train_acc: 0.175 train_loss_sup: 4.398
+[GPU1] epochs: [1/100] train_acc: 0.248 train_loss_sup: 3.727
+[GPU1] epochs: [1/100] train_acc: 0.217 train_loss_sup: 8.629
+[GPU1] epochs: [1/100] train_acc: 0.094 train_loss_sup: 17.839
+[GPU1] epochs: [1/100] train_acc: 0.225 train_loss_sup: 7.194
+[GPU1] epochs: [1/100] train_acc: 0.200 train_loss_sup: 4.333
+[GPU1] epochs: [1/100] train_acc: 0.179 train_loss_sup: 4.507
+[GPU1] epochs: [1/100] train_acc: 0.200 train_loss_sup: 4.331
+[GPU1] epochs: [1/100] train_acc: 0.231 train_loss_sup: 3.938
+[GPU1] epochs: [1/100] train_acc: 0.194 train_loss_sup: 4.302
+[GPU1] epochs: [1/100] train_acc: 0.231 train_loss_sup: 3.934
+[GPU1] epochs: [1/100] train_acc: 0.244 train_loss_sup: 3.778
+[GPU1] epochs: [1/100] train_acc: 0.189 train_loss_sup: 4.288
+[GPU1] epochs: [1/100] train_acc: 0.244 train_loss_sup: 3.773
+[GPU1] epochs: [1/100] train_acc: 0.247 train_loss_sup: 3.733
+[GPU1] epochs: [1/100] train_acc: 0.176 train_loss_sup: 4.398
+[GPU1] epochs: [1/100] train_acc: 0.248 train_loss_sup: 3.726
+[GPU1] epochs: [1/100] train_acc: 0.218 train_loss_sup: 8.115
+[GPU1] epochs: [1/100] train_acc: 0.094 train_loss_sup: 16.782
+[GPU1] epochs: [1/100] train_acc: 0.221 train_loss_sup: 8.031
+--------------------------------
