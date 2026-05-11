@@ -221,22 +221,37 @@
 ### attention maps visualization 
 
 images=(
-    # "datasets/imagenet100/train.X2/n01443537/n01443537_129.JPEG" 
-    # "datasets/imagenet100/train.X3/n01601694/n01601694_21.JPEG" 
-    # "datasets/imagenet100/train.X4/n01855672/n01855672_47.JPEG"
-    # "datasets/imagenet100/train.X4/n01770393/n01770393_137.JPEG"
-    # "datasets/imagenet100/train.X4/n01491361/n01491361_57.JPEG"
-    # "datasets/imagenet100/train.X4/n01806143/n01806143_130.JPEG"
-    # "datasets/imagenet100/train.X4/n01755581/n01755581_95.JPEG"
-    # "datasets/imagenet100/train.X2/n01608432/n01608432_56.JPEG"
-    # "datasets/imagenet100/train.X1/n01820546/n01820546_27.JPEG"
-    # "datasets/imagenet100/train.X3/n02006656/n02006656_192.JPEG"
+    "datasets/imagenet100/train.X2/n01443537/n01443537_129.JPEG" 
+    "datasets/imagenet100/train.X3/n01601694/n01601694_21.JPEG" 
+    "datasets/imagenet100/train.X4/n01855672/n01855672_47.JPEG"
+    "datasets/imagenet100/train.X4/n01770393/n01770393_137.JPEG"
+    "datasets/imagenet100/train.X4/n01491361/n01491361_57.JPEG"
+    "datasets/imagenet100/train.X4/n01806143/n01806143_130.JPEG"
+    "datasets/imagenet100/train.X4/n01755581/n01755581_95.JPEG"
+    "datasets/imagenet100/train.X2/n01608432/n01608432_56.JPEG"
+    "datasets/imagenet100/train.X1/n01820546/n01820546_27.JPEG"
+    "datasets/imagenet100/train.X3/n02006656/n02006656_192.JPEG"
 )
 
-# models=(
-#     "saved_models/mae.clr.rot.i100.wt0.8wt20.1.pth" 
+models=(
+    # "saved_models/mae.clr.rot.i100.wt0.8wt20.1.pth" 
 #     "saved_models/mae.bt.rot.i100.pth" 
-#     "saved_models/mae.i100.pth")
+#     "saved_models/mae.i100.pth"
+    "saved_models/mae.bt.rot.i100.vit.t.8.dist.pth"
+)
+
+for img in "${images[@]}"; do
+    echo "Processing image: $img"
+    
+    # Loop through each model for the current image
+    for mod in "${models[@]}"; do
+        echo "  Running model: $mod"
+        python attention_vis.py --saved_path "$mod" --gpu 0 --image "$img" --threshold 0.6 --model vit_t_8
+    done
+    
+    echo "Finished processing $img across all models."
+    echo "--------------------------------------------------"
+done
 
 # for img in "${images[@]}"; do
 #     echo "Processing image: $img"

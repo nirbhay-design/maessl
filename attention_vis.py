@@ -10,12 +10,13 @@ import torchvision.transforms as transforms
 import torchvision.utils as vutils
 
 from src.mae import MAEEncoder
-from train_utils import yaml_loader
+from train_utils import yaml_loader, get_vit_config_test
 from functools import partial
 
 def get_args():
     parser = argparse.ArgumentParser(description="Training script for linear probing")
     parser.add_argument("--saved_path", type=str, default="model.pth", required=True, help="path for pretrained model")
+    parser.add_argument("--model", type=str, default="vit", help="vit/vit_t_8/vit_s16")
     parser.add_argument("--image", type=str, default="test_image.jpg", required=True, help="image to visualize attention maps")
     parser.add_argument("--gpu", type=int, default=0, help="gpu_id")
     parser.add_argument("--output_dir", type=str, default="attention_maps", help="directory to save outputs")
@@ -55,8 +56,8 @@ if __name__ == "__main__":
     # 1. Setup Model
     config = yaml_loader("configs/test.yaml")
     model_params = config["mae_model_params"]
+    model_params = get_vit_config_test(args.model, model_params, "img100")
     patch_size = model_params["patch_size"]
-    
     model = MAEEncoder(img_size=model_params["img_size"], patch_size=patch_size, in_chans=model_params["in_chans"],
                 embed_dim=model_params["embed_dim"], depth=model_params["depth"], num_heads=model_params["num_heads"],
                 mlp_ratio=model_params["mlp_ratio"], norm_layer=partial(nn.LayerNorm, eps=1e-6))
