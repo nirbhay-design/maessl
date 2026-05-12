@@ -10,7 +10,7 @@ YAML: configs/mae_bt_rot.yaml
 ==> n_epochs_mlp: 100
 ==> gpu_id: 0
 ==> opt: AdamW
-==> opt_params: {'lr': 0.00015, 'weight_decay': 0.05, 'betas': (0.9, 0.95)}
+==> opt_params: {'lr': 0.0003, 'weight_decay': 0.05, 'betas': (0.9, 0.95)}
 ==> schedular_params: {'T_max': 380, 'eta_min': 0.001}
 ==> mlp_opt: SGD
 ==> mlp_opt_params: {'lr': 0.01, 'momentum': 0.9}
@@ -27,7 +27,7 @@ YAML: configs/mae_bt_rot.yaml
 ==> aug: v1
 ==> damp_rot: False
 --------------------------------------------------
-Launching DDP across 2 GPUs
+Launching DDP across 4 GPUs
 MaskedAutoencoderViT(
   (base_encoder): MAEEncoder(
     (patch_embed): PatchEmbed(
@@ -150,7 +150,7 @@ Compose(
 using optimizer: AdamW
 # of Training Images: 130000
 # of Testing Images: 5000
-schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x721ab9349780>
+schedular: <torch.optim.lr_scheduler.SequentialLR object at 0x7cfec5555480>
 loss function: bt
 loss: BT(lambda=0.005)
 param config for: mae_bt_rot
@@ -235,7 +235,7 @@ param config for: mae_bt_rot
       )
     )
   )
-), 'train_loader': <torch.utils.data.dataloader.DataLoader object at 0x721ab93492d0>, 'scaler': <torch.cuda.amp.grad_scaler.GradScaler object at 0x721ab9349810>, 'loss_base': BT(lambda=0.005), 'optimizer': AdamW (
+), 'train_loader': <torch.utils.data.dataloader.DataLoader object at 0x7cfec5555300>, 'scaler': <torch.cuda.amp.grad_scaler.GradScaler object at 0x7cfec55556f0>, 'loss_base': BT(lambda=0.005), 'optimizer': AdamW (
 Parameter Group 0
     amsgrad: False
     betas: (0.9, 0.95)
@@ -245,11 +245,11 @@ Parameter Group 0
     eps: 1e-08
     foreach: None
     fused: True
-    initial_lr: 0.00015
-    lr: 1.4999999999999997e-10
+    initial_lr: 0.0003
+    lr: 2.9999999999999995e-10
     maximize: False
     weight_decay: 0.05
-), 'opt_lr_schedular': <torch.optim.lr_scheduler.SequentialLR object at 0x721ab9349780>, 'progress': <function progress at 0x721ab91e4af0>, 'n_epochs': 400, 'device_id': 0, 'eval_id': 0, 'return_logs': False, 'weight': {'wt1': 0.1, 'wt2': 0.8}, 'rotnet': DistributedDataParallel(
+), 'opt_lr_schedular': <torch.optim.lr_scheduler.SequentialLR object at 0x7cfec5555480>, 'progress': <function progress at 0x7cfec52d09d0>, 'n_epochs': 400, 'device_id': 0, 'eval_id': 0, 'return_logs': False, 'weight': {'wt1': 0.1, 'wt2': 0.8}, 'rotnet': DistributedDataParallel(
   (module): rotnet_cls(
     (proj): Sequential(
       (0): Linear(in_features=384, out_features=768, bias=False)
@@ -261,7 +261,7 @@ Parameter Group 0
       (6): Linear(in_features=768, out_features=4, bias=True)
     )
   )
-), 'save_model': functools.partial(<function save_model at 0x721ab91e4940>, path='saved_models/mae.bt.rot.i100.vit.s.8.dist.pth')}
+), 'save_model': functools.partial(<function save_model at 0x7cfec52d0940>, path='saved_models/mae.bt.rot.i100.vit.s.8.dist.pth')}
 dict_keys(['train_algo', 'model', 'train_loader', 'scaler', 'loss_base', 'optimizer', 'opt_lr_schedular', 'progress', 'n_epochs', 'device_id', 'eval_id', 'return_logs', 'weight', 'rotnet', 'save_model'])
 ### mae + bt + rotnet Training begins
 rotnet_cls(
@@ -387,7 +387,7 @@ param config for: mae_bt_rot
       )
     )
   )
-), 'train_loader': <torch.utils.data.dataloader.DataLoader object at 0x79a2dfb851b0>, 'scaler': <torch.cuda.amp.grad_scaler.GradScaler object at 0x79a2dfb854e0>, 'loss_base': BT(lambda=0.005), 'optimizer': AdamW (
+), 'train_loader': <torch.utils.data.dataloader.DataLoader object at 0x78f48f0116f0>, 'scaler': <torch.cuda.amp.grad_scaler.GradScaler object at 0x78f48f011f60>, 'loss_base': BT(lambda=0.005), 'optimizer': AdamW (
 Parameter Group 0
     amsgrad: False
     betas: (0.9, 0.95)
@@ -397,11 +397,11 @@ Parameter Group 0
     eps: 1e-08
     foreach: None
     fused: True
-    initial_lr: 0.00015
-    lr: 1.4999999999999997e-10
+    initial_lr: 0.0003
+    lr: 2.9999999999999995e-10
     maximize: False
     weight_decay: 0.05
-), 'opt_lr_schedular': <torch.optim.lr_scheduler.SequentialLR object at 0x79a2dfb85690>, 'progress': <function progress at 0x79a2df7c0af0>, 'n_epochs': 400, 'device_id': 1, 'eval_id': 0, 'return_logs': False, 'weight': {'wt1': 0.1, 'wt2': 0.8}, 'rotnet': DistributedDataParallel(
+), 'opt_lr_schedular': <torch.optim.lr_scheduler.SequentialLR object at 0x78f48f012440>, 'progress': <function progress at 0x78f48f31af80>, 'n_epochs': 400, 'device_id': 3, 'eval_id': 0, 'return_logs': False, 'weight': {'wt1': 0.1, 'wt2': 0.8}, 'rotnet': DistributedDataParallel(
   (module): rotnet_cls(
     (proj): Sequential(
       (0): Linear(in_features=384, out_features=768, bias=False)
@@ -413,5 +413,307 @@ Parameter Group 0
       (6): Linear(in_features=768, out_features=4, bias=True)
     )
   )
-), 'save_model': functools.partial(<function save_model at 0x79a2df7c0940>, path='saved_models/mae.bt.rot.i100.vit.s.8.dist.pth')}
+), 'save_model': functools.partial(<function save_model at 0x78f48f31ab00>, path='saved_models/mae.bt.rot.i100.vit.s.8.dist.pth')}
+dict_keys(['train_algo', 'model', 'train_loader', 'scaler', 'loss_base', 'optimizer', 'opt_lr_schedular', 'progress', 'n_epochs', 'device_id', 'eval_id', 'return_logs', 'weight', 'rotnet', 'save_model'])
+rotnet_cls(
+  (proj): Sequential(
+    (0): Linear(in_features=384, out_features=768, bias=False)
+    (1): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=768, out_features=768, bias=False)
+    (4): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=768, out_features=4, bias=True)
+  )
+)
+augmentation for mae_bt_rot: 
+Compose(
+    RandomResizedCrop(size=(224, 224), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    GaussianBlur(p = 1.0)
+    Solarization(p = 0.0)
+    ToTensor()
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+)
+Compose(
+    RandomResizedCrop(size=(224, 224), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    GaussianBlur(p = 0.1)
+    Solarization(p = 0.1)
+    ToTensor()
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+)
+using optimizer: AdamW
+loss function: bt
+loss: BT(lambda=0.005)
+param config for: mae_bt_rot
+{'train_algo': 'mae_bt_rot', 'model': DistributedDataParallel(
+  (module): MaskedAutoencoderViT(
+    (base_encoder): MAEEncoder(
+      (patch_embed): PatchEmbed(
+        (proj): Conv2d(3, 384, kernel_size=(8, 8), stride=(8, 8))
+        (norm): Identity()
+      )
+      (blocks): ModuleList(
+        (0-11): 12 x Block(
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+          (attn): Attention(
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (q_norm): Identity()
+            (k_norm): Identity()
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (ls1): Identity()
+          (drop_path1): Identity()
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (ls2): Identity()
+          (drop_path2): Identity()
+        )
+      )
+      (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+    )
+    (decoder): MAEDecoder(
+      (decoder_embed): Linear(in_features=384, out_features=256, bias=True)
+      (decoder_blocks): ModuleList(
+        (0-3): 4 x Block(
+          (norm1): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+          (attn): Attention(
+            (qkv): Linear(in_features=256, out_features=768, bias=True)
+            (q_norm): Identity()
+            (k_norm): Identity()
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (ls1): Identity()
+          (drop_path1): Identity()
+          (norm2): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (ls2): Identity()
+          (drop_path2): Identity()
+        )
+      )
+      (decoder_norm): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+      (decoder_pred): Linear(in_features=256, out_features=192, bias=True)
+    )
+    (proj): bt_proj(
+      (proj): Sequential(
+        (0): Linear(in_features=384, out_features=8192, bias=False)
+        (1): SyncBatchNorm(8192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU()
+        (3): Linear(in_features=8192, out_features=8192, bias=False)
+        (4): SyncBatchNorm(8192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU()
+        (6): Linear(in_features=8192, out_features=8192, bias=True)
+        (7): SyncBatchNorm(8192, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+  )
+), 'train_loader': <torch.utils.data.dataloader.DataLoader object at 0x7254ab21d5d0>, 'scaler': <torch.cuda.amp.grad_scaler.GradScaler object at 0x7254ab21da20>, 'loss_base': BT(lambda=0.005), 'optimizer': AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.95)
+    capturable: False
+    decoupled_weight_decay: True
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: True
+    initial_lr: 0.0003
+    lr: 2.9999999999999995e-10
+    maximize: False
+    weight_decay: 0.05
+), 'opt_lr_schedular': <torch.optim.lr_scheduler.SequentialLR object at 0x7254ab21d6f0>, 'progress': <function progress at 0x7254ab3b89d0>, 'n_epochs': 400, 'device_id': 1, 'eval_id': 0, 'return_logs': False, 'weight': {'wt1': 0.1, 'wt2': 0.8}, 'rotnet': DistributedDataParallel(
+  (module): rotnet_cls(
+    (proj): Sequential(
+      (0): Linear(in_features=384, out_features=768, bias=False)
+      (1): SyncBatchNorm(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU()
+      (3): Linear(in_features=768, out_features=768, bias=False)
+      (4): SyncBatchNorm(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (5): ReLU()
+      (6): Linear(in_features=768, out_features=4, bias=True)
+    )
+  )
+), 'save_model': functools.partial(<function save_model at 0x7254ab3b8940>, path='saved_models/mae.bt.rot.i100.vit.s.8.dist.pth')}
+dict_keys(['train_algo', 'model', 'train_loader', 'scaler', 'loss_base', 'optimizer', 'opt_lr_schedular', 'progress', 'n_epochs', 'device_id', 'eval_id', 'return_logs', 'weight', 'rotnet', 'save_model'])
+rotnet_cls(
+  (proj): Sequential(
+    (0): Linear(in_features=384, out_features=768, bias=False)
+    (1): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): Linear(in_features=768, out_features=768, bias=False)
+    (4): BatchNorm1d(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU()
+    (6): Linear(in_features=768, out_features=4, bias=True)
+  )
+)
+augmentation for mae_bt_rot: 
+Compose(
+    RandomResizedCrop(size=(224, 224), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    GaussianBlur(p = 1.0)
+    Solarization(p = 0.0)
+    ToTensor()
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+)
+Compose(
+    RandomResizedCrop(size=(224, 224), scale=(0.08, 1.0), ratio=(0.75, 1.3333), interpolation=bilinear, antialias=True)
+    RandomHorizontalFlip(p=0.5)
+    RandomApply(
+    p=0.8
+    ColorJitter(brightness=(0.6, 1.4), contrast=(0.6, 1.4), saturation=(0.6, 1.4), hue=(-0.1, 0.1))
+)
+    RandomGrayscale(p=0.2)
+    GaussianBlur(p = 0.1)
+    Solarization(p = 0.1)
+    ToTensor()
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+)
+using optimizer: AdamW
+loss function: bt
+loss: BT(lambda=0.005)
+param config for: mae_bt_rot
+{'train_algo': 'mae_bt_rot', 'model': DistributedDataParallel(
+  (module): MaskedAutoencoderViT(
+    (base_encoder): MAEEncoder(
+      (patch_embed): PatchEmbed(
+        (proj): Conv2d(3, 384, kernel_size=(8, 8), stride=(8, 8))
+        (norm): Identity()
+      )
+      (blocks): ModuleList(
+        (0-11): 12 x Block(
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+          (attn): Attention(
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (q_norm): Identity()
+            (k_norm): Identity()
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (ls1): Identity()
+          (drop_path1): Identity()
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (ls2): Identity()
+          (drop_path2): Identity()
+        )
+      )
+      (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+    )
+    (decoder): MAEDecoder(
+      (decoder_embed): Linear(in_features=384, out_features=256, bias=True)
+      (decoder_blocks): ModuleList(
+        (0-3): 4 x Block(
+          (norm1): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+          (attn): Attention(
+            (qkv): Linear(in_features=256, out_features=768, bias=True)
+            (q_norm): Identity()
+            (k_norm): Identity()
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (ls1): Identity()
+          (drop_path1): Identity()
+          (norm2): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (norm): Identity()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (ls2): Identity()
+          (drop_path2): Identity()
+        )
+      )
+      (decoder_norm): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+      (decoder_pred): Linear(in_features=256, out_features=192, bias=True)
+    )
+    (proj): bt_proj(
+      (proj): Sequential(
+        (0): Linear(in_features=384, out_features=8192, bias=False)
+        (1): SyncBatchNorm(8192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU()
+        (3): Linear(in_features=8192, out_features=8192, bias=False)
+        (4): SyncBatchNorm(8192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU()
+        (6): Linear(in_features=8192, out_features=8192, bias=True)
+        (7): SyncBatchNorm(8192, eps=1e-05, momentum=0.1, affine=False, track_running_stats=True)
+      )
+    )
+  )
+), 'train_loader': <torch.utils.data.dataloader.DataLoader object at 0x714a33ee9300>, 'scaler': <torch.cuda.amp.grad_scaler.GradScaler object at 0x714a33ee96f0>, 'loss_base': BT(lambda=0.005), 'optimizer': AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.95)
+    capturable: False
+    decoupled_weight_decay: True
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: True
+    initial_lr: 0.0003
+    lr: 2.9999999999999995e-10
+    maximize: False
+    weight_decay: 0.05
+), 'opt_lr_schedular': <torch.optim.lr_scheduler.SequentialLR object at 0x714a33ee9480>, 'progress': <function progress at 0x714a33de49d0>, 'n_epochs': 400, 'device_id': 2, 'eval_id': 0, 'return_logs': False, 'weight': {'wt1': 0.1, 'wt2': 0.8}, 'rotnet': DistributedDataParallel(
+  (module): rotnet_cls(
+    (proj): Sequential(
+      (0): Linear(in_features=384, out_features=768, bias=False)
+      (1): SyncBatchNorm(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU()
+      (3): Linear(in_features=768, out_features=768, bias=False)
+      (4): SyncBatchNorm(768, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (5): ReLU()
+      (6): Linear(in_features=768, out_features=4, bias=True)
+    )
+  )
+), 'save_model': functools.partial(<function save_model at 0x714a33de4940>, path='saved_models/mae.bt.rot.i100.vit.s.8.dist.pth')}
 dict_keys(['train_algo', 'model', 'train_loader', 'scaler', 'loss_base', 'optimizer', 'opt_lr_schedular', 'progress', 'n_epochs', 'device_id', 'eval_id', 'return_logs', 'weight', 'rotnet', 'save_model'])
