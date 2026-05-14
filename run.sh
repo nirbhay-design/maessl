@@ -237,7 +237,8 @@ models=(
     # "saved_models/mae.clr.rot.i100.wt0.8wt20.1.pth" 
 #     "saved_models/mae.bt.rot.i100.pth" 
 #     "saved_models/mae.i100.pth"
-    "saved_models/mae.bt.rot.i100.vit.t.8.dist.pth"
+    # "saved_models/mae.bt.rot.i100.vit.t.8.dist.pth"
+    "saved_models/mae.bt.rot.i100.vit.s.8.dist.pth"
 )
 
 for img in "${images[@]}"; do
@@ -246,7 +247,7 @@ for img in "${images[@]}"; do
     # Loop through each model for the current image
     for mod in "${models[@]}"; do
         echo "  Running model: $mod"
-        python attention_vis.py --saved_path "$mod" --gpu 0 --image "$img" --threshold 0.6 --model vit_t_8
+        python attention_vis.py --saved_path "$mod" --gpu 0 --image "$img" --threshold 0.6 --model vit_s_8
     done
     
     echo "Finished processing $img across all models."
