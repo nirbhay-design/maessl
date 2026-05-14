@@ -142,7 +142,7 @@ def get_tsne_knn_logreg(model, train_loader, test_loader, device, return_logs = 
         make_umap_plot(x_train, y_train, name = f"umap.{tsne_name}")
 
     if knn:
-        print("knn evalution")
+        print(f"knn evaluation for k = {k}")
         knnc = KNeighborsClassifier(n_neighbors=k)
         knnc.fit(x_train, y_train)
         y_test_pred = knnc.predict(x_test)

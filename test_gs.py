@@ -31,6 +31,7 @@ def get_args():
     parser.add_argument("--pf", type=int, default = 4, help="prefetch factor for dataloading")
     parser.add_argument("--aug", type=str, default = "v1", help="augmentation strategy")
     parser.add_argument("--lrs", type=float, nargs='+', default = [1.0, 1.5, 2.0, 5.0, 10.0], help="learning rates for grid search")
+    parser.add_argument("--k", type=int, default = 200, help="k for k-nearest neighbors")
 
     args = parser.parse_args()
     return args
@@ -261,7 +262,7 @@ if __name__ == "__main__":
     tsne_name = ".".join(args.saved_path.split("/")[-1].split('.')[:-1]) + '.pdf'
     test_config = {"model": encoder, "train_loader": train_dl_mlp, "test_loader": test_dl, 
                     "device": device, "return_logs": args.verbose, "umap": args.umap, "cmet": args.cmet,
-                    "tsne": args.tsne, "knn": args.knn, "log_reg": args.lreg, "tsne_name": tsne_name}
+                    "tsne": args.tsne, "knn": args.knn, "log_reg": args.lreg, "tsne_name": tsne_name, "k": args.k}
     
     if any([args.tsne, args.knn, args.lreg, args.umap, args.cmet]):
         output = get_tsne_knn_logreg(**test_config)
