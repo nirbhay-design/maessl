@@ -137,7 +137,7 @@ if __name__ == "__main__":
         # print(f"{fname_heatmap} saved.")
         head_to_plot = j  # You can change this to visualize different heads (e.g., 0 through 15)
     
-        fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+        fig, axes = plt.subplots(1, 2, figsize=(4, 4))
 
         # Plot 1: Original Image
         axes[0].imshow(img_show)
@@ -150,10 +150,10 @@ if __name__ == "__main__":
         axes[1].axis('off')
 
         # Plot 3: Overlay (Original + Heatmap)
-        axes[2].imshow(img_show)
-        axes[2].imshow(attentions[head_to_plot], cmap='inferno', alpha=0.5) # Alpha controls transparency
-        # axes[2].set_title(f"Overlay (Head {head_to_plot})", fontsize=14)
-        axes[2].axis('off')
+        # axes[2].imshow(img_show)
+        # axes[2].imshow(attentions[head_to_plot], cmap='inferno', alpha=0.5) # Alpha controls transparency
+        # # axes[2].set_title(f"Overlay (Head {head_to_plot})", fontsize=14)
+        # axes[2].axis('off')
 
         plt.tight_layout()
         

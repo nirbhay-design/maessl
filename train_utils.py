@@ -219,7 +219,20 @@ def load_dataset(dataset_name, **kwargs):
     
 def get_tsne_title(name):
     split = name.split(".")[1:-1]
-    return ".".join(split)
+    if "dist" in split:
+        split.remove("dist")
+    if "v2" in split:
+        split.remove("v2")
+    algo_name = []
+    for i, part in enumerate(split):
+        algo_name.append(part.upper())
+        if part in ["timg", "i100"]: 
+            break 
+    remaining_split = split[len(algo_name):]
+    final_name = "+".join(algo_name[:-1]) 
+    if len(remaining_split) > 0: 
+        return final_name + f" ({'.'.join(remaining_split)})"        
+    return final_name
 
 def make_tsne_plot(X, y, name):
     print(f"TSNE name: {name}")
@@ -235,7 +248,8 @@ def make_tsne_plot(X, y, name):
     X_embedded = tsne.fit_transform(X)
 
     plt.figure(figsize=(8, 6))
-    plt.scatter(X_embedded[:, 0], X_embedded[:, 1], c=y, s = 16, alpha = 0.8, cmap='turbo', edgecolors="white", linewidths=0.3, rasterized=True)  # Color by labels
+    plt.scatter(X_embedded[:, 0], X_embedded[:, 1], c=y, s = 4, alpha = 0.8, cmap='turbo', rasterized=True)
+    # plt.scatter(X_embedded[:, 0], X_embedded[:, 1], c=y, s = 16, alpha = 0.8, cmap='turbo', edgecolors="white", linewidths=0.3, rasterized=True)  # Color by labels
     plt.box(False)
     plt.xticks([]) 
     plt.yticks([])
