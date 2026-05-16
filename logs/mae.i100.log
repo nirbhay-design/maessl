@@ -2002,3 +2002,57 @@ BLAS : Bad memory unallocation! :  640  0x7d42b4000000
 BLAS : Bad memory unallocation! :  640  0x7d4202000000
 BLAS : Bad memory unallocation! :  640  0x7d4174000000
 corrupted size vs. prev_size
+Namespace(dataset='img100', saved_path='saved_models/mae.i100.pth', gpu=0, model='vit_s_16', verbose=False, epochs=100, eval_every=10, knn=False, lreg=False, linprobe=True, tsne=False, umap=False, cmet=False, nw=4, pf=2, aug='v1', lrs=[1.0, 2.0, 5.0, 10.0], k=200)
+MAE Encoder with params: {'img_size': 224, 'in_chans': 3, 'patch_size': 16, 'embed_dim': 384, 'depth': 12, 'num_heads': 6, 'mlp_ratio': 4}
+<All keys matched successfully>
+sweeping through lr: [1.0, 2.0, 5.0, 10.0]
+sweeping through wd: [1e-06, 0.0001, 0.0]
+Starting Hyperparameter Sweep on 0...
+===> using linear mlp
+linear probe with LR: 1.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 1.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 1.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 2.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 2.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 2.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 5.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 10.0, WD: 1e-06, Cosine: False
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0001, Cosine: False
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0, Cosine: False
+===> using linear mlp
+linear probe with LR: 1.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 1.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 1.0, WD: 0.0, Cosine: True
+===> using linear mlp
+linear probe with LR: 2.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 2.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 2.0, WD: 0.0, Cosine: True
+===> using linear mlp
+linear probe with LR: 5.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 5.0, WD: 0.0, Cosine: True
+===> using linear mlp
+linear probe with LR: 10.0, WD: 1e-06, Cosine: True
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0001, Cosine: True
+===> using linear mlp
+linear probe with LR: 10.0, WD: 0.0, Cosine: True
