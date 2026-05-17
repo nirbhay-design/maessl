@@ -1,0 +1,62 @@
+base_model: vit
+environment: 
+YAML: configs/mae_bt_rot.yaml
+==> SEED: 42
+==> train_algo: mae_bt_rot
+==> dataset: {'cifar10': {'num_classes': 10, 'params': {'data_dir': 'datasets/cifar10', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'prefetch_factor': 4, 'algo': 'mae_bt_rot'}}, 'cifar100': {'num_classes': 100, 'params': {'data_dir': 'datasets/cifar100', 'batch_size': 512, 'test_batch_size': 512, 'num_workers': 1, 'image_size': 32, 'prefetch_factor': 4, 'algo': 'mae_bt_rot'}}, 'timg': {'num_classes': 200, 'params': {'data_dir': 'datasets/tinyimagenet/tiny-imagenet-200', 'batch_size': 256, 'test_batch_size': 256, 'num_workers': 6, 'image_size': 64, 'prefetch_factor': 4, 'algo': 'mae_bt_rot'}}, 'img100': {'num_classes': 100, 'params': {'data_dir': 'datasets/imagenet100', 'labels_json': 'Labels.json', 'batch_size': 256, 'test_batch_size': 512, 'num_workers': 4, 'image_size': 224, 'prefetch_factor': 2, 'algo': 'mae_bt_rot'}}}
+==> return_logs: False
+==> eval_every: 10
+==> n_epochs: 800
+==> n_epochs_mlp: 100
+==> gpu_id: 0
+==> opt: AdamW
+==> opt_params: {'lr': 0.0003, 'weight_decay': 0.05, 'betas': (0.9, 0.95)}
+==> schedular_params: {'T_max': 780, 'eta_min': 0.001}
+==> mlp_opt: SGD
+==> mlp_opt_params: {'lr': 0.01, 'momentum': 0.9}
+==> model_params: {'img_size': 224, 'in_chans': 3, 'patch_size': 8, 'embed_dim': 192, 'depth': 12, 'num_heads': 3, 'decoder_embed_dim': 128, 'decoder_depth': 4, 'decoder_num_heads': 4, 'mlp_ratio': 4, 'norm_pix_loss': False, 'algo_type': 'mae_bt_rot', 'model_name': 'vit'}
+==> rotnet_params: {'rot_hidden': 768, 'num_classes': 4}
+==> mlp_type: hidden
+==> loss: mae_bt_rot
+==> loss_params: {'lambd': 0.005}
+==> distributed: True
+==> model_save_path: saved_models/mae.bt.rot.i100.vit.t.8.dist.e800.pth
+==> warmup_epochs: 20
+==> weight: {'wt1': 0.1, 'wt2': 0.8}
+==> config: configs/mae_bt_rot.yaml
+==> aug: v1
+==> damp_rot: False
+--------------------------------------------------
+Launching DDP across 2 GPUs
+W0517 22:23:12.283000 385129 torch/multiprocessing/spawn.py:174] Terminating process 385180 via signal SIGTERM
+Traceback (most recent call last):
+  File "/data1/home/nirbhays/maessl/train.py", line 288, in <module>
+    mp.spawn(main_single, args=(world_size, config, args, True), nprocs=world_size)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 364, in spawn
+    return start_processes(fn, args, nprocs, join, daemon, start_method="spawn")
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 320, in start_processes
+    while not context.join():
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 220, in join
+    raise ProcessRaisedException(msg, error_index, failed_process.pid)
+torch.multiprocessing.spawn.ProcessRaisedException: 
+
+-- Process 0 terminated with the following error:
+Traceback (most recent call last):
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/multiprocessing/spawn.py", line 95, in _wrap
+    fn(i, *args)
+  File "/data1/home/nirbhays/maessl/train.py", line 73, in main_single
+    ddp_setup(rank, world_size, args.port)
+  File "/data1/home/nirbhays/maessl/train.py", line 63, in ddp_setup
+    init_process_group(backend = 'nccl', rank = rank, world_size = world_size)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/distributed/c10d_logger.py", line 81, in wrapper
+    return func(*args, **kwargs)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/distributed/c10d_logger.py", line 95, in wrapper
+    func_return = func(*args, **kwargs)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/distributed/distributed_c10d.py", line 1762, in init_process_group
+    store, rank, world_size = next(rendezvous_iterator)
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/distributed/rendezvous.py", line 278, in _env_rendezvous_handler
+    store = _create_c10d_store(
+  File "/data1/home/nirbhays/envs/mlenv/lib/python3.10/site-packages/torch/distributed/rendezvous.py", line 198, in _create_c10d_store
+    return TCPStore(
+torch.distributed.DistNetworkError: The server socket has failed to listen on any local network address. port: 4084, useIpv6: false, code: -98, name: EADDRINUSE, message: address already in use
+
